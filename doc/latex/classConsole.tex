@@ -1,0 +1,290 @@
+\doxysection{Console Class Reference}
+\hypertarget{classConsole}{}\label{classConsole}\index{Console@{Console}}
+
+
+A class to perform CLI.  
+
+
+
+
+{\ttfamily \#include $<$console.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classConsole_a69817bdccb3726aa8ff844c577454228}{Console}} (\mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \&memory\+\_\+accessor, \mbox{\hyperlink{classHexViewer}{Hex\+Viewer}} \&hex\+\_\+viewer, \mbox{\hyperlink{classTools}{Tools}} \&tools) noexcept(false)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classConsole_a4365050250c2c042e9f4f18a6b368f80}{Console}} (const \mbox{\hyperlink{classConsole}{Console}} \&origin)=delete
+\begin{DoxyCompactList}\small\item\em Copy constructor (deleted). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classConsole_a2cd0bd2528ec6314e677f1616a1e1447}{Console}} (\mbox{\hyperlink{classConsole}{Console}} \&\&origin)=delete
+\begin{DoxyCompactList}\small\item\em Move constructor (deleted). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classConsole}{Console}} \& \mbox{\hyperlink{classConsole_a0e1b64b22d04acb22d8ca2ae4f8bd625}{operator=}} (const \mbox{\hyperlink{classConsole}{Console}} \&origin)=delete
+\begin{DoxyCompactList}\small\item\em Copy-\/assignment operator (deleted). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classConsole}{Console}} \& \mbox{\hyperlink{classConsole_a4a8bf0c5b5d02d8688c8986a76110da0}{operator=}} (\mbox{\hyperlink{classConsole}{Console}} \&\&origin)=delete
+\begin{DoxyCompactList}\small\item\em Move-\/assignment operator (deleted). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classConsole_ad03f47007c1feab0c18b15f1aa933b98}{\texorpdfstring{$\sim$}{\string~}\+Console}} () noexcept
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classConsole_a0b22211d85059d54a78cd03109900672}{Set\+Buffer\+Size}} (const size\+\_\+t \&buffer\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Set buffer size of an instance. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classConsole_afe2e985b3d6df508524b952d74a7c7c5}{Print\+Name\+Ver}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Print project name and version. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classConsole_a4caf358d9f8bdf91790e97129e7642e2}{Start}} () noexcept
+\begin{DoxyCompactList}\small\item\em Start the console. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classConsole_a62987bb460dd29b26262513669f9fabe}{Read\+Stdin}} () noexcept
+\begin{DoxyCompactList}\small\item\em Read and process input from stdin. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classConsole_a734562e8b24e4011703a9b245c28d5b2}{Handle\+Command}} (const std\+::string \&line) noexcept
+\begin{DoxyCompactList}\small\item\em Handle line with command. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classConsole_a441f7d34d10420ab1c795e7f9f314493}\label{classConsole_a441f7d34d10420ab1c795e7f9f314493} 
+const std\+::string {\bfseries k\+Project\+Name} \{"{}Memory\+Accessor"{}\}
+\begin{DoxyCompactList}\small\item\em Name of the project. \end{DoxyCompactList}\item 
+\Hypertarget{classConsole_abc411673721eaf0a2f29a7cf02c4f9dd}\label{classConsole_abc411673721eaf0a2f29a7cf02c4f9dd} 
+const std\+::string {\bfseries k\+Project\+Version} \{"{}v1.\+0"{}\}
+\begin{DoxyCompactList}\small\item\em Project version. \end{DoxyCompactList}\item 
+const std\+::string \mbox{\hyperlink{classConsole_a213548ca270289b15639497b4f6cefd2}{k\+Project\+Description}}
+\begin{DoxyCompactList}\small\item\em Project description. \end{DoxyCompactList}\item 
+const std\+::string \mbox{\hyperlink{classConsole_abfad51f712b017dcabc7d86179046cd1}{k\+Console\+Prefix}}
+\begin{DoxyCompactList}\small\item\em Prefix shown in console input. \end{DoxyCompactList}\item 
+\Hypertarget{classConsole_ad183ac921462e3ae223a26756280c6ec}\label{classConsole_ad183ac921462e3ae223a26756280c6ec} 
+\mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \& {\bfseries memory\+\_\+accessor\+\_\+}
+\begin{DoxyCompactList}\small\item\em A reference to a \doxylink{classMemoryAccessor}{Memory\+Accessor} class instance. \end{DoxyCompactList}\item 
+\Hypertarget{classConsole_af66eccb21baba280a63bd409da538d18}\label{classConsole_af66eccb21baba280a63bd409da538d18} 
+\mbox{\hyperlink{classHexViewer}{Hex\+Viewer}} \& {\bfseries hex\+\_\+viewer\+\_\+}
+\begin{DoxyCompactList}\small\item\em A reference to a \doxylink{classHexViewer}{Hex\+Viewer} class instance. \end{DoxyCompactList}\item 
+\Hypertarget{classConsole_aba86c5220c00fac630d3557648034fa0}\label{classConsole_aba86c5220c00fac630d3557648034fa0} 
+\mbox{\hyperlink{classTools}{Tools}} \& {\bfseries tools\+\_\+}
+\begin{DoxyCompactList}\small\item\em A reference to a \doxylink{classTools}{Tools} class instance. \end{DoxyCompactList}\item 
+\Hypertarget{classConsole_a9d333d05aec9868208093379b7259616}\label{classConsole_a9d333d05aec9868208093379b7259616} 
+const \mbox{\hyperlink{structCommand}{Command}} {\bfseries k\+Commands} \mbox{[}\mbox{\hyperlink{classConsole_a6c36dfaa8baac56df6544226689b4c43}{k\+Commands\+Number}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em Definitions of commands. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int \mbox{\hyperlink{classConsole_a6c36dfaa8baac56df6544226689b4c43}{k\+Commands\+Number}}
+\begin{DoxyCompactList}\small\item\em Number of the commands available. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class to perform CLI. 
+
+The class provides commandline interface to interract with \doxylink{classMemoryAccessor}{Memory\+Accessor} effectively. It can handle various commands with arguments. The class can either execute a command as a std\+::string or read a command from stdin. Moving, copying and creating more than 1 instance of the class is prohibited. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classConsole_a69817bdccb3726aa8ff844c577454228}\index{Console@{Console}!Console@{Console}}
+\index{Console@{Console}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{Console()}{Console()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{classConsole_a69817bdccb3726aa8ff844c577454228} 
+Console\+::\+Console (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \&}]{memory\+\_\+accessor}{, }\item[{\mbox{\hyperlink{classHexViewer}{Hex\+Viewer}} \&}]{hex\+\_\+viewer}{, }\item[{\mbox{\hyperlink{classTools}{Tools}} \&}]{tools}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em memory\+\_\+accessor} & A reference to an instance of \doxylink{classMemoryAccessor}{Memory\+Accessor} class.\\
+\hline
+\mbox{\texttt{ in,out}}  & {\em hex\+\_\+viewer} & A reference to an instance of \doxylink{classHexViewer}{Hex\+Viewer} class.\\
+\hline
+\mbox{\texttt{ in,out}}  & {\em tools} & A reference to an instance of \doxylink{classTools}{Tools} struct. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::logic\+\_\+error} & If an instance of the class have already been created and it is a second instance.\\
+\hline
+\end{DoxyExceptions}
+Initializes \doxylink{classMemoryAccessor}{Memory\+Accessor} class, \doxylink{classHexViewer}{Hex\+Viewer} class and \doxylink{classTools}{Tools} struct references by values got as parameters. Throws an exception if an instance of the class have already been created. Sets one\+\_\+instance\+\_\+created\+\_\+ to true. \Hypertarget{classConsole_a4365050250c2c042e9f4f18a6b368f80}\index{Console@{Console}!Console@{Console}}
+\index{Console@{Console}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{Console()}{Console()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{classConsole_a4365050250c2c042e9f4f18a6b368f80} 
+Console\+::\+Console (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classConsole}{Console}} \&}]{origin}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+Copy constructor (deleted). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em origin} & \doxylink{classConsole}{Console} instance to copy from.\\
+\hline
+\end{DoxyParams}
+Create a new object by copying an old one. Prohibited. \Hypertarget{classConsole_a2cd0bd2528ec6314e677f1616a1e1447}\index{Console@{Console}!Console@{Console}}
+\index{Console@{Console}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{Console()}{Console()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{classConsole_a2cd0bd2528ec6314e677f1616a1e1447} 
+Console\+::\+Console (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classConsole}{Console}} \&\&}]{origin}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+Move constructor (deleted). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em origin} & Moved \doxylink{classConsole}{Console} object.\\
+\hline
+\end{DoxyParams}
+Create a new object by moving an old one. Prohibited. \Hypertarget{classConsole_ad03f47007c1feab0c18b15f1aa933b98}\index{Console@{Console}!````~Console@{\texorpdfstring{$\sim$}{\string~}Console}}
+\index{````~Console@{\texorpdfstring{$\sim$}{\string~}Console}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Console()}{\string~Console()}}
+{\footnotesize\ttfamily \label{classConsole_ad03f47007c1feab0c18b15f1aa933b98} 
+Console\+::\texorpdfstring{$\sim$}{\string~}\+Console (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Destructor. 
+
+Deletes SIGINT handler attach if it is set to memoryaccessor\+\_\+console\+\_\+src\+::\+CtrlC, sets variables current\+\_\+console\+\_\+p to nullptr, rl\+\_\+attempted\+\_\+completion\+\_\+function to nullptr and one\+\_\+instance\+\_\+created\+\_\+ to false. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classConsole_a734562e8b24e4011703a9b245c28d5b2}\index{Console@{Console}!HandleCommand@{HandleCommand}}
+\index{HandleCommand@{HandleCommand}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{HandleCommand()}{HandleCommand()}}
+{\footnotesize\ttfamily \label{classConsole_a734562e8b24e4011703a9b245c28d5b2} 
+void Console\+::\+Handle\+Command (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{line}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Handle line with command. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em line} & Line containing the command.\+f\\
+\hline
+\end{DoxyParams}
+Parse and execute the given line containing the command. \Hypertarget{classConsole_a4a8bf0c5b5d02d8688c8986a76110da0}\index{Console@{Console}!operator=@{operator=}}
+\index{operator=@{operator=}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classConsole_a4a8bf0c5b5d02d8688c8986a76110da0} 
+\mbox{\hyperlink{classConsole}{Console}} \& Console\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classConsole}{Console}} \&\&}]{origin}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+Move-\/assignment operator (deleted). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em origin} & Moved \doxylink{classConsole}{Console} object.\\
+\hline
+\end{DoxyParams}
+Assign an object by moving other object. Prohibited. \Hypertarget{classConsole_a0e1b64b22d04acb22d8ca2ae4f8bd625}\index{Console@{Console}!operator=@{operator=}}
+\index{operator=@{operator=}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classConsole_a0e1b64b22d04acb22d8ca2ae4f8bd625} 
+\mbox{\hyperlink{classConsole}{Console}} \& Console\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classConsole}{Console}} \&}]{origin}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+Copy-\/assignment operator (deleted). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em origin} & \doxylink{classConsole}{Console} instance to copy from.\\
+\hline
+\end{DoxyParams}
+Assign an object by copying other object. Prohibited. \Hypertarget{classConsole_afe2e985b3d6df508524b952d74a7c7c5}\index{Console@{Console}!PrintNameVer@{PrintNameVer}}
+\index{PrintNameVer@{PrintNameVer}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{PrintNameVer()}{PrintNameVer()}}
+{\footnotesize\ttfamily \label{classConsole_afe2e985b3d6df508524b952d74a7c7c5} 
+void Console\+::\+Print\+Name\+Ver (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Print project name and version. 
+
+Print project name and version to stdout. \Hypertarget{classConsole_a62987bb460dd29b26262513669f9fabe}\index{Console@{Console}!ReadStdin@{ReadStdin}}
+\index{ReadStdin@{ReadStdin}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{ReadStdin()}{ReadStdin()}}
+{\footnotesize\ttfamily \label{classConsole_a62987bb460dd29b26262513669f9fabe} 
+void Console\+::\+Read\+Stdin (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Read and process input from stdin. 
+
+Print prefix of a console, read input and process it (add line to history and handle command). If Ctrl-\/D is pressed, print "{}\+Quit"{} and exit the program with the code 0. \Hypertarget{classConsole_a0b22211d85059d54a78cd03109900672}\index{Console@{Console}!SetBufferSize@{SetBufferSize}}
+\index{SetBufferSize@{SetBufferSize}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{SetBufferSize()}{SetBufferSize()}}
+{\footnotesize\ttfamily \label{classConsole_a0b22211d85059d54a78cd03109900672} 
+void Console\+::\+Set\+Buffer\+Size (\begin{DoxyParamCaption}\item[{const size\+\_\+t \&}]{buffer\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set buffer size of an instance. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em buffer\+\_\+size} & Desired buffer size in bytes.\\
+\hline
+\end{DoxyParams}
+Set buffer size, a number of bytes that are allocated when needed. \Hypertarget{classConsole_a4caf358d9f8bdf91790e97129e7642e2}\index{Console@{Console}!Start@{Start}}
+\index{Start@{Start}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{Start()}{Start()}}
+{\footnotesize\ttfamily \label{classConsole_a4caf358d9f8bdf91790e97129e7642e2} 
+void Console\+::\+Start (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Start the console. 
+
+Try to set handler for SIGINT, set memoryaccessor\+\_\+console\+\_\+src\+::current\+\_\+console\+\_\+p, rl\+\_\+attempted\+\_\+completion\+\_\+function and print greeting message to stdout. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classConsole_a6c36dfaa8baac56df6544226689b4c43}\index{Console@{Console}!kCommandsNumber@{kCommandsNumber}}
+\index{kCommandsNumber@{kCommandsNumber}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{kCommandsNumber}{kCommandsNumber}}
+{\footnotesize\ttfamily \label{classConsole_a6c36dfaa8baac56df6544226689b4c43} 
+int Console\+::k\+Commands\+Number\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \ \ 9\}}
+
+\end{DoxyCode}
+
+
+Number of the commands available. 
+
+\Hypertarget{classConsole_abfad51f712b017dcabc7d86179046cd1}\index{Console@{Console}!kConsolePrefix@{kConsolePrefix}}
+\index{kConsolePrefix@{kConsolePrefix}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{kConsolePrefix}{kConsolePrefix}}
+{\footnotesize\ttfamily \label{classConsole_abfad51f712b017dcabc7d86179046cd1} 
+const std\+::string Console\+::k\+Console\+Prefix}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \ \ \textcolor{stringliteral}{"{}(MemAcc)"{}}\}}
+
+\end{DoxyCode}
+
+
+Prefix shown in console input. 
+
+\Hypertarget{classConsole_a213548ca270289b15639497b4f6cefd2}\index{Console@{Console}!kProjectDescription@{kProjectDescription}}
+\index{kProjectDescription@{kProjectDescription}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{kProjectDescription}{kProjectDescription}}
+{\footnotesize\ttfamily \label{classConsole_a213548ca270289b15639497b4f6cefd2} 
+const std\+::string Console\+::k\+Project\+Description}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \ \ \textcolor{stringliteral}{"{}A\ command-\/line\ front-\/end\ for\ exploring\ virtual\ memory\ of\ a\ linux\ "{}}}
+\DoxyCodeLine{\ \ \ \ \ \ \textcolor{stringliteral}{"{}process\ "{}}}
+\DoxyCodeLine{\ \ \ \ \ \ \textcolor{stringliteral}{"{}by\ accessing\ /proc/PID/mem\ file."{}}\}}
+
+\end{DoxyCode}
+
+
+Project description. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{console_8h}{console.\+h}}\item 
+\mbox{\hyperlink{console_8cc}{console.\+cc}}\end{DoxyCompactItemize}

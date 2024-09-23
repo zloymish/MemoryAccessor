@@ -1,0 +1,243 @@
+\doxysection{Tools Class Reference}
+\hypertarget{classTools}{}\label{classTools}\index{Tools@{Tools}}
+
+
+A struct with various tools that are independent or depend on operating system.  
+
+
+
+
+{\ttfamily \#include $<$tools.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classTools_aea6bd9f85a08e2bb9ebca6c9202cd936}{Set\+Buffer\+Size}} (const size\+\_\+t \&buffer\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Set buffer size of an instance. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classTools_aa27e253ad1e31f979e5eee78f872c118}{Set\+Sigint}} (void(\texorpdfstring{$\ast$}{*}handler)(int)) const noexcept
+\begin{DoxyCompactList}\small\item\em Attach handler to SIGINT signal. \end{DoxyCompactList}\item 
+std\+::\+FILE \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classTools_afbabefebf57e3576ff68e4f14b83427c}{Shell\+Command}} (const std\+::string \&command) const noexcept
+\begin{DoxyCompactList}\small\item\em Do a command in system shell. \end{DoxyCompactList}\item 
+std\+::unordered\+\_\+set$<$ pid\+\_\+t $>$ \mbox{\hyperlink{classTools_ab5b1437b329653c648c08813781d44b5}{Get\+All\+Pids}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Get all PIDs existing in the system. \end{DoxyCompactList}\item 
+std\+::unordered\+\_\+set$<$ std\+::string $>$ \mbox{\hyperlink{classTools_a65574336fb86b2c5c67762b414c3e2f8}{Get\+All\+Process\+Names}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Get all names of processes existing in the system. \end{DoxyCompactList}\item 
+std\+::unordered\+\_\+set$<$ pid\+\_\+t $>$ \mbox{\hyperlink{classTools_ac4c8a12bad3ae3d12115f17eccd3732f}{Find\+Pids\+By\+Name}} (const std\+::string \&name) const noexcept
+\begin{DoxyCompactList}\small\item\em Get all PIDs by name of the process. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classTools_aeac154b3a2c16b98d31b81731494475e}{Pid\+Exists}} (const pid\+\_\+t \&pid) const noexcept
+\begin{DoxyCompactList}\small\item\em Check if a process with the given PID exists. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classTools_a25be0a12042cf9b1ed788d57a0e9d68f}{Process\+Exists}} (const std\+::string \&pname) const noexcept
+\begin{DoxyCompactList}\small\item\em Check if a process with the given name exists. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classTools_a0c7f39349f34614488d61d63c4f6dd94}{Decode\+Permissions}} (const std\+::string \&permissions) const noexcept
+\begin{DoxyCompactList}\small\item\em Get permissions stored as uint8\+\_\+t from std\+::string. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classTools_a2e51a42c74604c7b40e62f4263c32deb}{Encode\+Permissions}} (const uint8\+\_\+t \&mode) const noexcept
+\begin{DoxyCompactList}\small\item\em Get permissions stored as std\+::string from uint8\+\_\+t. \end{DoxyCompactList}\item 
+std\+::array$<$ std\+::unique\+\_\+ptr$<$ char\mbox{[}$\,$\mbox{]}$>$, 2 $>$ \mbox{\hyperlink{classTools_aa7c948a54b6c886f748a35f3ac62c935}{Find\+Differences\+Of\+Len}} (const char \texorpdfstring{$\ast$}{*}old\+\_\+str, const char \texorpdfstring{$\ast$}{*}new\+\_\+str, size\+\_\+t str\+\_\+len, size\+\_\+t \&done, const size\+\_\+t \&len) const noexcept
+\begin{DoxyCompactList}\small\item\em Find differences of given length comparing two arrays of char. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A struct with various tools that are independent or depend on operating system. 
+
+This struct provides a set of functions that are useful in some parts of the project, but cannot be attributed to any existing category. These functions do not depend on any parts of the program. The struct includes such functionality as working with signals (SIGINT), getting terminal window size, making shell commands, comparing memory arrays and so on. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classTools_a0c7f39349f34614488d61d63c4f6dd94}\index{Tools@{Tools}!DecodePermissions@{DecodePermissions}}
+\index{DecodePermissions@{DecodePermissions}!Tools@{Tools}}
+\doxysubsubsection{\texorpdfstring{DecodePermissions()}{DecodePermissions()}}
+{\footnotesize\ttfamily \label{classTools_a0c7f39349f34614488d61d63c4f6dd94} 
+uint8\+\_\+t Tools\+::\+Decode\+Permissions (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{permissions}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Get permissions stored as uint8\+\_\+t from std\+::string. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em permissions} & Permissions stored as std\+::string, for example, "{}rwxp"{}. Some additional characters after are not prohibited. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Value where the last 4 bits represent permissions (rwxs are 1, others are 0). If the input std\+::string is too short or an unexpected character is found, the return value is -\/1 (255).
+\end{DoxyReturn}
+Process permissions of a memory segment from std\+::string to uint8\+\_\+t. \Hypertarget{classTools_a2e51a42c74604c7b40e62f4263c32deb}\index{Tools@{Tools}!EncodePermissions@{EncodePermissions}}
+\index{EncodePermissions@{EncodePermissions}!Tools@{Tools}}
+\doxysubsubsection{\texorpdfstring{EncodePermissions()}{EncodePermissions()}}
+{\footnotesize\ttfamily \label{classTools_a2e51a42c74604c7b40e62f4263c32deb} 
+std\+::string Tools\+::\+Encode\+Permissions (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \&}]{mode}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Get permissions stored as std\+::string from uint8\+\_\+t. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mode} & Value, where the last 4 bits represent permissions (rwxs are 1, others are 0). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Permissions stored as std\+::string, for example, "{}rwxp"{}.
+\end{DoxyReturn}
+Process permissions of a memory segment from uint8\+\_\+t to std\+::string. \Hypertarget{classTools_aa7c948a54b6c886f748a35f3ac62c935}\index{Tools@{Tools}!FindDifferencesOfLen@{FindDifferencesOfLen}}
+\index{FindDifferencesOfLen@{FindDifferencesOfLen}!Tools@{Tools}}
+\doxysubsubsection{\texorpdfstring{FindDifferencesOfLen()}{FindDifferencesOfLen()}}
+{\footnotesize\ttfamily \label{classTools_aa7c948a54b6c886f748a35f3ac62c935} 
+std\+::array$<$ std\+::unique\+\_\+ptr$<$ char\mbox{[}$\,$\mbox{]}$>$, 2 $>$ Tools\+::\+Find\+Differences\+Of\+Len (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{old\+\_\+str}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{new\+\_\+str}{, }\item[{size\+\_\+t}]{str\+\_\+len}{, }\item[{size\+\_\+t \&}]{done}{, }\item[{const size\+\_\+t \&}]{len}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Find differences of given length comparing two arrays of char. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em old\+\_\+str} & First "{}old"{} array of char. \\
+\hline
+\mbox{\texttt{ in}}  & {\em new\+\_\+str} & Second "{}new"{} array of char. \\
+\hline
+\mbox{\texttt{ in}}  & {\em str\+\_\+len} & Length of both arrays. \\
+\hline
+\mbox{\texttt{ in}}  & {\em len} & Length of different sequences. \\
+\hline
+\mbox{\texttt{ out}}  & {\em done} & Amount of bytes processed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::array of length of 2 containing "{}old"{} and "{}new"{} versions of a changed substring in unique\+\_\+ptr containers.
+\end{DoxyReturn}
+Find first pair of different substrings of given length on equal positions comparing 2 given arrays. Each char of the substrings must be different. If longer substrings differ, their shorter versions are not returned. \Hypertarget{classTools_ac4c8a12bad3ae3d12115f17eccd3732f}\index{Tools@{Tools}!FindPidsByName@{FindPidsByName}}
+\index{FindPidsByName@{FindPidsByName}!Tools@{Tools}}
+\doxysubsubsection{\texorpdfstring{FindPidsByName()}{FindPidsByName()}}
+{\footnotesize\ttfamily \label{classTools_ac4c8a12bad3ae3d12115f17eccd3732f} 
+std\+::unordered\+\_\+set$<$ pid\+\_\+t $>$ Tools\+::\+Find\+Pids\+By\+Name (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Get all PIDs by name of the process. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em name} & Name of the process in type of std\+::string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::unordered\+\_\+set with PIDs in pid\+\_\+t type.
+\end{DoxyReturn}
+Get all process IDs that can be found by running "{}pgrep -\/x "{}process\+\_\+name"{}"{} shell command. \Hypertarget{classTools_ab5b1437b329653c648c08813781d44b5}\index{Tools@{Tools}!GetAllPids@{GetAllPids}}
+\index{GetAllPids@{GetAllPids}!Tools@{Tools}}
+\doxysubsubsection{\texorpdfstring{GetAllPids()}{GetAllPids()}}
+{\footnotesize\ttfamily \label{classTools_ab5b1437b329653c648c08813781d44b5} 
+std\+::unordered\+\_\+set$<$ pid\+\_\+t $>$ Tools\+::\+Get\+All\+Pids (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Get all PIDs existing in the system. 
+
+\begin{DoxyReturn}{Returns}
+std\+::unordered\+\_\+set with all PIDs in pid\+\_\+t type.
+\end{DoxyReturn}
+Get all process IDs that can be found by running "{}pgrep .+"{} shell command. \Hypertarget{classTools_a65574336fb86b2c5c67762b414c3e2f8}\index{Tools@{Tools}!GetAllProcessNames@{GetAllProcessNames}}
+\index{GetAllProcessNames@{GetAllProcessNames}!Tools@{Tools}}
+\doxysubsubsection{\texorpdfstring{GetAllProcessNames()}{GetAllProcessNames()}}
+{\footnotesize\ttfamily \label{classTools_a65574336fb86b2c5c67762b414c3e2f8} 
+std\+::unordered\+\_\+set$<$ std\+::string $>$ Tools\+::\+Get\+All\+Process\+Names (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Get all names of processes existing in the system. 
+
+\begin{DoxyReturn}{Returns}
+std\+::unordered\+\_\+set with all names in std\+::string type.
+\end{DoxyReturn}
+Get all names of processes that can be found by running "{}pgrep -\/l .+"{} shell command. \Hypertarget{classTools_aeac154b3a2c16b98d31b81731494475e}\index{Tools@{Tools}!PidExists@{PidExists}}
+\index{PidExists@{PidExists}!Tools@{Tools}}
+\doxysubsubsection{\texorpdfstring{PidExists()}{PidExists()}}
+{\footnotesize\ttfamily \label{classTools_aeac154b3a2c16b98d31b81731494475e} 
+uint8\+\_\+t Tools\+::\+Pid\+Exists (\begin{DoxyParamCaption}\item[{const pid\+\_\+t \&}]{pid}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Check if a process with the given PID exists. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em pid} & PID of the process in pid\+\_\+t type. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if process exists, 1 if process does not exist, 2 if there was an error while checking.
+\end{DoxyReturn}
+Check if a process with the given process ID exists in the system by checking if /proc/\+PID directory exists. \Hypertarget{classTools_a25be0a12042cf9b1ed788d57a0e9d68f}\index{Tools@{Tools}!ProcessExists@{ProcessExists}}
+\index{ProcessExists@{ProcessExists}!Tools@{Tools}}
+\doxysubsubsection{\texorpdfstring{ProcessExists()}{ProcessExists()}}
+{\footnotesize\ttfamily \label{classTools_a25be0a12042cf9b1ed788d57a0e9d68f} 
+uint8\+\_\+t Tools\+::\+Process\+Exists (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{pname}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Check if a process with the given name exists. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em pname} & Name of the process in type of std\+::string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if process exists, 1 if process does not exist, 2 if there was an error while checking.
+\end{DoxyReturn}
+Check if a process with the given process name exists in the system by running "{}pgrep -\/x "{}process\+\_\+name"{}"{} shell command. \Hypertarget{classTools_aea6bd9f85a08e2bb9ebca6c9202cd936}\index{Tools@{Tools}!SetBufferSize@{SetBufferSize}}
+\index{SetBufferSize@{SetBufferSize}!Tools@{Tools}}
+\doxysubsubsection{\texorpdfstring{SetBufferSize()}{SetBufferSize()}}
+{\footnotesize\ttfamily \label{classTools_aea6bd9f85a08e2bb9ebca6c9202cd936} 
+void Tools\+::\+Set\+Buffer\+Size (\begin{DoxyParamCaption}\item[{const size\+\_\+t \&}]{buffer\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set buffer size of an instance. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em buffer\+\_\+size} & Desired buffer size in bytes.\\
+\hline
+\end{DoxyParams}
+Set buffer size, a number of bytes that are allocated when needed. \Hypertarget{classTools_aa27e253ad1e31f979e5eee78f872c118}\index{Tools@{Tools}!SetSigint@{SetSigint}}
+\index{SetSigint@{SetSigint}!Tools@{Tools}}
+\doxysubsubsection{\texorpdfstring{SetSigint()}{SetSigint()}}
+{\footnotesize\ttfamily \label{classTools_aa27e253ad1e31f979e5eee78f872c118} 
+int Tools\+::\+Set\+Sigint (\begin{DoxyParamCaption}\item[{void(\texorpdfstring{$\ast$}{*}}]{handler~}{)(int)}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Attach handler to SIGINT signal. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em handler} & Pointer to handler function. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return value of calling sigaction function (success is 0, error is other value).
+\end{DoxyReturn}
+Attach handler function to SIGINT, which will be called every time SIGINT is received. \Hypertarget{classTools_afbabefebf57e3576ff68e4f14b83427c}\index{Tools@{Tools}!ShellCommand@{ShellCommand}}
+\index{ShellCommand@{ShellCommand}!Tools@{Tools}}
+\doxysubsubsection{\texorpdfstring{ShellCommand()}{ShellCommand()}}
+{\footnotesize\ttfamily \label{classTools_afbabefebf57e3576ff68e4f14b83427c} 
+std\+::\+FILE \texorpdfstring{$\ast$}{*} Tools\+::\+Shell\+Command (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{command}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Do a command in system shell. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em command} & \doxylink{structCommand}{Command} in type of std\+::string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+FILE\texorpdfstring{$\ast$}{*}, read-\/only pipe that is stdout of the done command.
+\end{DoxyReturn}
+Do a command in a shell by calling function "{}popen"{} and return stdout pipe of the command. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{tools_8h}{tools.\+h}}\item 
+\mbox{\hyperlink{tools_8cc}{tools.\+cc}}\end{DoxyCompactItemize}

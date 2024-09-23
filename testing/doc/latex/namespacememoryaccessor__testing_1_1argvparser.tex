@@ -1,0 +1,61 @@
+\doxysection{memoryaccessor\+\_\+testing\+::argvparser Namespace Reference}
+\hypertarget{namespacememoryaccessor__testing_1_1argvparser}{}\label{namespacememoryaccessor__testing_1_1argvparser}\index{memoryaccessor\_testing::argvparser@{memoryaccessor\_testing::argvparser}}
+
+
+Fields used in testing argvparser.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespacememoryaccessor__testing_1_1argvparser_ad6da842028c72f3a7ac21bb0dacb4b0d}{exit\+\_\+handler}} ()
+\begin{DoxyCompactList}\small\item\em Exit handler. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacememoryaccessor__testing_1_1argvparser_ac468ed3d332a66f258d2be46ea81d21f}{test\+\_\+parse\+\_\+argv}} (const int \&\mbox{\hyperlink{project__test_8cc_ad1447518f4372828b8435ae82e48499e}{argc}}, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}\mbox{\hyperlink{project__test_8cc_af2efa898e9eed6fe6715279cb1ec35b0}{argv}}, const std\+::string \&result\+\_\+substr)
+\begin{DoxyCompactList}\small\item\em Perform test on \doxylink{classArgvParser_a837c299aff0a06ffcfd1e4e140ea11e2}{Argv\+Parser\+::\+Parse\+Argv} function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespacememoryaccessor__testing_1_1argvparser_adfa91fa7b333f2ea42a661d46d47cae1}\label{namespacememoryaccessor__testing_1_1argvparser_adfa91fa7b333f2ea42a661d46d47cae1} 
+std\+::ostringstream \texorpdfstring{$\ast$}{*} {\bfseries cur\+\_\+oss\+\_\+p} \{nullptr\}
+\begin{DoxyCompactList}\small\item\em Pointer to ostringstream. Used inside of exit\+\_\+handler. \end{DoxyCompactList}\item 
+\Hypertarget{namespacememoryaccessor__testing_1_1argvparser_aea9d1898ca236c7b694dc75a01f8a150}\label{namespacememoryaccessor__testing_1_1argvparser_aea9d1898ca236c7b694dc75a01f8a150} 
+int {\bfseries pipe\+\_\+to\+\_\+write} \{0\}
+\begin{DoxyCompactList}\small\item\em File descriptor of writable end of pipe. Used inside of exit\+\_\+handler. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Fields used in testing argvparser. 
+
+Functions and variables that are used in tests related to \doxylink{classArgvParser}{Argv\+Parser} class. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacememoryaccessor__testing_1_1argvparser_ad6da842028c72f3a7ac21bb0dacb4b0d}\index{memoryaccessor\_testing::argvparser@{memoryaccessor\_testing::argvparser}!exit\_handler@{exit\_handler}}
+\index{exit\_handler@{exit\_handler}!memoryaccessor\_testing::argvparser@{memoryaccessor\_testing::argvparser}}
+\doxysubsubsection{\texorpdfstring{exit\_handler()}{exit\_handler()}}
+{\footnotesize\ttfamily \label{namespacememoryaccessor__testing_1_1argvparser_ad6da842028c72f3a7ac21bb0dacb4b0d} 
+void memoryaccessor\+\_\+testing\+::argvparser\+::exit\+\_\+handler (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Exit handler. 
+
+Should be called before the exit in child process. Writes remained data to pipe and closes write end. \Hypertarget{namespacememoryaccessor__testing_1_1argvparser_ac468ed3d332a66f258d2be46ea81d21f}\index{memoryaccessor\_testing::argvparser@{memoryaccessor\_testing::argvparser}!test\_parse\_argv@{test\_parse\_argv}}
+\index{test\_parse\_argv@{test\_parse\_argv}!memoryaccessor\_testing::argvparser@{memoryaccessor\_testing::argvparser}}
+\doxysubsubsection{\texorpdfstring{test\_parse\_argv()}{test\_parse\_argv()}}
+{\footnotesize\ttfamily \label{namespacememoryaccessor__testing_1_1argvparser_ac468ed3d332a66f258d2be46ea81d21f} 
+void memoryaccessor\+\_\+testing\+::argvparser\+::test\+\_\+parse\+\_\+argv (\begin{DoxyParamCaption}\item[{const int \&}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{argv}{, }\item[{const std\+::string \&}]{result\+\_\+substr}{}\end{DoxyParamCaption})}
+
+
+
+Perform test on \doxylink{classArgvParser_a837c299aff0a06ffcfd1e4e140ea11e2}{Argv\+Parser\+::\+Parse\+Argv} function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em argc} & Desired arguments count. \\
+\hline
+\mbox{\texttt{ in}}  & {\em argv} & Desired array of arguments. \\
+\hline
+\mbox{\texttt{ in}}  & {\em result\+\_\+substr} & Desired substring of result starting from the beginning.\\
+\hline
+\end{DoxyParams}
+Perform test on \doxylink{classArgvParser_a837c299aff0a06ffcfd1e4e140ea11e2}{Argv\+Parser\+::\+Parse\+Argv} function and compare result with specified substring. 

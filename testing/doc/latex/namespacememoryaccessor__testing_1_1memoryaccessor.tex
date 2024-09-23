@@ -1,0 +1,119 @@
+\doxysection{memoryaccessor\+\_\+testing\+::memoryaccessor Namespace Reference}
+\hypertarget{namespacememoryaccessor__testing_1_1memoryaccessor}{}\label{namespacememoryaccessor__testing_1_1memoryaccessor}\index{memoryaccessor\_testing::memoryaccessor@{memoryaccessor\_testing::memoryaccessor}}
+
+
+Fields used in testing memoryaccessor.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+pid\+\_\+t \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a95d65a988133e077668f0e0be1209a39}{get\+\_\+paused\+\_\+child}} ()
+\begin{DoxyCompactList}\small\item\em Create paused child process. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a0cf93f4598450e68a7262bd5b3fe327c}{read\+\_\+urandom}} (char \texorpdfstring{$\ast$}{*}dst, size\+\_\+t amount)
+\begin{DoxyCompactList}\small\item\em Read data from /dev/urandom. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_aee68f0a9215173f0d457c44b7cc10633}{are\+\_\+arrays\+\_\+same}} (const char \texorpdfstring{$\ast$}{*}arr1, const char \texorpdfstring{$\ast$}{*}arr2, const size\+\_\+t \&size)
+\begin{DoxyCompactList}\small\item\em Check if 2 arrays are same. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a6fca17b0fc001bd6195de4fd390fd644}{seg\+\_\+num\+\_\+by\+\_\+name}} (const std\+::string \&name, const std\+::vector$<$ \mbox{\hyperlink{structSegmentInfo}{Segment\+Info}} $>$ \&infos)
+\begin{DoxyCompactList}\small\item\em Find segment number by name. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a44f24f65262ef575562e94b3bc6b9346}{find\+\_\+gap\+\_\+start}} (const std\+::vector$<$ \mbox{\hyperlink{structSegmentInfo}{Segment\+Info}} $>$ \&infos)
+\begin{DoxyCompactList}\small\item\em Find the beginning of the 1st gap between segments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Fields used in testing memoryaccessor. 
+
+Functions and variables that are used in tests related to \doxylink{classMemoryAccessor}{Memory\+Accessor} class. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacememoryaccessor__testing_1_1memoryaccessor_aee68f0a9215173f0d457c44b7cc10633}\index{memoryaccessor\_testing::memoryaccessor@{memoryaccessor\_testing::memoryaccessor}!are\_arrays\_same@{are\_arrays\_same}}
+\index{are\_arrays\_same@{are\_arrays\_same}!memoryaccessor\_testing::memoryaccessor@{memoryaccessor\_testing::memoryaccessor}}
+\doxysubsubsection{\texorpdfstring{are\_arrays\_same()}{are\_arrays\_same()}}
+{\footnotesize\ttfamily \label{namespacememoryaccessor__testing_1_1memoryaccessor_aee68f0a9215173f0d457c44b7cc10633} 
+bool memoryaccessor\+\_\+testing\+::memoryaccessor\+::are\+\_\+arrays\+\_\+same (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{arr1}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{arr2}{, }\item[{const size\+\_\+t \&}]{size}{}\end{DoxyParamCaption})}
+
+
+
+Check if 2 arrays are same. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em arr1} & 1st array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em arr2} & 2nd array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em size} & Size of each of arrays. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if arrays are same, false otherwise.
+\end{DoxyReturn}
+Check if 2 arrays of char with equal length are same and return true or false. \Hypertarget{namespacememoryaccessor__testing_1_1memoryaccessor_a44f24f65262ef575562e94b3bc6b9346}\index{memoryaccessor\_testing::memoryaccessor@{memoryaccessor\_testing::memoryaccessor}!find\_gap\_start@{find\_gap\_start}}
+\index{find\_gap\_start@{find\_gap\_start}!memoryaccessor\_testing::memoryaccessor@{memoryaccessor\_testing::memoryaccessor}}
+\doxysubsubsection{\texorpdfstring{find\_gap\_start()}{find\_gap\_start()}}
+{\footnotesize\ttfamily \label{namespacememoryaccessor__testing_1_1memoryaccessor_a44f24f65262ef575562e94b3bc6b9346} 
+size\+\_\+t memoryaccessor\+\_\+testing\+::memoryaccessor\+::find\+\_\+gap\+\_\+start (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{structSegmentInfo}{Segment\+Info}} $>$ \&}]{infos}{}\end{DoxyParamCaption})}
+
+
+
+Find the beginning of the 1st gap between segments. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em infos} & std\+::vector of \doxylink{structSegmentInfo}{Segment\+Info} instances to search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Start of the gap.
+\end{DoxyReturn}
+Find the beginning of the first gap between segments, i.\+e. the first end of the segment that is not equal to the start of the following segment. \Hypertarget{namespacememoryaccessor__testing_1_1memoryaccessor_a95d65a988133e077668f0e0be1209a39}\index{memoryaccessor\_testing::memoryaccessor@{memoryaccessor\_testing::memoryaccessor}!get\_paused\_child@{get\_paused\_child}}
+\index{get\_paused\_child@{get\_paused\_child}!memoryaccessor\_testing::memoryaccessor@{memoryaccessor\_testing::memoryaccessor}}
+\doxysubsubsection{\texorpdfstring{get\_paused\_child()}{get\_paused\_child()}}
+{\footnotesize\ttfamily \label{namespacememoryaccessor__testing_1_1memoryaccessor_a95d65a988133e077668f0e0be1209a39} 
+pid\+\_\+t memoryaccessor\+\_\+testing\+::memoryaccessor\+::get\+\_\+paused\+\_\+child (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Create paused child process. 
+
+\begin{DoxyReturn}{Returns}
+PID of the process created.
+\end{DoxyReturn}
+Fork the current process and run pause() in it, so parent process could freely run experiments with the forked process. \Hypertarget{namespacememoryaccessor__testing_1_1memoryaccessor_a0cf93f4598450e68a7262bd5b3fe327c}\index{memoryaccessor\_testing::memoryaccessor@{memoryaccessor\_testing::memoryaccessor}!read\_urandom@{read\_urandom}}
+\index{read\_urandom@{read\_urandom}!memoryaccessor\_testing::memoryaccessor@{memoryaccessor\_testing::memoryaccessor}}
+\doxysubsubsection{\texorpdfstring{read\_urandom()}{read\_urandom()}}
+{\footnotesize\ttfamily \label{namespacememoryaccessor__testing_1_1memoryaccessor_a0cf93f4598450e68a7262bd5b3fe327c} 
+void memoryaccessor\+\_\+testing\+::memoryaccessor\+::read\+\_\+urandom (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{dst}{, }\item[{size\+\_\+t}]{amount}{}\end{DoxyParamCaption})}
+
+
+
+Read data from /dev/urandom. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em dst} & Destination to store data. \\
+\hline
+\mbox{\texttt{ in}}  & {\em amount} & Amount of data in bytes.\\
+\hline
+\end{DoxyParams}
+Read some amount of bytes from /dev/urandom to specified destination. \Hypertarget{namespacememoryaccessor__testing_1_1memoryaccessor_a6fca17b0fc001bd6195de4fd390fd644}\index{memoryaccessor\_testing::memoryaccessor@{memoryaccessor\_testing::memoryaccessor}!seg\_num\_by\_name@{seg\_num\_by\_name}}
+\index{seg\_num\_by\_name@{seg\_num\_by\_name}!memoryaccessor\_testing::memoryaccessor@{memoryaccessor\_testing::memoryaccessor}}
+\doxysubsubsection{\texorpdfstring{seg\_num\_by\_name()}{seg\_num\_by\_name()}}
+{\footnotesize\ttfamily \label{namespacememoryaccessor__testing_1_1memoryaccessor_a6fca17b0fc001bd6195de4fd390fd644} 
+size\+\_\+t memoryaccessor\+\_\+testing\+::memoryaccessor\+::seg\+\_\+num\+\_\+by\+\_\+name (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name}{, }\item[{const std\+::vector$<$ \mbox{\hyperlink{structSegmentInfo}{Segment\+Info}} $>$ \&}]{infos}{}\end{DoxyParamCaption})}
+
+
+
+Find segment number by name. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em name} & Name of the segment. \\
+\hline
+\mbox{\texttt{ in}}  & {\em infos} & std\+::vector of \doxylink{structSegmentInfo}{Segment\+Info} instances to search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number starting from 0 if found, SIZE\+\_\+\+MAX otherwise.
+\end{DoxyReturn}
+Find segment number in std\+::vector of \doxylink{structSegmentInfo}{Segment\+Info} by name of the segment. 

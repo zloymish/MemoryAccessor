@@ -1,0 +1,48 @@
+\doxysection{tools.\+h}
+\hypertarget{tools_8h_source}{}\label{tools_8h_source}\index{/home/misha/prog/MemoryAccessor/src/tools.h@{/home/misha/prog/MemoryAccessor/src/tools.h}}
+\mbox{\hyperlink{tools_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_SRC\_TOOLS\_H\_}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_SRC\_TOOLS\_H\_}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <cstdio>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <unordered\_set>}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTools}{Tools}}\ \{}
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTools_aea6bd9f85a08e2bb9ebca6c9202cd936}{SetBufferSize}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\&\ buffer\_size)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ buffer\_size\_\ =\ buffer\_size;}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ \ \ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classTools_aa27e253ad1e31f979e5eee78f872c118}{SetSigint}}(\textcolor{keywordtype}{void}\ (*handler)(\textcolor{keywordtype}{int}))\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ std::FILE\ *\mbox{\hyperlink{classTools_afbabefebf57e3576ff68e4f14b83427c}{ShellCommand}}(\textcolor{keyword}{const}\ std::string\ \&command)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00044\ \ \ std::unordered\_set<pid\_t>\ \mbox{\hyperlink{classTools_ab5b1437b329653c648c08813781d44b5}{GetAllPids}}()\ const\ noexcept;}
+\DoxyCodeLine{00045\ \ \ std::unordered\_set<std::\textcolor{keywordtype}{string}>\ \mbox{\hyperlink{classTools_a65574336fb86b2c5c67762b414c3e2f8}{GetAllProcessNames}}()\ const\ noexcept;}
+\DoxyCodeLine{00046\ \ \ std::unordered\_set<pid\_t>}
+\DoxyCodeLine{00047\ \ \ \mbox{\hyperlink{classTools_ac4c8a12bad3ae3d12115f17eccd3732f}{FindPidsByName}}(const\ std::\textcolor{keywordtype}{string}\ \&name)\ const\ noexcept;}
+\DoxyCodeLine{00048\ \ \ uint8\_t\ \mbox{\hyperlink{classTools_aeac154b3a2c16b98d31b81731494475e}{PidExists}}(const\ pid\_t\ \&pid)\ const\ noexcept;}
+\DoxyCodeLine{00049\ \ \ uint8\_t\ \mbox{\hyperlink{classTools_a25be0a12042cf9b1ed788d57a0e9d68f}{ProcessExists}}(const\ std::\textcolor{keywordtype}{string}\ \&pname)\ const\ noexcept;}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ uint8\_t\ \mbox{\hyperlink{classTools_a0c7f39349f34614488d61d63c4f6dd94}{DecodePermissions}}(const\ std::\textcolor{keywordtype}{string}\ \&permissions)\ const\ noexcept;}
+\DoxyCodeLine{00052\ \ \ std::\textcolor{keywordtype}{string}\ \mbox{\hyperlink{classTools_a2e51a42c74604c7b40e62f4263c32deb}{EncodePermissions}}(const\ uint8\_t\ \&mode)\ const\ noexcept;}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ std::array<std::unique\_ptr<\textcolor{keywordtype}{char}[]>,\ 2>}
+\DoxyCodeLine{00055\ \ \ \mbox{\hyperlink{classTools_aa7c948a54b6c886f748a35f3ac62c935}{FindDifferencesOfLen}}(const\ \textcolor{keywordtype}{char}\ *old\_str,\ const\ \textcolor{keywordtype}{char}\ *new\_str,\ \textcolor{keywordtype}{size\_t}\ str\_len,\ \textcolor{keywordtype}{size\_t}\ \&done,\ const\ \textcolor{keywordtype}{size\_t}\ \&len)\ const\ noexcept;}
+\DoxyCodeLine{00056\ private:}
+\DoxyCodeLine{00057\ \ \ const\ std::\textcolor{keywordtype}{string}\ kModes\{\textcolor{stringliteral}{"{}rwxs"{}}\};\ }
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{const}\ uint8\_t\ kModesLength\{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ kModes.length()\};\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{size\_t}\ buffer\_size\_\{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ 0x1000\};\ }
+\DoxyCodeLine{00063\ \};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_SRC\_TOOLS\_H\_}}
+
+\end{DoxyCode}

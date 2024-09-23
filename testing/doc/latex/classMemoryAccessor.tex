@@ -1,0 +1,507 @@
+\doxysection{Memory\+Accessor Class Reference}
+\hypertarget{classMemoryAccessor}{}\label{classMemoryAccessor}\index{MemoryAccessor@{MemoryAccessor}}
+
+
+A class to perform the main operations with memory.  
+
+
+
+
+{\ttfamily \#include $<$memoryaccessor.\+h$>$}
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1AddressNotInSegmentEx}{Address\+Not\+In\+Segment\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Address does not belong to any segment. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1BadMapsEx}{Bad\+Maps\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Parsing /proc/\+PID/maps failed. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1BaseException}{Base\+Exception}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Base exception. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1ErrCheckingPidEx}{Err\+Checking\+Pid\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Could not check if PID exists. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1FileEx}{File\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Exception related to files. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1MapsFileEx}{Maps\+File\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Opening /proc/\+PID/maps failed. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1MemFileEx}{Mem\+File\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Operation with /proc/\+PID/mem failed. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1PidEx}{Pid\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Exception related to PID. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1PidNotExistEx}{Pid\+Not\+Exist\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: PID does not exist. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1PidNotSetEx}{Pid\+Not\+Set\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: PID is not set. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1SegmentAccessDeniedEx}{Segment\+Access\+Denied\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Access to the segment of memory denied. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1SegmentEx}{Segment\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Exception related to memory segments. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1SegmentNotExistEx}{Segment\+Not\+Exist\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Segment of memory does not exist. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMemoryAccessor_a98d7e11cb5b6167e90f7b78be770e52b}{Memory\+Accessor}} (\mbox{\hyperlink{classTools}{Tools}} \&\mbox{\hyperlink{project__test_8cc_a0a884c8dc64177499af32c4fa5698aad}{tools}}) noexcept(false)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMemoryAccessor_a37ba4145084a47f6043e3925e600fd42}{Memory\+Accessor}} (const \mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \&origin)=delete
+\begin{DoxyCompactList}\small\item\em Copy constructor (deleted). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMemoryAccessor_a48cdc585a7eff1e82524262b4989ac20}{Memory\+Accessor}} (\mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \&\&origin)=delete
+\begin{DoxyCompactList}\small\item\em Move constructor (deleted). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \& \mbox{\hyperlink{classMemoryAccessor_a0e9cbd90d712ef70d97117b5122e2939}{operator=}} (const \mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \&origin)=delete
+\begin{DoxyCompactList}\small\item\em Copy-\/assignment operator (deleted). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \& \mbox{\hyperlink{classMemoryAccessor_aedbaac42228b1f939cbbd0066cd3b3cb}{operator=}} (\mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \&\&origin)=delete
+\begin{DoxyCompactList}\small\item\em Move-\/assignment operator (deleted). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMemoryAccessor_ac0f6cece54fcae1a6ab081b2c56afff2}{\texorpdfstring{$\sim$}{\string~}\+Memory\+Accessor}} () noexcept
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+pid\+\_\+t \mbox{\hyperlink{classMemoryAccessor_a07f2bd1a538824686a9c182c5b29ae70}{Get\+Pid}} () const noexcept(false)
+\begin{DoxyCompactList}\small\item\em Get PID. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMemoryAccessor_a894f83f57056816fcb4bbf5441334a35}{Set\+Pid}} (const pid\+\_\+t \&pid) noexcept(false)
+\begin{DoxyCompactList}\small\item\em Set PID. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMemoryAccessor_a07140b2a509913b3031da9ad2d4b6e7c}{Check\+Pid}} () const noexcept(false)
+\begin{DoxyCompactList}\small\item\em Check if PID is set. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMemoryAccessor_a7049e54df54dc688a13a53e9fbe3f0fd}{Parse\+Maps}} () noexcept(false)
+\begin{DoxyCompactList}\small\item\em Parse maps file. \end{DoxyCompactList}\item 
+std\+::unordered\+\_\+set$<$ std\+::string $>$ \mbox{\hyperlink{classMemoryAccessor_a85110d8407c1460530dea15c5d0dade1}{Get\+All\+Segment\+Names}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Get all segment names. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classMemoryAccessor_a1f8a87d5cbb4ef038016f58dc3e1a49e}{Address\+In\+Segment}} (const size\+\_\+t \&address) const noexcept(false)
+\begin{DoxyCompactList}\small\item\em Find out which segment an address belongs to. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMemoryAccessor_adf6bd8eda7e30ca7dc595212107468b7}{Check\+Seg\+Num}} (const size\+\_\+t \&num) const noexcept(false)
+\begin{DoxyCompactList}\small\item\em Check if a segment with the given number exists. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMemoryAccessor_aa7ade36d4a2885e54ede3003cfbf8de9}{Reset\+Segments}} () noexcept
+\begin{DoxyCompactList}\small\item\em Delete all data related to found segments. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMemoryAccessor_abcca35793dc44d12caefa550f419d590}{Reset}} () noexcept
+\begin{DoxyCompactList}\small\item\em Reset all data related to PID. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classMemoryAccessor_a71b31469ad039fae534cd6b216dd710a}{Read\+Segment}} (char \texorpdfstring{$\ast$}{*}dst, const size\+\_\+t \&num, size\+\_\+t start=0, size\+\_\+t amount=SIZE\+\_\+\+MAX) noexcept(false)
+\begin{DoxyCompactList}\small\item\em Read full memory segment or a part of it. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classMemoryAccessor_a30e86e711c9a1c0542254e289d9ba131}{Write\+Segment}} (const char \texorpdfstring{$\ast$}{*}src, const size\+\_\+t \&num, size\+\_\+t start=0, size\+\_\+t amount=SIZE\+\_\+\+MAX) noexcept(false)
+\begin{DoxyCompactList}\small\item\em Write data to memory segment. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMemoryAccessor_a81d702ead573dcb71bb5dddbd5a31b51}{Read}} (char \texorpdfstring{$\ast$}{*}dst, size\+\_\+t address, size\+\_\+t amount, size\+\_\+t \&done\+\_\+amount) noexcept(false)
+\begin{DoxyCompactList}\small\item\em Read data from /proc/\+PID/mem. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMemoryAccessor_acd5f5e2174c81d2fdf64156f7581275f}{Write}} (const char \texorpdfstring{$\ast$}{*}src, size\+\_\+t address, size\+\_\+t amount, size\+\_\+t \&done\+\_\+amount) noexcept(false)
+\begin{DoxyCompactList}\small\item\em Write data to /proc/\+PID/mem. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classMemoryAccessor_aaf5633bd62fa47ce24090699728860ea}\label{classMemoryAccessor_aaf5633bd62fa47ce24090699728860ea} 
+\mbox{\hyperlink{classTools}{Tools}} \& {\bfseries tools\+\_\+}
+\begin{DoxyCompactList}\small\item\em A reference to a \doxylink{classTools}{Tools} class instance. \end{DoxyCompactList}\item 
+std\+::map$<$ std\+::string, \mbox{\hyperlink{structSegmentInfo}{Segment\+Info}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classMemoryAccessor_a94df70445998de56390955432fd0c4e6}{special\+\_\+segment\+\_\+found\+\_\+}}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{structSegmentInfo}{Segment\+Info}} $>$ \mbox{\hyperlink{classMemoryAccessor_a10b2c21dfe7fd767d43914c5545e0443}{segment\+\_\+infos\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class to perform the main operations with memory. 
+
+This class is dedicated to make all the work of reading and writing from/to /proc/\+PID/mem. Firstly, PID needs to be set. Then the instance parses /proc/\+PID/maps to get information about memory segments. If everything is correct, on the found segments r/w operations can be performed. Moving, copying and creating more than 1 instance of this class is prohibited. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classMemoryAccessor_a98d7e11cb5b6167e90f7b78be770e52b}\index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
+\index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{MemoryAccessor()}{MemoryAccessor()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a98d7e11cb5b6167e90f7b78be770e52b} 
+Memory\+Accessor\+::\+Memory\+Accessor (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTools}{Tools}} \&}]{tools}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em tools} & A reference to an instance of \doxylink{classTools}{Tools} struct. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::logic\+\_\+error} & If an instance of the class have already been created and it is a second instance.\\
+\hline
+\end{DoxyExceptions}
+Initializes \doxylink{classTools}{Tools} struct reference by value got as an parameter. Throws an exception if an instance of the class have already been created. Sets one\+\_\+instance\+\_\+created\+\_\+ to true. \Hypertarget{classMemoryAccessor_a37ba4145084a47f6043e3925e600fd42}\index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
+\index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{MemoryAccessor()}{MemoryAccessor()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a37ba4145084a47f6043e3925e600fd42} 
+Memory\+Accessor\+::\+Memory\+Accessor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \&}]{origin}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+Copy constructor (deleted). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em origin} & \doxylink{classMemoryAccessor}{Memory\+Accessor} instance to copy from.\\
+\hline
+\end{DoxyParams}
+Create a new object by copying an old one. Prohibited. \Hypertarget{classMemoryAccessor_a48cdc585a7eff1e82524262b4989ac20}\index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
+\index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{MemoryAccessor()}{MemoryAccessor()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a48cdc585a7eff1e82524262b4989ac20} 
+Memory\+Accessor\+::\+Memory\+Accessor (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \&\&}]{origin}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+Move constructor (deleted). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em origin} & Moved \doxylink{classMemoryAccessor}{Memory\+Accessor} object.\\
+\hline
+\end{DoxyParams}
+Create a new object by moving an old one. Prohibited. \Hypertarget{classMemoryAccessor_ac0f6cece54fcae1a6ab081b2c56afff2}\index{MemoryAccessor@{MemoryAccessor}!````~MemoryAccessor@{\texorpdfstring{$\sim$}{\string~}MemoryAccessor}}
+\index{````~MemoryAccessor@{\texorpdfstring{$\sim$}{\string~}MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}MemoryAccessor()}{\string~MemoryAccessor()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_ac0f6cece54fcae1a6ab081b2c56afff2} 
+Memory\+Accessor\+::\texorpdfstring{$\sim$}{\string~}\+Memory\+Accessor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Destructor. 
+
+Sets one\+\_\+instance\+\_\+created\+\_\+ to false. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classMemoryAccessor_a1f8a87d5cbb4ef038016f58dc3e1a49e}\index{MemoryAccessor@{MemoryAccessor}!AddressInSegment@{AddressInSegment}}
+\index{AddressInSegment@{AddressInSegment}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{AddressInSegment()}{AddressInSegment()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a1f8a87d5cbb4ef038016f58dc3e1a49e} 
+size\+\_\+t Memory\+Accessor\+::\+Address\+In\+Segment (\begin{DoxyParamCaption}\item[{const size\+\_\+t \&}]{address}{}\end{DoxyParamCaption}) const}
+
+
+
+Find out which segment an address belongs to. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em address} & Address to process. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of the segment. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \doxylink{classMemoryAccessor_1_1AddressNotInSegmentEx}{Address\+Not\+In\+Segment\+Ex}} & If the given address does not belong to any segment.\\
+\hline
+\end{DoxyExceptions}
+Find out which memory segment an address belongs to and return the number of the segment. \Hypertarget{classMemoryAccessor_a07140b2a509913b3031da9ad2d4b6e7c}\index{MemoryAccessor@{MemoryAccessor}!CheckPid@{CheckPid}}
+\index{CheckPid@{CheckPid}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{CheckPid()}{CheckPid()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a07140b2a509913b3031da9ad2d4b6e7c} 
+void Memory\+Accessor\+::\+Check\+Pid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Check if PID is set. 
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \doxylink{classMemoryAccessor_1_1PidNotSetEx}{Pid\+Not\+Set\+Ex}} & If pid\+\_\+set\+\_\+ is false.\\
+\hline
+\end{DoxyExceptions}
+Check if pid\+\_\+set\+\_\+ is true, and, if it is not, throws an exception. \Hypertarget{classMemoryAccessor_adf6bd8eda7e30ca7dc595212107468b7}\index{MemoryAccessor@{MemoryAccessor}!CheckSegNum@{CheckSegNum}}
+\index{CheckSegNum@{CheckSegNum}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{CheckSegNum()}{CheckSegNum()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_adf6bd8eda7e30ca7dc595212107468b7} 
+void Memory\+Accessor\+::\+Check\+Seg\+Num (\begin{DoxyParamCaption}\item[{const size\+\_\+t \&}]{num}{}\end{DoxyParamCaption}) const}
+
+
+
+Check if a segment with the given number exists. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em num} & Number of the memory segment starting from 0. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \doxylink{classMemoryAccessor_1_1PidNotSetEx}{Pid\+Not\+Set\+Ex}} & If PID is not set. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1SegmentNotExistEx}{Segment\+Not\+Exist\+Ex}} & If the segment does not exist.\\
+\hline
+\end{DoxyExceptions}
+Check if a memory segment with the given number exists. The function also checks if PID is set. \Hypertarget{classMemoryAccessor_a85110d8407c1460530dea15c5d0dade1}\index{MemoryAccessor@{MemoryAccessor}!GetAllSegmentNames@{GetAllSegmentNames}}
+\index{GetAllSegmentNames@{GetAllSegmentNames}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{GetAllSegmentNames()}{GetAllSegmentNames()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a85110d8407c1460530dea15c5d0dade1} 
+std\+::unordered\+\_\+set$<$ std\+::string $>$ Memory\+Accessor\+::\+Get\+All\+Segment\+Names (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Get all segment names. 
+
+\begin{DoxyReturn}{Returns}
+std\+::unordered\+\_\+set with all segment names in std\+::string type.
+\end{DoxyReturn}
+Get all segment names that are currently stored. \Hypertarget{classMemoryAccessor_a07f2bd1a538824686a9c182c5b29ae70}\index{MemoryAccessor@{MemoryAccessor}!GetPid@{GetPid}}
+\index{GetPid@{GetPid}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{GetPid()}{GetPid()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a07f2bd1a538824686a9c182c5b29ae70} 
+pid\+\_\+t Memory\+Accessor\+::\+Get\+Pid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Get PID. 
+
+\begin{DoxyReturn}{Returns}
+Current PID assigned to an instance. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \doxylink{classMemoryAccessor_1_1PidNotSetEx}{Pid\+Not\+Set\+Ex}} & If PID is not set.\\
+\hline
+\end{DoxyExceptions}
+Get PID if it is set and throw an exception otherwise. \Hypertarget{classMemoryAccessor_a0e9cbd90d712ef70d97117b5122e2939}\index{MemoryAccessor@{MemoryAccessor}!operator=@{operator=}}
+\index{operator=@{operator=}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a0e9cbd90d712ef70d97117b5122e2939} 
+\mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \& Memory\+Accessor\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \&}]{origin}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+Copy-\/assignment operator (deleted). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em origin} & \doxylink{classMemoryAccessor}{Memory\+Accessor} instance to copy from.\\
+\hline
+\end{DoxyParams}
+Assign an object by copying other object. Prohibited. \Hypertarget{classMemoryAccessor_aedbaac42228b1f939cbbd0066cd3b3cb}\index{MemoryAccessor@{MemoryAccessor}!operator=@{operator=}}
+\index{operator=@{operator=}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_aedbaac42228b1f939cbbd0066cd3b3cb} 
+\mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \& Memory\+Accessor\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \&\&}]{origin}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+Move-\/assignment operator (deleted). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em origin} & Moved \doxylink{classMemoryAccessor}{Memory\+Accessor} object.\\
+\hline
+\end{DoxyParams}
+Assign an object by moving other object. Prohibited. \Hypertarget{classMemoryAccessor_a7049e54df54dc688a13a53e9fbe3f0fd}\index{MemoryAccessor@{MemoryAccessor}!ParseMaps@{ParseMaps}}
+\index{ParseMaps@{ParseMaps}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{ParseMaps()}{ParseMaps()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a7049e54df54dc688a13a53e9fbe3f0fd} 
+void Memory\+Accessor\+::\+Parse\+Maps (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Parse maps file. 
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \doxylink{classMemoryAccessor_1_1BadMapsEx}{Bad\+Maps\+Ex}} & If an error in parsing /proc/\+PID/maps file occured. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1MapsFileEx}{Maps\+File\+Ex}} & If an error in opening /proc/\+PID/maps file occured. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1PidNotSetEx}{Pid\+Not\+Set\+Ex}} & If PID is not set.\\
+\hline
+\end{DoxyExceptions}
+Open and parse /proc/\+PID/maps file saving data in segment\+\_\+infos\+\_\+ and special\+\_\+segment\+\_\+found\+\_\+. \Hypertarget{classMemoryAccessor_a81d702ead573dcb71bb5dddbd5a31b51}\index{MemoryAccessor@{MemoryAccessor}!Read@{Read}}
+\index{Read@{Read}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a81d702ead573dcb71bb5dddbd5a31b51} 
+void Memory\+Accessor\+::\+Read (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{dst}{, }\item[{size\+\_\+t}]{address}{, }\item[{size\+\_\+t}]{amount}{, }\item[{size\+\_\+t \&}]{done\+\_\+amount}{}\end{DoxyParamCaption})}
+
+
+
+Read data from /proc/\+PID/mem. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em dst} & Destination to which data will be copied. \\
+\hline
+\mbox{\texttt{ in}}  & {\em address} & Address to start from. \\
+\hline
+\mbox{\texttt{ in}}  & {\em amount} & Number of bytes to read. \\
+\hline
+\mbox{\texttt{ out}}  & {\em done\+\_\+amount} & How much data were read. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \doxylink{classMemoryAccessor_1_1AddressNotInSegmentEx}{Address\+Not\+In\+Segment\+Ex}} & If an address reached that does not belong to any segment. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1MemFileEx}{Mem\+File\+Ex}} & If an error in opening /proc/\+PID/mem file occured. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1PidNotSetEx}{Pid\+Not\+Set\+Ex}} & If PID is not set. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1SegmentAccessDeniedEx}{Segment\+Access\+Denied\+Ex}} & If a segment is reached, access to which is denied by an operating system. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1SegmentNotExistEx}{Segment\+Not\+Exist\+Ex}} & Must not be thrown normally, but appears in called methods.\\
+\hline
+\end{DoxyExceptions}
+Read data from /proc/\+PID/mem to a destination "{}dst"{}, modifying done\+\_\+amount by how many bytes were read. \Hypertarget{classMemoryAccessor_a71b31469ad039fae534cd6b216dd710a}\index{MemoryAccessor@{MemoryAccessor}!ReadSegment@{ReadSegment}}
+\index{ReadSegment@{ReadSegment}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{ReadSegment()}{ReadSegment()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a71b31469ad039fae534cd6b216dd710a} 
+size\+\_\+t Memory\+Accessor\+::\+Read\+Segment (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{dst}{, }\item[{const size\+\_\+t \&}]{num}{, }\item[{size\+\_\+t}]{start}{ = {\ttfamily 0}, }\item[{size\+\_\+t}]{amount}{ = {\ttfamily SIZE\+\_\+MAX}}\end{DoxyParamCaption})}
+
+
+
+Read full memory segment or a part of it. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em dst} & Destination to which data will be copied. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num} & Number of the memory segment starting from 0. \\
+\hline
+\mbox{\texttt{ in}}  & {\em start} & Offset relative to the start of the segment, default is 0. \\
+\hline
+\mbox{\texttt{ in}}  & {\em amount} & Number of bytes to capture after the "{}start"{} parameter, default is SIZE\+\_\+\+MAX. If a value is too big, it is set to a maximum appropriate value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Amount of bytes read. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \doxylink{classMemoryAccessor_1_1AddressNotInSegmentEx}{Address\+Not\+In\+Segment\+Ex}} & If the value of parameter "{}start"{} represents address on/after the end of the segment. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1MemFileEx}{Mem\+File\+Ex}} & If an error in opening /proc/\+PID/mem file occured. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1PidNotSetEx}{Pid\+Not\+Set\+Ex}} & If PID is not set. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1SegmentAccessDeniedEx}{Segment\+Access\+Denied\+Ex}} & If access to the segment is denied by an operating system. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1SegmentNotExistEx}{Segment\+Not\+Exist\+Ex}} & If a segment with a number "{}num"{} does not exist.\\
+\hline
+\end{DoxyExceptions}
+Read full memory segment or a part of it to a destination "{}dst"{} and return how many bytes were read. \Hypertarget{classMemoryAccessor_abcca35793dc44d12caefa550f419d590}\index{MemoryAccessor@{MemoryAccessor}!Reset@{Reset}}
+\index{Reset@{Reset}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_abcca35793dc44d12caefa550f419d590} 
+void Memory\+Accessor\+::\+Reset (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Reset all data related to PID. 
+
+Clear/delete all variables which are related to current PID, including setting pid\+\_\+set\+\_\+ to false. \Hypertarget{classMemoryAccessor_aa7ade36d4a2885e54ede3003cfbf8de9}\index{MemoryAccessor@{MemoryAccessor}!ResetSegments@{ResetSegments}}
+\index{ResetSegments@{ResetSegments}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{ResetSegments()}{ResetSegments()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_aa7ade36d4a2885e54ede3003cfbf8de9} 
+void Memory\+Accessor\+::\+Reset\+Segments (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Delete all data related to found segments. 
+
+Clear/delete all variables which conatin information about found segments. \Hypertarget{classMemoryAccessor_a894f83f57056816fcb4bbf5441334a35}\index{MemoryAccessor@{MemoryAccessor}!SetPid@{SetPid}}
+\index{SetPid@{SetPid}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{SetPid()}{SetPid()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a894f83f57056816fcb4bbf5441334a35} 
+void Memory\+Accessor\+::\+Set\+Pid (\begin{DoxyParamCaption}\item[{const pid\+\_\+t \&}]{pid}{}\end{DoxyParamCaption})}
+
+
+
+Set PID. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em pid} & PID value to set. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \doxylink{classMemoryAccessor_1_1ErrCheckingPidEx}{Err\+Checking\+Pid\+Ex}} & If an error while checking if PID exists occured. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1PidNotExistEx}{Pid\+Not\+Exist\+Ex}} & If PID provided is not exist.\\
+\hline
+\end{DoxyExceptions}
+Reset all objects of an instance that are related to PID and set new PID. \Hypertarget{classMemoryAccessor_acd5f5e2174c81d2fdf64156f7581275f}\index{MemoryAccessor@{MemoryAccessor}!Write@{Write}}
+\index{Write@{Write}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_acd5f5e2174c81d2fdf64156f7581275f} 
+void Memory\+Accessor\+::\+Write (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{src}{, }\item[{size\+\_\+t}]{address}{, }\item[{size\+\_\+t}]{amount}{, }\item[{size\+\_\+t \&}]{done\+\_\+amount}{}\end{DoxyParamCaption})}
+
+
+
+Write data to /proc/\+PID/mem. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em src} & Source from which data will be copied. \\
+\hline
+\mbox{\texttt{ in}}  & {\em address} & Address to start from. \\
+\hline
+\mbox{\texttt{ in}}  & {\em amount} & Number of bytes to write. \\
+\hline
+\mbox{\texttt{ out}}  & {\em done\+\_\+amount} & How much data were written. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \doxylink{classMemoryAccessor_1_1AddressNotInSegmentEx}{Address\+Not\+In\+Segment\+Ex}} & If an address reached that does not belong to any segment. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1MemFileEx}{Mem\+File\+Ex}} & If an error in opening /proc/\+PID/mem file occured. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1PidNotSetEx}{Pid\+Not\+Set\+Ex}} & If PID is not set. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1SegmentAccessDeniedEx}{Segment\+Access\+Denied\+Ex}} & If a segment is reached, access to which is denied by an operating system. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1SegmentNotExistEx}{Segment\+Not\+Exist\+Ex}} & Must not be thrown normally, but appears in called methods.\\
+\hline
+\end{DoxyExceptions}
+Write data to /proc/\+PID/mem from a source "{}src"{}, modifying done\+\_\+amount by how many bytes were written. \Hypertarget{classMemoryAccessor_a30e86e711c9a1c0542254e289d9ba131}\index{MemoryAccessor@{MemoryAccessor}!WriteSegment@{WriteSegment}}
+\index{WriteSegment@{WriteSegment}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{WriteSegment()}{WriteSegment()}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a30e86e711c9a1c0542254e289d9ba131} 
+size\+\_\+t Memory\+Accessor\+::\+Write\+Segment (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{src}{, }\item[{const size\+\_\+t \&}]{num}{, }\item[{size\+\_\+t}]{start}{ = {\ttfamily 0}, }\item[{size\+\_\+t}]{amount}{ = {\ttfamily SIZE\+\_\+MAX}}\end{DoxyParamCaption})}
+
+
+
+Write data to memory segment. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em src} & Source from which data will be copied. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num} & Number of the memory segment starting from 0. \\
+\hline
+\mbox{\texttt{ in}}  & {\em start} & Offset relative to the start of the segment, default is 0. \\
+\hline
+\mbox{\texttt{ in}}  & {\em amount} & Number of bytes to capture after the "{}start"{} parameter, default is SIZE\+\_\+\+MAX. If a value is too big, it is set to a maximum appropriate value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Amount of bytes written. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \doxylink{classMemoryAccessor_1_1AddressNotInSegmentEx}{Address\+Not\+In\+Segment\+Ex}} & If the value of parameter "{}start"{} represents address on/after the end of the segment. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1MemFileEx}{Mem\+File\+Ex}} & If an error in opening /proc/\+PID/mem file occured. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1PidNotSetEx}{Pid\+Not\+Set\+Ex}} & If PID is not set. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1SegmentAccessDeniedEx}{Segment\+Access\+Denied\+Ex}} & If access to the segment is denied by an operating system. \\
+\hline
+{\em \doxylink{classMemoryAccessor_1_1SegmentNotExistEx}{Segment\+Not\+Exist\+Ex}} & If a segment with a number "{}num"{} does not exist.\\
+\hline
+\end{DoxyExceptions}
+Write data to memory segment from a source "{}src"{} and return how many bytes were written. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classMemoryAccessor_a10b2c21dfe7fd767d43914c5545e0443}\index{MemoryAccessor@{MemoryAccessor}!segment\_infos\_@{segment\_infos\_}}
+\index{segment\_infos\_@{segment\_infos\_}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{segment\_infos\_}{segment\_infos\_}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a10b2c21dfe7fd767d43914c5545e0443} 
+std\+::vector$<$\mbox{\hyperlink{structSegmentInfo}{Segment\+Info}}$>$ Memory\+Accessor\+::segment\+\_\+infos\+\_\+}
+
+\doxylink{structSegmentInfo}{Segment\+Info} objects got as a result of parsing /proc/\+PID/maps. \Hypertarget{classMemoryAccessor_a94df70445998de56390955432fd0c4e6}\index{MemoryAccessor@{MemoryAccessor}!special\_segment\_found\_@{special\_segment\_found\_}}
+\index{special\_segment\_found\_@{special\_segment\_found\_}!MemoryAccessor@{MemoryAccessor}}
+\doxysubsubsection{\texorpdfstring{special\_segment\_found\_}{special\_segment\_found\_}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a94df70445998de56390955432fd0c4e6} 
+std\+::map$<$std\+::string, \mbox{\hyperlink{structSegmentInfo}{Segment\+Info}} \texorpdfstring{$\ast$}{*}$>$ Memory\+Accessor\+::special\+\_\+segment\+\_\+found\+\_\+}
+
+"{}\+Special"{} segment infos found (segments, which name starts with \textquotesingle{}\mbox{[}\textquotesingle{}). Contains pairs that consist of a segment name and a pointer to \doxylink{structSegmentInfo}{Segment\+Info}. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/misha/prog/\+Memory\+Accessor/src/\mbox{\hyperlink{memoryaccessor_8h}{memoryaccessor.\+h}}\item 
+/home/misha/prog/\+Memory\+Accessor/src/\mbox{\hyperlink{memoryaccessor_8cc}{memoryaccessor.\+cc}}\end{DoxyCompactItemize}

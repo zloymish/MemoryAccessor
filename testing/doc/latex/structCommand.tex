@@ -1,0 +1,66 @@
+\doxysection{Command Struct Reference}
+\hypertarget{structCommand}{}\label{structCommand}\index{Command@{Command}}
+
+
+A struct that represents command in \doxylink{classConsole}{Console}.  
+
+
+
+
+{\ttfamily \#include $<$console.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{structCommand_a82844920745698521b0194202e581277}{Command\+FuncP}}
+\begin{DoxyCompactList}\small\item\em Type of pointer to command function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structCommand_a8d66550a9895cbd96373a9a221fa2b25}\label{structCommand_a8d66550a9895cbd96373a9a221fa2b25} 
+std\+::string {\bfseries name}
+\begin{DoxyCompactList}\small\item\em \doxylink{structCommand}{Command} name. \end{DoxyCompactList}\item 
+\Hypertarget{structCommand_aa34611124fb2b915b0d8ed56b79cdbac}\label{structCommand_aa34611124fb2b915b0d8ed56b79cdbac} 
+\mbox{\hyperlink{structCommand_a82844920745698521b0194202e581277}{Command\+FuncP}} {\bfseries func} \{nullptr\}
+\begin{DoxyCompactList}\small\item\em Pointer. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::array$<$ std\+::string, 2 $>$ $>$ \mbox{\hyperlink{structCommand_a1e18f0b1cc88f4e737f93bcd62acaca9}{description}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A struct that represents command in \doxylink{classConsole}{Console}. 
+
+In this struct all the variables related to \doxylink{classConsole}{Console} command are stored\+: name of the command, pointer to \doxylink{classConsole}{Console} function that handles the command, and formattable description of the command. 
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{structCommand_a82844920745698521b0194202e581277}\index{Command@{Command}!CommandFuncP@{CommandFuncP}}
+\index{CommandFuncP@{CommandFuncP}!Command@{Command}}
+\doxysubsubsection{\texorpdfstring{CommandFuncP}{CommandFuncP}}
+{\footnotesize\ttfamily \label{structCommand_a82844920745698521b0194202e581277} 
+using \mbox{\hyperlink{structCommand_a82844920745698521b0194202e581277}{Command\+::\+Command\+FuncP}}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ void\ (\mbox{\hyperlink{classConsole}{Console}}::*)(}
+\DoxyCodeLine{\ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,\ \textcolor{keyword}{const}\ std::vector<std::string>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&)}
+
+\end{DoxyCode}
+
+
+Type of pointer to command function. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structCommand_a1e18f0b1cc88f4e737f93bcd62acaca9}\index{Command@{Command}!description@{description}}
+\index{description@{description}!Command@{Command}}
+\doxysubsubsection{\texorpdfstring{description}{description}}
+{\footnotesize\ttfamily \label{structCommand_a1e18f0b1cc88f4e737f93bcd62acaca9} 
+std\+::vector$<$std\+::array$<$std\+::string, 2$>$ $>$ Command\+::description}
+
+Description of command\+: lines split by the left and right sides for better formatting. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/misha/prog/\+Memory\+Accessor/src/\mbox{\hyperlink{console_8h}{console.\+h}}\end{DoxyCompactItemize}

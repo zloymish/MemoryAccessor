@@ -1,0 +1,155 @@
+\doxysection{memoryaccessor.\+h}
+\hypertarget{memoryaccessor_8h_source}{}\label{memoryaccessor_8h_source}\index{/home/misha/prog/MemoryAccessor/src/memoryaccessor.h@{/home/misha/prog/MemoryAccessor/src/memoryaccessor.h}}
+\mbox{\hyperlink{memoryaccessor_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_SRC\_MEMORYACCESSOR\_H\_}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_SRC\_MEMORYACCESSOR\_H\_}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <exception>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <unordered\_set>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{segmentinfo_8h}{segmentinfo.h}}"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{tools_8h}{tools.h}}"{}}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor}{MemoryAccessor}}\ \{}
+\DoxyCodeLine{00035\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1BaseException}{BaseException}}\ :\ \textcolor{keyword}{public}\ std::exception\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Base\ exception"{}};}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1PidEx}{PidEx}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classMemoryAccessor_1_1BaseException}{BaseException}}\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}PID\ exception"{}};}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1ErrCheckingPidEx}{ErrCheckingPidEx}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classMemoryAccessor_1_1PidEx}{PidEx}}\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}An\ error\ occurred\ while\ checking\ if\ PID\ exists"{}};}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1PidNotExistEx}{PidNotExistEx}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classMemoryAccessor_1_1PidEx}{PidEx}}\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}PID\ not\ exist"{}};}
+\DoxyCodeLine{00103\ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \};}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1PidNotSetEx}{PidNotSetEx}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classMemoryAccessor_1_1PidEx}{PidEx}}\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}PID\ not\ set"{}};\ \}}
+\DoxyCodeLine{00120\ \ \ \};}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1FileEx}{FileEx}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classMemoryAccessor_1_1BaseException}{BaseException}}\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Error\ in\ opening\ file"{}};}
+\DoxyCodeLine{00136\ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \};}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1MemFileEx}{MemFileEx}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classMemoryAccessor_1_1FileEx}{FileEx}}\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Error\ in\ opening\ current\ /proc/PID/mem"{}};}
+\DoxyCodeLine{00154\ \ \ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \};}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1MapsFileEx}{MapsFileEx}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classMemoryAccessor_1_1FileEx}{FileEx}}\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Error\ in\ opening\ current\ /proc/PID/maps"{}};}
+\DoxyCodeLine{00171\ \ \ \ \ \}}
+\DoxyCodeLine{00172\ \ \ \};}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1BadMapsEx}{BadMapsEx}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classMemoryAccessor_1_1BaseException}{BaseException}}\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Error\ in\ parsing\ /proc/PID/maps"{}};}
+\DoxyCodeLine{00188\ \ \ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \};}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00197\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1SegmentEx}{SegmentEx}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classMemoryAccessor_1_1BaseException}{BaseException}}\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Segment\ exception"{}};}
+\DoxyCodeLine{00206\ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \};}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00215\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1SegmentNotExistEx}{SegmentNotExistEx}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classMemoryAccessor_1_1SegmentEx}{SegmentEx}}\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}The\ segment\ of\ memory\ does\ not\ exist"{}};}
+\DoxyCodeLine{00224\ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \};}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1SegmentAccessDeniedEx}{SegmentAccessDeniedEx}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classMemoryAccessor_1_1SegmentEx}{SegmentEx}}\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Access\ to\ the\ segment\ of\ memory\ denied"{}};}
+\DoxyCodeLine{00242\ \ \ \ \ \}}
+\DoxyCodeLine{00243\ \ \ \};}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00251\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMemoryAccessor_1_1AddressNotInSegmentEx}{AddressNotInSegmentEx}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classMemoryAccessor_1_1SegmentEx}{SegmentEx}}\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Address\ does\ not\ belong\ to\ any\ segment"{}};}
+\DoxyCodeLine{00260\ \ \ \ \ \}}
+\DoxyCodeLine{00261\ \ \ \};}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classMemoryAccessor_a98d7e11cb5b6167e90f7b78be770e52b}{MemoryAccessor}}(\mbox{\hyperlink{classTools}{Tools}}\ \&\mbox{\hyperlink{project__test_8cc_a0a884c8dc64177499af32c4fa5698aad}{tools}})\ \textcolor{keyword}{noexcept}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00271\ \ \ \mbox{\hyperlink{classMemoryAccessor_a37ba4145084a47f6043e3925e600fd42}{MemoryAccessor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classMemoryAccessor}{MemoryAccessor}}\ \&origin)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00272\ }
+\DoxyCodeLine{00279\ \ \ \mbox{\hyperlink{classMemoryAccessor_a48cdc585a7eff1e82524262b4989ac20}{MemoryAccessor}}(\mbox{\hyperlink{classMemoryAccessor}{MemoryAccessor}}\ \&\&origin)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00287\ \ \ \mbox{\hyperlink{classMemoryAccessor}{MemoryAccessor}}\ \&\mbox{\hyperlink{classMemoryAccessor_a0e9cbd90d712ef70d97117b5122e2939}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classMemoryAccessor}{MemoryAccessor}}\ \&origin)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00295\ \ \ \mbox{\hyperlink{classMemoryAccessor}{MemoryAccessor}}\ \&\mbox{\hyperlink{classMemoryAccessor_aedbaac42228b1f939cbbd0066cd3b3cb}{operator=}}(\mbox{\hyperlink{classMemoryAccessor}{MemoryAccessor}}\ \&\&origin)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ \ \ \mbox{\hyperlink{classMemoryAccessor_ac0f6cece54fcae1a6ab081b2c56afff2}{\string~MemoryAccessor}}()\ noexcept;}
+\DoxyCodeLine{00298\ }
+\DoxyCodeLine{00299\ \ \ pid\_t\ \mbox{\hyperlink{classMemoryAccessor_a07f2bd1a538824686a9c182c5b29ae70}{GetPid}}()\ const\ noexcept(false);}
+\DoxyCodeLine{00300\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMemoryAccessor_a894f83f57056816fcb4bbf5441334a35}{SetPid}}(const\ pid\_t\ \&pid)\ noexcept(false);}
+\DoxyCodeLine{00301\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMemoryAccessor_a07140b2a509913b3031da9ad2d4b6e7c}{CheckPid}}()\ const\ noexcept(false);}
+\DoxyCodeLine{00302\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMemoryAccessor_a7049e54df54dc688a13a53e9fbe3f0fd}{ParseMaps}}()\ noexcept(false);}
+\DoxyCodeLine{00303\ \ \ std::unordered\_set<std::\textcolor{keywordtype}{string}>\ \mbox{\hyperlink{classMemoryAccessor_a85110d8407c1460530dea15c5d0dade1}{GetAllSegmentNames}}()\ const\ noexcept;}
+\DoxyCodeLine{00304\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classMemoryAccessor_a1f8a87d5cbb4ef038016f58dc3e1a49e}{AddressInSegment}}(const\ \textcolor{keywordtype}{size\_t}\ \&address)\ const\ noexcept(false);}
+\DoxyCodeLine{00305\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMemoryAccessor_adf6bd8eda7e30ca7dc595212107468b7}{CheckSegNum}}(const\ \textcolor{keywordtype}{size\_t}\ \&num)\ const\ noexcept(false);}
+\DoxyCodeLine{00306\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMemoryAccessor_aa7ade36d4a2885e54ede3003cfbf8de9}{ResetSegments}}()\ noexcept;}
+\DoxyCodeLine{00307\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMemoryAccessor_abcca35793dc44d12caefa550f419d590}{Reset}}()\ noexcept;}
+\DoxyCodeLine{00308\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classMemoryAccessor_a71b31469ad039fae534cd6b216dd710a}{ReadSegment}}(\textcolor{keywordtype}{char}\ *dst,\ const\ \textcolor{keywordtype}{size\_t}\ \&num,\ \textcolor{keywordtype}{size\_t}\ start\ =\ 0,}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ amount\ =\ SIZE\_MAX)\ noexcept(false);}
+\DoxyCodeLine{00310\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classMemoryAccessor_a30e86e711c9a1c0542254e289d9ba131}{WriteSegment}}(const\ \textcolor{keywordtype}{char}\ *src,\ const\ \textcolor{keywordtype}{size\_t}\ \&num,\ \textcolor{keywordtype}{size\_t}\ start\ =\ 0,}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ amount\ =\ SIZE\_MAX)\ noexcept(false);}
+\DoxyCodeLine{00312\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMemoryAccessor_a81d702ead573dcb71bb5dddbd5a31b51}{Read}}(\textcolor{keywordtype}{char}\ *dst,\ \textcolor{keywordtype}{size\_t}\ address,\ \textcolor{keywordtype}{size\_t}\ amount,}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \&done\_amount)\ noexcept(false);}
+\DoxyCodeLine{00314\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMemoryAccessor_acd5f5e2174c81d2fdf64156f7581275f}{Write}}(const\ \textcolor{keywordtype}{char}\ *src,\ \textcolor{keywordtype}{size\_t}\ address,\ \textcolor{keywordtype}{size\_t}\ amount,}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \&done\_amount)\ noexcept(false);}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \mbox{\hyperlink{classTools}{Tools}}\ \&\mbox{\hyperlink{classMemoryAccessor_aaf5633bd62fa47ce24090699728860ea}{tools\_}};\ }
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ \ \ std::map<std::\textcolor{keywordtype}{string},\ \mbox{\hyperlink{structSegmentInfo}{SegmentInfo}}\ *>}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \mbox{\hyperlink{classMemoryAccessor_a94df70445998de56390955432fd0c4e6}{special\_segment\_found\_}};\ }
+\DoxyCodeLine{00324\ \ \ std::vector<\mbox{\hyperlink{structSegmentInfo}{SegmentInfo}}>}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \mbox{\hyperlink{classMemoryAccessor_a10b2c21dfe7fd767d43914c5545e0443}{segment\_infos\_}};\ }
+\DoxyCodeLine{00327\ private:}
+\DoxyCodeLine{00328\ \ \ \textcolor{keywordtype}{void}\ OpenMem()\ noexcept(false);}
+\DoxyCodeLine{00329\ \ \ \textcolor{keywordtype}{void}\ CheckMem()\ noexcept(false);}
+\DoxyCodeLine{00330\ \ \ \textcolor{keywordtype}{void}\ CheckSegBoundaries(const\ \textcolor{keywordtype}{size\_t}\ \&num,\ const\ \textcolor{keywordtype}{size\_t}\ \&start,}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \&amount)\ const\ noexcept(false);}
+\DoxyCodeLine{00332\ \ \ \textcolor{keywordtype}{void}\ PrepareMemSegment(const\ \textcolor{keywordtype}{size\_t}\ \&num,\ const\ \textcolor{keywordtype}{size\_t}\ \&start,}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \&amount)\ noexcept(false);}
+\DoxyCodeLine{00334\ }
+\DoxyCodeLine{00335\ \ \ static\ \textcolor{keywordtype}{bool}\ one\_instance\_created\_;\ }
+\DoxyCodeLine{00337\ }
+\DoxyCodeLine{00338\ \ \ std::fstream\ mem\_;\ }
+\DoxyCodeLine{00339\ \ \ }
+\DoxyCodeLine{00340\ \ \ pid\_t\ pid\_\{0\};\ }
+\DoxyCodeLine{00343\ \ \ \textcolor{keywordtype}{bool}\ pid\_set\_\{}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \textcolor{keyword}{false}\};\ }
+\DoxyCodeLine{00345\ \};}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_SRC\_MEMORYACCESSOR\_H\_}}
+
+\end{DoxyCode}

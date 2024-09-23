@@ -1,0 +1,63 @@
+\doxysection{/home/misha/prog/\+Memory\+Accessor/src/console.cc File Reference}
+\hypertarget{console_8cc}{}\label{console_8cc}\index{/home/misha/prog/MemoryAccessor/src/console.cc@{/home/misha/prog/MemoryAccessor/src/console.cc}}
+
+
+\doxylink{classConsole}{Console} source and Read\+Line integration.  
+
+
+{\ttfamily \#include "{}console.\+h"{}}\newline
+{\ttfamily \#include $<$readline/history.\+h$>$}\newline
+{\ttfamily \#include $<$readline/readline.\+h$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$cstdlib$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include $<$iomanip$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$ostream$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include "{}hexviewer.\+h"{}}\newline
+{\ttfamily \#include "{}memoryaccessor.\+h"{}}\newline
+{\ttfamily \#include "{}segmentinfo.\+h"{}}\newline
+{\ttfamily \#include "{}tools.\+h"{}}\newline
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacememoryaccessor__console__src}{memoryaccessor\+\_\+console\+\_\+src}}
+\begin{DoxyCompactList}\small\item\em Namespace of the file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{console_8cc_a67f70007bffa41404159792bf32bf927}{ctrl\+\_\+c\+\_\+pressed}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classConsole}{Console} source and Read\+Line integration. 
+
+A source that contains the realization of \doxylink{classConsole}{Console} class and the integration of GNU Read\+Line library. Also, this file defines ctrl\+\_\+c\+\_\+pressed variable, which is used to detect if Ctrl-\/C was pressed when \doxylink{classConsole}{Console} class is used. 
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{console_8cc_a67f70007bffa41404159792bf32bf927}\index{console.cc@{console.cc}!ctrl\_c\_pressed@{ctrl\_c\_pressed}}
+\index{ctrl\_c\_pressed@{ctrl\_c\_pressed}!console.cc@{console.cc}}
+\doxysubsubsection{\texorpdfstring{ctrl\_c\_pressed}{ctrl\_c\_pressed}}
+{\footnotesize\ttfamily \label{console_8cc_a67f70007bffa41404159792bf32bf927} 
+bool ctrl\+\_\+c\+\_\+pressed}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{false}\}}
+
+\end{DoxyCode}
+Shows if Ctrl-\/C was pressed if the instance of class \doxylink{classConsole}{Console} is created. When console is reading stdin, it goes to new line and sets the variable to false. 

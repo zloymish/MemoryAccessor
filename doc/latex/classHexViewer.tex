@@ -1,0 +1,53 @@
+\doxysection{Hex\+Viewer Class Reference}
+\hypertarget{classHexViewer}{}\label{classHexViewer}\index{HexViewer@{HexViewer}}
+
+
+A class for printing data in a readable format.  
+
+
+
+
+{\ttfamily \#include $<$hexviewer.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classHexViewer_a3b09b075e31f6c6a02ef9f9948e7f83e}{Print\+Hex}} (std\+::ostream \texorpdfstring{$\ast$}{*}stream\+\_\+p, const char \texorpdfstring{$\ast$}{*}s, size\+\_\+t size, size\+\_\+t addr, bool show\+\_\+hex=false) const noexcept
+\begin{DoxyCompactList}\small\item\em Print data in readable format. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class for printing data in a readable format. 
+
+This class provides an opportunity to print in readable format any array of char (bytes) to any ostream, optionally showing the hexadecimal values of bytes. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classHexViewer_a3b09b075e31f6c6a02ef9f9948e7f83e}\index{HexViewer@{HexViewer}!PrintHex@{PrintHex}}
+\index{PrintHex@{PrintHex}!HexViewer@{HexViewer}}
+\doxysubsubsection{\texorpdfstring{PrintHex()}{PrintHex()}}
+{\footnotesize\ttfamily \label{classHexViewer_a3b09b075e31f6c6a02ef9f9948e7f83e} 
+void Hex\+Viewer\+::\+Print\+Hex (\begin{DoxyParamCaption}\item[{std\+::ostream \texorpdfstring{$\ast$}{*}}]{stream\+\_\+p}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{s}{, }\item[{size\+\_\+t}]{size}{, }\item[{size\+\_\+t}]{addr}{, }\item[{bool}]{show\+\_\+hex}{ = {\ttfamily false}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Print data in readable format. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em stream\+\_\+p} & std\+::ostream to which output should be printed. \\
+\hline
+\mbox{\texttt{ in}}  & {\em s} & Array of char with data to be processed. \\
+\hline
+\mbox{\texttt{ in}}  & {\em size} & Size of the array of char. \\
+\hline
+\mbox{\texttt{ in}}  & {\em addr} & Start address to print to output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em show\+\_\+hex} & To show hex values of bytes or not.\\
+\hline
+\end{DoxyParams}
+Print data line be line replacing non-\/printable characters by \textquotesingle{}.\textquotesingle{}. If show\+\_\+hex is true, hex values are shown. Also, address provided in parameter "{}address"{} is printed in hex with offset in each line. The width of each line is base\+\_\+width\+\_\+ multiplied by 2 in power as much as screen width can contain when show\+\_\+hex is true, otherwise width is additionally multiplied by 4. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{hexviewer_8h}{hexviewer.\+h}}\item 
+\mbox{\hyperlink{hexviewer_8cc}{hexviewer.\+cc}}\end{DoxyCompactItemize}

@@ -1,0 +1,417 @@
+\doxysection{project\+\_\+test.\+cc File Reference}
+\hypertarget{project__test_8cc}{}\label{project__test_8cc}\index{project\_test.cc@{project\_test.cc}}
+
+
+Tests source.  
+
+
+{\ttfamily \#include "{}project\+\_\+test.\+h"{}}\newline
+{\ttfamily \#include $<$doctest/doctest.\+h$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$bit$>$}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$cstdio$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$ios$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$streambuf$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include "{}argvparser.\+h"{}}\newline
+{\ttfamily \#include "{}console.\+h"{}}\newline
+{\ttfamily \#include "{}hexviewer.\+h"{}}\newline
+{\ttfamily \#include "{}memoryaccessor.\+h"{}}\newline
+{\ttfamily \#include "{}segmentinfo.\+h"{}}\newline
+{\ttfamily \#include "{}tools.\+h"{}}\newline
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacememoryaccessor__testing}{memoryaccessor\+\_\+testing}}
+\begin{DoxyCompactList}\small\item\em Fields used in tests. \end{DoxyCompactList}\item 
+namespace \mbox{\hyperlink{namespacememoryaccessor__testing_1_1tools}{memoryaccessor\+\_\+testing\+::tools}}
+\begin{DoxyCompactList}\small\item\em Fields used in testing tools. \end{DoxyCompactList}\item 
+namespace \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor}{memoryaccessor\+\_\+testing\+::memoryaccessor}}
+\begin{DoxyCompactList}\small\item\em Fields used in testing memoryaccessor. \end{DoxyCompactList}\item 
+namespace \mbox{\hyperlink{namespacememoryaccessor__testing_1_1console}{memoryaccessor\+\_\+testing\+::console}}
+\begin{DoxyCompactList}\small\item\em Fields used in testing console. \end{DoxyCompactList}\item 
+namespace \mbox{\hyperlink{namespacememoryaccessor__testing_1_1argvparser}{memoryaccessor\+\_\+testing\+::argvparser}}
+\begin{DoxyCompactList}\small\item\em Fields used in testing argvparser. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{project__test_8cc_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int \mbox{\hyperlink{project__test_8cc_ad1447518f4372828b8435ae82e48499e}{argc}}, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}\mbox{\hyperlink{project__test_8cc_af2efa898e9eed6fe6715279cb1ec35b0}{argv}})
+\begin{DoxyCompactList}\small\item\em Main function. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_afbd4406722d33fe2519f178783c7817b}\label{project__test_8cc_afbd4406722d33fe2519f178783c7817b} 
+{\bfseries TEST\+\_\+\+SUITE\+\_\+\+BEGIN} ("{}Tools"{})
+\item 
+void \mbox{\hyperlink{namespacememoryaccessor__testing_1_1tools_a61cbe0b5d2df3292e828a4f47bccebdd}{memoryaccessor\+\_\+testing\+::tools\+::\+SIGINT\+\_\+handler}} (int signum)
+\begin{DoxyCompactList}\small\item\em SIGINT handler. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_ae03d7ae4300d824f58855e1a8d66c4c5}\label{project__test_8cc_ae03d7ae4300d824f58855e1a8d66c4c5} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Set SIGINT"{})
+\item 
+\Hypertarget{project__test_8cc_acad57cf866319a7ab4c5ebe92519837a}\label{project__test_8cc_acad57cf866319a7ab4c5ebe92519837a} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Set SIGINT to default"{})
+\item 
+\Hypertarget{project__test_8cc_a15dac14e1bb5039c30b4ef905f62312a}\label{project__test_8cc_a15dac14e1bb5039c30b4ef905f62312a} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Shell command\+: echo"{})
+\item 
+\Hypertarget{project__test_8cc_aef4555029cc599869119c5d63fdbff02}\label{project__test_8cc_aef4555029cc599869119c5d63fdbff02} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Shell empty command"{})
+\item 
+\Hypertarget{project__test_8cc_a7bb6477b7cdb264ecd40e4a4a942e263}\label{project__test_8cc_a7bb6477b7cdb264ecd40e4a4a942e263} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Shell non-\/existent command"{})
+\item 
+\Hypertarget{project__test_8cc_a3b43a8b76106549fc701ae3c3e746e42}\label{project__test_8cc_a3b43a8b76106549fc701ae3c3e746e42} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Get all PIDs including self"{})
+\item 
+\Hypertarget{project__test_8cc_a57114379dd7377eddee72109fdf1602d}\label{project__test_8cc_a57114379dd7377eddee72109fdf1602d} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Get all PIDs (amount non-\/equal zero)"{})
+\item 
+std\+::string \mbox{\hyperlink{namespacememoryaccessor__testing_1_1tools_a96329f6944a116f2f925ca7a6e27b612}{memoryaccessor\+\_\+testing\+::tools\+::get\+\_\+self\+\_\+name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of the current process. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_a0f49357e70d3391b8fb48e53056dc431}\label{project__test_8cc_a0f49357e70d3391b8fb48e53056dc431} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Get all process names including self"{})
+\item 
+\Hypertarget{project__test_8cc_a648cd63cf2ef28ac6fac7c57ce067862}\label{project__test_8cc_a648cd63cf2ef28ac6fac7c57ce067862} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Get all process names (amount non-\/equal zero)"{})
+\item 
+\Hypertarget{project__test_8cc_af1d2732d1750a2e4cfeff8a8c3d8f251}\label{project__test_8cc_af1d2732d1750a2e4cfeff8a8c3d8f251} 
+{\bfseries TEST\+\_\+\+CASE} ("{}PID exists\+: self"{})
+\item 
+\Hypertarget{project__test_8cc_a6abe83aa13322a5344c5a119de2e0b20}\label{project__test_8cc_a6abe83aa13322a5344c5a119de2e0b20} 
+{\bfseries TEST\+\_\+\+CASE} ("{}PID does not exist"{})
+\item 
+\Hypertarget{project__test_8cc_a0abaf60ae3bf5102ee976890bab11718}\label{project__test_8cc_a0abaf60ae3bf5102ee976890bab11718} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Process exists\+: self name"{})
+\item 
+\Hypertarget{project__test_8cc_a072686297e638af2af431740a19aee67}\label{project__test_8cc_a072686297e638af2af431740a19aee67} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Process with name does not exist"{})
+\item 
+\Hypertarget{project__test_8cc_a9410f3172b299bdc1cf7ad2ec798a54c}\label{project__test_8cc_a9410f3172b299bdc1cf7ad2ec798a54c} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Decode permissions\+: return zero"{})
+\item 
+\Hypertarget{project__test_8cc_ae98e669d75a2b10f9e8924d3342e5284}\label{project__test_8cc_ae98e669d75a2b10f9e8924d3342e5284} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Decode permissions\+: full"{})
+\item 
+\Hypertarget{project__test_8cc_a4562251988e0f085b4e748651fcd004d}\label{project__test_8cc_a4562251988e0f085b4e748651fcd004d} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Decode permissions\+: various"{})
+\item 
+\Hypertarget{project__test_8cc_aa55cbfae380859831a1bb0cdd17cfc79}\label{project__test_8cc_aa55cbfae380859831a1bb0cdd17cfc79} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Decode permissions\+: long"{})
+\item 
+\Hypertarget{project__test_8cc_a7dc8c191e33127e1e8284cd03650555d}\label{project__test_8cc_a7dc8c191e33127e1e8284cd03650555d} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Decode permissions\+: short"{})
+\item 
+\Hypertarget{project__test_8cc_a01719c14b010d1756eeaa935d94f4bf5}\label{project__test_8cc_a01719c14b010d1756eeaa935d94f4bf5} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Decode permissions\+: invalid"{})
+\item 
+\Hypertarget{project__test_8cc_aa9a188bc6c31d65e38495539e6eb7c2e}\label{project__test_8cc_aa9a188bc6c31d65e38495539e6eb7c2e} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Encode permissions\+: zero"{})
+\item 
+\Hypertarget{project__test_8cc_aec86602a7e945888c9c4207ad823a1c9}\label{project__test_8cc_aec86602a7e945888c9c4207ad823a1c9} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Encode permissions\+: full"{})
+\item 
+\Hypertarget{project__test_8cc_a837c06dd309cefda3fe94096b3a75e04}\label{project__test_8cc_a837c06dd309cefda3fe94096b3a75e04} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Encode permissions\+: various"{})
+\item 
+\Hypertarget{project__test_8cc_ab1341f76dc9a6932c9265e7487a8cc98}\label{project__test_8cc_ab1341f76dc9a6932c9265e7487a8cc98} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Encode permissions\+: additional bits"{})
+\item 
+\Hypertarget{project__test_8cc_a02d49f6e1d5f77ad6022e5b8e82430dd}\label{project__test_8cc_a02d49f6e1d5f77ad6022e5b8e82430dd} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Find differences\+: zeros"{})
+\item 
+\Hypertarget{project__test_8cc_aa536bae73383f8547469f0650c95c8e0}\label{project__test_8cc_aa536bae73383f8547469f0650c95c8e0} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Find differences\+: size less than length"{})
+\item 
+\Hypertarget{project__test_8cc_a3a9716c49c3f32791b24f5b2b8115d7b}\label{project__test_8cc_a3a9716c49c3f32791b24f5b2b8115d7b} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Find differences\+: one"{})
+\item 
+\Hypertarget{project__test_8cc_a312631758b673e1080400329b66d2c81}\label{project__test_8cc_a312631758b673e1080400329b66d2c81} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Find differences\+: two"{})
+\item 
+\Hypertarget{project__test_8cc_ad338dea778c434571f6a15b1813f2f76}\label{project__test_8cc_ad338dea778c434571f6a15b1813f2f76} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Find differences\+: diff too long"{})
+\item 
+\Hypertarget{project__test_8cc_ac1652a9fac498bad99df0f64a4ac4fe9}\label{project__test_8cc_ac1652a9fac498bad99df0f64a4ac4fe9} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Find differences\+: full arr"{})
+\item 
+\Hypertarget{project__test_8cc_a6b3d0e6e1eb59af6eab68344d73b4209}\label{project__test_8cc_a6b3d0e6e1eb59af6eab68344d73b4209} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Find differences\+: seq length 1"{})
+\item 
+\Hypertarget{project__test_8cc_a823ac6ae08cbaca8576ca97727045140}\label{project__test_8cc_a823ac6ae08cbaca8576ca97727045140} 
+{\bfseries TEST\+\_\+\+SUITE\+\_\+\+END} ()
+\item 
+\Hypertarget{project__test_8cc_a9ad22d7ca1f225a0ecef008d1e581970}\label{project__test_8cc_a9ad22d7ca1f225a0ecef008d1e581970} 
+{\bfseries TEST\+\_\+\+SUITE\+\_\+\+BEGIN} ("{}Memory\+Accessor"{})
+\item 
+\Hypertarget{project__test_8cc_acc99a04398bd85275066ca7b5d07709f}\label{project__test_8cc_acc99a04398bd85275066ca7b5d07709f} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Set PID"{})
+\item 
+\Hypertarget{project__test_8cc_a76bc0740783120af289f224bfd4ebf81}\label{project__test_8cc_a76bc0740783120af289f224bfd4ebf81} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Set non-\/existent PID"{})
+\item 
+\Hypertarget{project__test_8cc_a17bfc43cff684e09972106091ce0eff8}\label{project__test_8cc_a17bfc43cff684e09972106091ce0eff8} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Parse maps\+: self"{})
+\item 
+\Hypertarget{project__test_8cc_ab1f78df04734db61145c02303821eeb3}\label{project__test_8cc_ab1f78df04734db61145c02303821eeb3} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Parse maps\+: PID not set"{})
+\item 
+\Hypertarget{project__test_8cc_a0f5c9d4742886e8ec11db89d2f060898}\label{project__test_8cc_a0f5c9d4742886e8ec11db89d2f060898} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Get all segment names"{})
+\item 
+\Hypertarget{project__test_8cc_ad7479a8f35af29ffdd2da2d753fad714}\label{project__test_8cc_ad7479a8f35af29ffdd2da2d753fad714} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Get zero segment names with no PID"{})
+\item 
+\Hypertarget{project__test_8cc_a138227d5c4360377651c7623f2d353fe}\label{project__test_8cc_a138227d5c4360377651c7623f2d353fe} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Address in segment"{})
+\item 
+\Hypertarget{project__test_8cc_a3e41cf6b4dafe1c4b4a47203e4e2339c}\label{project__test_8cc_a3e41cf6b4dafe1c4b4a47203e4e2339c} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Address not in segment"{})
+\item 
+\Hypertarget{project__test_8cc_a1ef566ac93e259512ab58fc886e26fa4}\label{project__test_8cc_a1ef566ac93e259512ab58fc886e26fa4} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Check segment number\+: positive"{})
+\item 
+\Hypertarget{project__test_8cc_a50161bea95dc0860ca95a71a25189583}\label{project__test_8cc_a50161bea95dc0860ca95a71a25189583} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Check segment number\+: negative"{})
+\item 
+\Hypertarget{project__test_8cc_a7165e9ca8dceabfd024f879c4a07383d}\label{project__test_8cc_a7165e9ca8dceabfd024f879c4a07383d} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Check segment number\+: PID not set"{})
+\item 
+\Hypertarget{project__test_8cc_a3c5f503046faa5d267e519dcf38637bf}\label{project__test_8cc_a3c5f503046faa5d267e519dcf38637bf} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Reset segments"{})
+\item 
+\Hypertarget{project__test_8cc_a18e35278e8e41899e8085b114f72e36e}\label{project__test_8cc_a18e35278e8e41899e8085b114f72e36e} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Double Reset segments"{})
+\item 
+\Hypertarget{project__test_8cc_aa8ecd2eb11196622ec461d01ac783afa}\label{project__test_8cc_aa8ecd2eb11196622ec461d01ac783afa} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Reset"{})
+\item 
+\Hypertarget{project__test_8cc_a291294d28f6c6c702e3dd4078d0a0239}\label{project__test_8cc_a291294d28f6c6c702e3dd4078d0a0239} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Double Reset"{})
+\item 
+pid\+\_\+t \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a95d65a988133e077668f0e0be1209a39}{memoryaccessor\+\_\+testing\+::memoryaccessor\+::get\+\_\+paused\+\_\+child}} ()
+\begin{DoxyCompactList}\small\item\em Create paused child process. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a0cf93f4598450e68a7262bd5b3fe327c}{memoryaccessor\+\_\+testing\+::memoryaccessor\+::read\+\_\+urandom}} (char \texorpdfstring{$\ast$}{*}dst, size\+\_\+t amount)
+\begin{DoxyCompactList}\small\item\em Read data from /dev/urandom. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_aee68f0a9215173f0d457c44b7cc10633}{memoryaccessor\+\_\+testing\+::memoryaccessor\+::are\+\_\+arrays\+\_\+same}} (const char \texorpdfstring{$\ast$}{*}arr1, const char \texorpdfstring{$\ast$}{*}arr2, const size\+\_\+t \&size)
+\begin{DoxyCompactList}\small\item\em Check if 2 arrays are same. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a6fca17b0fc001bd6195de4fd390fd644}{memoryaccessor\+\_\+testing\+::memoryaccessor\+::seg\+\_\+num\+\_\+by\+\_\+name}} (const std\+::string \&name, const std\+::vector$<$ \mbox{\hyperlink{structSegmentInfo}{Segment\+Info}} $>$ \&infos)
+\begin{DoxyCompactList}\small\item\em Find segment number by name. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_a1177faf4fa81dd885542715579f65616}\label{project__test_8cc_a1177faf4fa81dd885542715579f65616} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Read segment to array and compare to initial array"{})
+\item 
+\Hypertarget{project__test_8cc_ac6705361c7546322c0ee6c659e8090b6}\label{project__test_8cc_ac6705361c7546322c0ee6c659e8090b6} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Read same segment to arrays in different cases"{})
+\item 
+\Hypertarget{project__test_8cc_aaba59a03001113c5bdadb62ea905baed}\label{project__test_8cc_aaba59a03001113c5bdadb62ea905baed} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Read segment to array and compare to parts"{})
+\item 
+\Hypertarget{project__test_8cc_a7dbf6bc3b9a5bff67ca5520342b9e465}\label{project__test_8cc_a7dbf6bc3b9a5bff67ca5520342b9e465} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Read segment\+: exceptions"{})
+\item 
+\Hypertarget{project__test_8cc_ac8856667793609bdd73b61d2f2d87df7}\label{project__test_8cc_ac8856667793609bdd73b61d2f2d87df7} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Write array to segment, read back and compare"{})
+\item 
+\Hypertarget{project__test_8cc_aedc67d0bd2538f60661342bbbd83ecab}\label{project__test_8cc_aedc67d0bd2538f60661342bbbd83ecab} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Write array parts to segment, read back and compare"{})
+\item 
+\Hypertarget{project__test_8cc_a59474258f01fbc696181649d982c7640}\label{project__test_8cc_a59474258f01fbc696181649d982c7640} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Write segment\+: exceptions"{})
+\item 
+size\+\_\+t \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a44f24f65262ef575562e94b3bc6b9346}{memoryaccessor\+\_\+testing\+::memoryaccessor\+::find\+\_\+gap\+\_\+start}} (const std\+::vector$<$ \mbox{\hyperlink{structSegmentInfo}{Segment\+Info}} $>$ \&infos)
+\begin{DoxyCompactList}\small\item\em Find the beginning of the 1st gap between segments. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_a1f6211b5a928845097eccdd75c8723b2}\label{project__test_8cc_a1f6211b5a928845097eccdd75c8723b2} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Read data across segments to array and compare to initial array"{})
+\item 
+\Hypertarget{project__test_8cc_a937bfb39ed13f178f5b7a5805febb9b9}\label{project__test_8cc_a937bfb39ed13f178f5b7a5805febb9b9} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Read data across segments to arrays in different cases"{})
+\item 
+\Hypertarget{project__test_8cc_a18772f005c38f9d2d9c58253860dd8cb}\label{project__test_8cc_a18772f005c38f9d2d9c58253860dd8cb} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Read data across segments to array and compare to parts"{})
+\item 
+\Hypertarget{project__test_8cc_ab92249a7b2d4e505d964101ae2d45fb1}\label{project__test_8cc_ab92249a7b2d4e505d964101ae2d45fb1} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Read\+: exceptions"{})
+\item 
+\Hypertarget{project__test_8cc_a0a5fadd7382f35313a88b9205415a895}\label{project__test_8cc_a0a5fadd7382f35313a88b9205415a895} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Write array to memory across segments, read back and compare"{})
+\item 
+\Hypertarget{project__test_8cc_a48a7923433abda352d296cfc108fc691}\label{project__test_8cc_a48a7923433abda352d296cfc108fc691} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Write array parts to memory across segments, read back and compare"{})
+\item 
+\Hypertarget{project__test_8cc_af1fec1ede46445a175eb74e25a7002b0}\label{project__test_8cc_af1fec1ede46445a175eb74e25a7002b0} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Write\+: exceptions"{})
+\item 
+\Hypertarget{project__test_8cc_ad4fde4830b2e9706359ab9e717e841a4}\label{project__test_8cc_ad4fde4830b2e9706359ab9e717e841a4} 
+{\bfseries TEST\+\_\+\+SUITE\+\_\+\+BEGIN} ("{}Hex\+Viewer"{})
+\item 
+\Hypertarget{project__test_8cc_a904132fcf5b7c0b5bfb06b17743e12ec}\label{project__test_8cc_a904132fcf5b7c0b5bfb06b17743e12ec} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Print hex\+: check syntax, show\+\_\+hex == false"{})
+\item 
+\Hypertarget{project__test_8cc_a53d461533e17b1a8953cf301c11eec2f}\label{project__test_8cc_a53d461533e17b1a8953cf301c11eec2f} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Print hex\+: zero length, show\+\_\+hex == false"{})
+\item 
+\Hypertarget{project__test_8cc_a48b07b72ef1a7dcc6beac372d1fba8b4}\label{project__test_8cc_a48b07b72ef1a7dcc6beac372d1fba8b4} 
+{\bfseries TEST\+\_\+\+SUITE\+\_\+\+BEGIN} ("{}Console"{})
+\item 
+std\+::streambuf \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespacememoryaccessor__testing_1_1console_ae17729cb472b2ccbd6755bcd1b252f68}{memoryaccessor\+\_\+testing\+::console\+::replace\+\_\+streambuf}} (std\+::ios \&stream, const std\+::ostringstream \&oss)
+\begin{DoxyCompactList}\small\item\em Replace streambuf of stream by one provided in ostringstream. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_a522777721c127e4f43624c23ca7509b3}\label{project__test_8cc_a522777721c127e4f43624c23ca7509b3} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Print name and version\+: not null"{})
+\item 
+\Hypertarget{project__test_8cc_a5e2fb05ffea0ef8eae4562ee9c3c5402}\label{project__test_8cc_a5e2fb05ffea0ef8eae4562ee9c3c5402} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Print name and version"{})
+\item 
+\Hypertarget{project__test_8cc_a8a4c1c5d223955c77ce1dd3fb9df5563}\label{project__test_8cc_a8a4c1c5d223955c77ce1dd3fb9df5563} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Console start\+: not null"{})
+\item 
+\Hypertarget{project__test_8cc_a55664a9868f3320b4cbc5ef16829e159}\label{project__test_8cc_a55664a9868f3320b4cbc5ef16829e159} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Console start"{})
+\item 
+void \mbox{\hyperlink{namespacememoryaccessor__testing_1_1console_a818802496a46415ea473fb77e86f6b75}{memoryaccessor\+\_\+testing\+::console\+::test\+\_\+handle\+\_\+command}} (std\+::ostringstream \&oss, const std\+::string \&command, const std\+::string \&result\+\_\+substr)
+\begin{DoxyCompactList}\small\item\em Perform test on \doxylink{classConsole_a734562e8b24e4011703a9b245c28d5b2}{Console\+::\+Handle\+Command} function. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_a1ba2b8291d4f0d656bb0da92a6df2913}\label{project__test_8cc_a1ba2b8291d4f0d656bb0da92a6df2913} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle empty command"{})
+\item 
+\Hypertarget{project__test_8cc_a004c276dd7278b1304962ea8fdfc0ea0}\label{project__test_8cc_a004c276dd7278b1304962ea8fdfc0ea0} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle whitespace command"{})
+\item 
+\Hypertarget{project__test_8cc_a405fcfbe8f45524e4e9289fa6805dde1}\label{project__test_8cc_a405fcfbe8f45524e4e9289fa6805dde1} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle unknown command"{})
+\item 
+\Hypertarget{project__test_8cc_abf85e917227bd8eb6f1c2b119ec76d0a}\label{project__test_8cc_abf85e917227bd8eb6f1c2b119ec76d0a} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle command with quotes"{})
+\item 
+\Hypertarget{project__test_8cc_a60bc1ddf7d1bc08adf80a9116b060887}\label{project__test_8cc_a60bc1ddf7d1bc08adf80a9116b060887} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle command with escape sequences"{})
+\item 
+\Hypertarget{project__test_8cc_ad2bf24c8b55a4e8646cf1a453e5beb7d}\label{project__test_8cc_ad2bf24c8b55a4e8646cf1a453e5beb7d} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle command\+: help"{})
+\item 
+\Hypertarget{project__test_8cc_a07b9810b58e9e6242f105105d487dbaa}\label{project__test_8cc_a07b9810b58e9e6242f105105d487dbaa} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle command\+: name"{})
+\item 
+\Hypertarget{project__test_8cc_a226e471e563c89e0fbc27710d594d7e9}\label{project__test_8cc_a226e471e563c89e0fbc27710d594d7e9} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle command\+: pid"{})
+\item 
+std\+::string \mbox{\hyperlink{namespacememoryaccessor__testing_1_1console_aa45549c37ce5d9d1254e82e7f28829cb}{memoryaccessor\+\_\+testing\+::console\+::size\+\_\+t\+\_\+to\+\_\+hex}} (const size\+\_\+t \&num, size\+\_\+t width)
+\begin{DoxyCompactList}\small\item\em Convert size\+\_\+t to hex string. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_a175717eb2f2c31757bd3196bb0c65c3b}\label{project__test_8cc_a175717eb2f2c31757bd3196bb0c65c3b} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle command\+: maps"{})
+\item 
+\Hypertarget{project__test_8cc_a379478a875180057aacb7c05f37896ce}\label{project__test_8cc_a379478a875180057aacb7c05f37896ce} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle command\+: view"{})
+\item 
+\Hypertarget{project__test_8cc_a76cc32723076a6f317e2f3f30e0748b7}\label{project__test_8cc_a76cc32723076a6f317e2f3f30e0748b7} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle command\+: read"{})
+\item 
+\Hypertarget{project__test_8cc_a000b630e9cb588873be4b537c4a13896}\label{project__test_8cc_a000b630e9cb588873be4b537c4a13896} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle command\+: write"{})
+\item 
+\Hypertarget{project__test_8cc_a167946833dcd197dd1805f8f353b3ef5}\label{project__test_8cc_a167946833dcd197dd1805f8f353b3ef5} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle command\+: diff"{})
+\item 
+\Hypertarget{project__test_8cc_a9bcf99f379e2e9f8a11b9cf8cf1fbf06}\label{project__test_8cc_a9bcf99f379e2e9f8a11b9cf8cf1fbf06} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Handle command\+: await"{})
+\item 
+\Hypertarget{project__test_8cc_ac623160d8e845ddd5ad4f6d1287844f7}\label{project__test_8cc_ac623160d8e845ddd5ad4f6d1287844f7} 
+{\bfseries TEST\+\_\+\+SUITE\+\_\+\+BEGIN} ("{}Argv\+Parser"{})
+\item 
+\Hypertarget{project__test_8cc_a730fb6f3e4ed4f0d8e7733c147420cd3}\label{project__test_8cc_a730fb6f3e4ed4f0d8e7733c147420cd3} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Parse argv\+: empty"{})
+\item 
+\Hypertarget{project__test_8cc_aeca28c20b0d5958074960098028c508c}\label{project__test_8cc_aeca28c20b0d5958074960098028c508c} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Parse argv\+: no key"{})
+\item 
+void \mbox{\hyperlink{namespacememoryaccessor__testing_1_1argvparser_ad6da842028c72f3a7ac21bb0dacb4b0d}{memoryaccessor\+\_\+testing\+::argvparser\+::exit\+\_\+handler}} ()
+\begin{DoxyCompactList}\small\item\em Exit handler. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacememoryaccessor__testing_1_1argvparser_ac468ed3d332a66f258d2be46ea81d21f}{memoryaccessor\+\_\+testing\+::argvparser\+::test\+\_\+parse\+\_\+argv}} (const int \&\mbox{\hyperlink{project__test_8cc_ad1447518f4372828b8435ae82e48499e}{argc}}, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}\mbox{\hyperlink{project__test_8cc_af2efa898e9eed6fe6715279cb1ec35b0}{argv}}, const std\+::string \&result\+\_\+substr)
+\begin{DoxyCompactList}\small\item\em Perform test on \doxylink{classArgvParser_a837c299aff0a06ffcfd1e4e140ea11e2}{Argv\+Parser\+::\+Parse\+Argv} function. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_a26ce4c95c82322cfdbb605aafdd8471f}\label{project__test_8cc_a26ce4c95c82322cfdbb605aafdd8471f} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Parse argv\+: unknown key"{})
+\item 
+\Hypertarget{project__test_8cc_ac603f8e4f81e45923a9b7d6808795b23}\label{project__test_8cc_ac603f8e4f81e45923a9b7d6808795b23} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Parse argv\+: key help"{})
+\item 
+\Hypertarget{project__test_8cc_a601defaf92f3e69342f4b4bc426e8226}\label{project__test_8cc_a601defaf92f3e69342f4b4bc426e8226} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Parse argv\+: key command"{})
+\item 
+\Hypertarget{project__test_8cc_a312a0670102b08bb186a65fe7fdf6ff9}\label{project__test_8cc_a312a0670102b08bb186a65fe7fdf6ff9} 
+{\bfseries TEST\+\_\+\+CASE} ("{}Parse argv\+: key file"{})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{project__test_8cc_ad1447518f4372828b8435ae82e48499e}\label{project__test_8cc_ad1447518f4372828b8435ae82e48499e} 
+int {\bfseries argc} \{0\}
+\begin{DoxyCompactList}\small\item\em Number of arguments sent with the program. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_af2efa898e9eed6fe6715279cb1ec35b0}\label{project__test_8cc_af2efa898e9eed6fe6715279cb1ec35b0} 
+char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*} {\bfseries argv} \{nullptr\}
+\begin{DoxyCompactList}\small\item\em Array of arguments sent with the program. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_aa6dcc663b291e18b76f2bd11e15f2dfb}\label{project__test_8cc_aa6dcc663b291e18b76f2bd11e15f2dfb} 
+constexpr size\+\_\+t {\bfseries k\+Buffer\+Size} \{0x1000\}
+\begin{DoxyCompactList}\small\item\em Size of buffers used. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_a0a884c8dc64177499af32c4fa5698aad}\label{project__test_8cc_a0a884c8dc64177499af32c4fa5698aad} 
+\mbox{\hyperlink{classTools}{Tools}} {\bfseries tools}
+\begin{DoxyCompactList}\small\item\em tools instance to perform testing on. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_a886c5e6253200afc139cfc52ed12e158}\label{project__test_8cc_a886c5e6253200afc139cfc52ed12e158} 
+\mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} {\bfseries memory\+\_\+accessor} (\mbox{\hyperlink{project__test_8cc_a0a884c8dc64177499af32c4fa5698aad}{tools}})
+\begin{DoxyCompactList}\small\item\em memory\+\_\+accessor instance to perform testing on. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_a63d11e33b7f28e2b723a7d5a5ea31e66}\label{project__test_8cc_a63d11e33b7f28e2b723a7d5a5ea31e66} 
+\mbox{\hyperlink{classHexViewer}{Hex\+Viewer}} {\bfseries hex\+\_\+viewer}
+\begin{DoxyCompactList}\small\item\em hex\+\_\+viewer instance to perform testing on. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_aab149b82d48456f68e17ad68d29720a0}\label{project__test_8cc_aab149b82d48456f68e17ad68d29720a0} 
+\mbox{\hyperlink{classConsole}{Console}} {\bfseries console} (\mbox{\hyperlink{project__test_8cc_a886c5e6253200afc139cfc52ed12e158}{memory\+\_\+accessor}}, \mbox{\hyperlink{project__test_8cc_a63d11e33b7f28e2b723a7d5a5ea31e66}{hex\+\_\+viewer}}, \mbox{\hyperlink{project__test_8cc_a0a884c8dc64177499af32c4fa5698aad}{tools}})
+\begin{DoxyCompactList}\small\item\em console instance to perform testing on. \end{DoxyCompactList}\item 
+\Hypertarget{project__test_8cc_ae6a988d0b41aa22f37df750715b2eaca}\label{project__test_8cc_ae6a988d0b41aa22f37df750715b2eaca} 
+\mbox{\hyperlink{classArgvParser}{Argv\+Parser}} {\bfseries argv\+\_\+parser} (\mbox{\hyperlink{project__test_8cc_aab149b82d48456f68e17ad68d29720a0}{console}})
+\begin{DoxyCompactList}\small\item\em argv\+\_\+parser instance to perform testing on. \end{DoxyCompactList}\item 
+\Hypertarget{namespacememoryaccessor__testing_1_1tools_abf994a338ca123e7ed1688081de8e7f5}\label{namespacememoryaccessor__testing_1_1tools_abf994a338ca123e7ed1688081de8e7f5} 
+bool {\bfseries memoryaccessor\+\_\+testing\+::tools\+::check\+\_\+sigint} \{false\}
+\begin{DoxyCompactList}\small\item\em Shows if SIGINT was sent. \end{DoxyCompactList}\item 
+\Hypertarget{namespacememoryaccessor__testing_1_1tools_a9079b3aae82caa7e9581f5ee43373717}\label{namespacememoryaccessor__testing_1_1tools_a9079b3aae82caa7e9581f5ee43373717} 
+pid\+\_\+t {\bfseries memoryaccessor\+\_\+testing\+::tools\+::max\+\_\+pid\+\_\+t} \{(1 $<$$<$ (sizeof(pid\+\_\+t) -\/ 1)) -\/ 1\}
+\begin{DoxyCompactList}\small\item\em Maximum positive value of pid\+\_\+t. \end{DoxyCompactList}\item 
+\Hypertarget{namespacememoryaccessor__testing_1_1argvparser_adfa91fa7b333f2ea42a661d46d47cae1}\label{namespacememoryaccessor__testing_1_1argvparser_adfa91fa7b333f2ea42a661d46d47cae1} 
+std\+::ostringstream \texorpdfstring{$\ast$}{*} {\bfseries memoryaccessor\+\_\+testing\+::argvparser\+::cur\+\_\+oss\+\_\+p} \{nullptr\}
+\begin{DoxyCompactList}\small\item\em Pointer to ostringstream. Used inside of exit\+\_\+handler. \end{DoxyCompactList}\item 
+\Hypertarget{namespacememoryaccessor__testing_1_1argvparser_aea9d1898ca236c7b694dc75a01f8a150}\label{namespacememoryaccessor__testing_1_1argvparser_aea9d1898ca236c7b694dc75a01f8a150} 
+int {\bfseries memoryaccessor\+\_\+testing\+::argvparser\+::pipe\+\_\+to\+\_\+write} \{0\}
+\begin{DoxyCompactList}\small\item\em File descriptor of writable end of pipe. Used inside of exit\+\_\+handler. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Tests source. 
+
+A source that contains tests of the project. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{project__test_8cc_a3c04138a5bfe5d72780bb7e82a18e627}\index{project\_test.cc@{project\_test.cc}!main@{main}}
+\index{main@{main}!project\_test.cc@{project\_test.cc}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily \label{project__test_8cc_a3c04138a5bfe5d72780bb7e82a18e627} 
+int main (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{argv}{}\end{DoxyParamCaption})}
+
+
+
+Main function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em argc} & Arguments count. \\
+\hline
+\mbox{\texttt{ in}}  & {\em argv} & Array of C strings representing arguments. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Exit code of the program.
+\end{DoxyReturn}
+Sets values to global variables argc and argv, sets equal buffer\+\_\+size and run tests. 

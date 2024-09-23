@@ -1,0 +1,54 @@
+\doxysection{/home/misha/prog/\+Memory\+Accessor/src/memoryaccessor.h File Reference}
+\hypertarget{memoryaccessor_8h}{}\label{memoryaccessor_8h}\index{/home/misha/prog/MemoryAccessor/src/memoryaccessor.h@{/home/misha/prog/MemoryAccessor/src/memoryaccessor.h}}
+
+
+\doxylink{classMemoryAccessor}{Memory\+Accessor} header.  
+
+
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$exception$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include "{}segmentinfo.\+h"{}}\newline
+{\ttfamily \#include "{}tools.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}}
+\begin{DoxyCompactList}\small\item\em A class to perform the main operations with memory. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1BaseException}{Memory\+Accessor\+::\+Base\+Exception}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Base exception. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1PidEx}{Memory\+Accessor\+::\+Pid\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Exception related to PID. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1ErrCheckingPidEx}{Memory\+Accessor\+::\+Err\+Checking\+Pid\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Could not check if PID exists. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1PidNotExistEx}{Memory\+Accessor\+::\+Pid\+Not\+Exist\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: PID does not exist. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1PidNotSetEx}{Memory\+Accessor\+::\+Pid\+Not\+Set\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: PID is not set. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1FileEx}{Memory\+Accessor\+::\+File\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Exception related to files. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1MemFileEx}{Memory\+Accessor\+::\+Mem\+File\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Operation with /proc/\+PID/mem failed. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1MapsFileEx}{Memory\+Accessor\+::\+Maps\+File\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Opening /proc/\+PID/maps failed. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1BadMapsEx}{Memory\+Accessor\+::\+Bad\+Maps\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Parsing /proc/\+PID/maps failed. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1SegmentEx}{Memory\+Accessor\+::\+Segment\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Exception related to memory segments. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1SegmentNotExistEx}{Memory\+Accessor\+::\+Segment\+Not\+Exist\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Segment of memory does not exist. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1SegmentAccessDeniedEx}{Memory\+Accessor\+::\+Segment\+Access\+Denied\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Access to the segment of memory denied. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classMemoryAccessor_1_1AddressNotInSegmentEx}{Memory\+Accessor\+::\+Address\+Not\+In\+Segment\+Ex}}
+\begin{DoxyCompactList}\small\item\em Ex\+: Address does not belong to any segment. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classMemoryAccessor}{Memory\+Accessor} header. 
+
+A header that contains the definitions of \doxylink{classMemoryAccessor}{Memory\+Accessor} class itself and its exceptions. 

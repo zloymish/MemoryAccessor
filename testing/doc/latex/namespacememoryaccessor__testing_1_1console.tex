@@ -1,0 +1,84 @@
+\doxysection{memoryaccessor\+\_\+testing\+::console Namespace Reference}
+\hypertarget{namespacememoryaccessor__testing_1_1console}{}\label{namespacememoryaccessor__testing_1_1console}\index{memoryaccessor\_testing::console@{memoryaccessor\_testing::console}}
+
+
+Fields used in testing console.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::streambuf \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespacememoryaccessor__testing_1_1console_ae17729cb472b2ccbd6755bcd1b252f68}{replace\+\_\+streambuf}} (std\+::ios \&stream, const std\+::ostringstream \&oss)
+\begin{DoxyCompactList}\small\item\em Replace streambuf of stream by one provided in ostringstream. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacememoryaccessor__testing_1_1console_a818802496a46415ea473fb77e86f6b75}{test\+\_\+handle\+\_\+command}} (std\+::ostringstream \&oss, const std\+::string \&command, const std\+::string \&result\+\_\+substr)
+\begin{DoxyCompactList}\small\item\em Perform test on \doxylink{classConsole_a734562e8b24e4011703a9b245c28d5b2}{Console\+::\+Handle\+Command} function. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespacememoryaccessor__testing_1_1console_aa45549c37ce5d9d1254e82e7f28829cb}{size\+\_\+t\+\_\+to\+\_\+hex}} (const size\+\_\+t \&num, size\+\_\+t width)
+\begin{DoxyCompactList}\small\item\em Convert size\+\_\+t to hex string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Fields used in testing console. 
+
+Functions and variables that are used in tests related to \doxylink{classConsole}{Console} class. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacememoryaccessor__testing_1_1console_ae17729cb472b2ccbd6755bcd1b252f68}\index{memoryaccessor\_testing::console@{memoryaccessor\_testing::console}!replace\_streambuf@{replace\_streambuf}}
+\index{replace\_streambuf@{replace\_streambuf}!memoryaccessor\_testing::console@{memoryaccessor\_testing::console}}
+\doxysubsubsection{\texorpdfstring{replace\_streambuf()}{replace\_streambuf()}}
+{\footnotesize\ttfamily \label{namespacememoryaccessor__testing_1_1console_ae17729cb472b2ccbd6755bcd1b252f68} 
+std\+::streambuf \texorpdfstring{$\ast$}{*} memoryaccessor\+\_\+testing\+::console\+::replace\+\_\+streambuf (\begin{DoxyParamCaption}\item[{std\+::ios \&}]{stream}{, }\item[{const std\+::ostringstream \&}]{oss}{}\end{DoxyParamCaption})}
+
+
+
+Replace streambuf of stream by one provided in ostringstream. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em stream} & Stream to perform replacement. \\
+\hline
+\mbox{\texttt{ in}}  & {\em oss} & std\+::ostringstream containing std\+::streambuf replacement. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to old std\+::streambuf of the stream.
+\end{DoxyReturn}
+Replace std\+::streambuf of stream by one provided in std\+::ostringstream, so all data coming from stream will be redirected to std\+::ostringstream. \Hypertarget{namespacememoryaccessor__testing_1_1console_aa45549c37ce5d9d1254e82e7f28829cb}\index{memoryaccessor\_testing::console@{memoryaccessor\_testing::console}!size\_t\_to\_hex@{size\_t\_to\_hex}}
+\index{size\_t\_to\_hex@{size\_t\_to\_hex}!memoryaccessor\_testing::console@{memoryaccessor\_testing::console}}
+\doxysubsubsection{\texorpdfstring{size\_t\_to\_hex()}{size\_t\_to\_hex()}}
+{\footnotesize\ttfamily \label{namespacememoryaccessor__testing_1_1console_aa45549c37ce5d9d1254e82e7f28829cb} 
+std\+::string memoryaccessor\+\_\+testing\+::console\+::size\+\_\+t\+\_\+to\+\_\+hex (\begin{DoxyParamCaption}\item[{const size\+\_\+t \&}]{num}{, }\item[{size\+\_\+t}]{width}{}\end{DoxyParamCaption})}
+
+
+
+Convert size\+\_\+t to hex string. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em num} & Number to convert. \\
+\hline
+\mbox{\texttt{ in}}  & {\em width} & Minimum amount of digits in output. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+String with hex representation of number.
+\end{DoxyReturn}
+Convert size\+\_\+t to hex string with specified width filled with \textquotesingle{}0\textquotesingle{}. \Hypertarget{namespacememoryaccessor__testing_1_1console_a818802496a46415ea473fb77e86f6b75}\index{memoryaccessor\_testing::console@{memoryaccessor\_testing::console}!test\_handle\_command@{test\_handle\_command}}
+\index{test\_handle\_command@{test\_handle\_command}!memoryaccessor\_testing::console@{memoryaccessor\_testing::console}}
+\doxysubsubsection{\texorpdfstring{test\_handle\_command()}{test\_handle\_command()}}
+{\footnotesize\ttfamily \label{namespacememoryaccessor__testing_1_1console_a818802496a46415ea473fb77e86f6b75} 
+void memoryaccessor\+\_\+testing\+::console\+::test\+\_\+handle\+\_\+command (\begin{DoxyParamCaption}\item[{std\+::ostringstream \&}]{oss}{, }\item[{const std\+::string \&}]{command}{, }\item[{const std\+::string \&}]{result\+\_\+substr}{}\end{DoxyParamCaption})}
+
+
+
+Perform test on \doxylink{classConsole_a734562e8b24e4011703a9b245c28d5b2}{Console\+::\+Handle\+Command} function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em oss} & std\+::ostringstream with redirected std\+::cout and/or std\+::cerr. \\
+\hline
+\mbox{\texttt{ in}}  & {\em command} & Line with command. \\
+\hline
+\mbox{\texttt{ in}}  & {\em result\+\_\+substr} & Desired substring of result starting from the beginning.\\
+\hline
+\end{DoxyParams}
+Perform test on \doxylink{classConsole_a734562e8b24e4011703a9b245c28d5b2}{Console\+::\+Handle\+Command} function and compare result with specified substring. 

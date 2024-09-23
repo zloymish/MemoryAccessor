@@ -1,0 +1,66 @@
+\doxysection{Segment\+Info Struct Reference}
+\hypertarget{structSegmentInfo}{}\label{structSegmentInfo}\index{SegmentInfo@{SegmentInfo}}
+
+
+A struct to store the information of a memory segment.  
+
+
+
+
+{\ttfamily \#include $<$segmentinfo.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structSegmentInfo_af588bc52c02be4dc3e65766b6d95cca2}\label{structSegmentInfo_af588bc52c02be4dc3e65766b6d95cca2} 
+size\+\_\+t {\bfseries start}
+\begin{DoxyCompactList}\small\item\em Start address. \end{DoxyCompactList}\item 
+\Hypertarget{structSegmentInfo_a1714d1f616d39a23a64fc4ca67c633ea}\label{structSegmentInfo_a1714d1f616d39a23a64fc4ca67c633ea} 
+size\+\_\+t {\bfseries end}
+\begin{DoxyCompactList}\small\item\em End address (first address that does not belong to the segment) \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{structSegmentInfo_ac0132b8aea8466bd99d637e7d026bc64}{offset}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structSegmentInfo_a17e292dbd8fd13d78a213cddefa2ce45}{mode}} \{0\}
+\item 
+\Hypertarget{structSegmentInfo_af5dfea101d2e1fe705b45aa46d84fa69}\label{structSegmentInfo_af5dfea101d2e1fe705b45aa46d84fa69} 
+uint32\+\_\+t {\bfseries major\+\_\+id}
+\begin{DoxyCompactList}\small\item\em Major ID. \end{DoxyCompactList}\item 
+\Hypertarget{structSegmentInfo_a948a2f330b409b099db480faff8489ed}\label{structSegmentInfo_a948a2f330b409b099db480faff8489ed} 
+uint32\+\_\+t {\bfseries minor\+\_\+id}
+\begin{DoxyCompactList}\small\item\em Minor ID. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{structSegmentInfo_ab9b3f5c8ee2e0688d983c5aed557ca80}{inode\+\_\+id}}
+\item 
+\Hypertarget{structSegmentInfo_a887e77f1b7fee76ed6f63b62925d6df4}\label{structSegmentInfo_a887e77f1b7fee76ed6f63b62925d6df4} 
+std\+::string {\bfseries path}
+\begin{DoxyCompactList}\small\item\em Path or name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A struct to store the information of a memory segment. 
+
+This struct stores the information of one memory segment in a way it is given in /proc/\+PID/maps file. It uses its own style of storing the permissions though. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structSegmentInfo_ab9b3f5c8ee2e0688d983c5aed557ca80}\index{SegmentInfo@{SegmentInfo}!inode\_id@{inode\_id}}
+\index{inode\_id@{inode\_id}!SegmentInfo@{SegmentInfo}}
+\doxysubsubsection{\texorpdfstring{inode\_id}{inode\_id}}
+{\footnotesize\ttfamily \label{structSegmentInfo_ab9b3f5c8ee2e0688d983c5aed557ca80} 
+size\+\_\+t Segment\+Info\+::inode\+\_\+id}
+
+Inode ID if it is a file mapping (e.\+g., executable from ROM) \Hypertarget{structSegmentInfo_a17e292dbd8fd13d78a213cddefa2ce45}\index{SegmentInfo@{SegmentInfo}!mode@{mode}}
+\index{mode@{mode}!SegmentInfo@{SegmentInfo}}
+\doxysubsubsection{\texorpdfstring{mode}{mode}}
+{\footnotesize\ttfamily \label{structSegmentInfo_a17e292dbd8fd13d78a213cddefa2ce45} 
+uint8\+\_\+t Segment\+Info\+::mode \{0\}}
+
+Permissions, are stored as 0000rwx(p/s), where p is 0, s is 1 (private -\/ shared) \Hypertarget{structSegmentInfo_ac0132b8aea8466bd99d637e7d026bc64}\index{SegmentInfo@{SegmentInfo}!offset@{offset}}
+\index{offset@{offset}!SegmentInfo@{SegmentInfo}}
+\doxysubsubsection{\texorpdfstring{offset}{offset}}
+{\footnotesize\ttfamily \label{structSegmentInfo_ac0132b8aea8466bd99d637e7d026bc64} 
+size\+\_\+t Segment\+Info\+::offset}
+
+Offset from the start of the file if it is a file mapping (e.\+g., executable from ROM) 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/misha/prog/\+Memory\+Accessor/src/\mbox{\hyperlink{segmentinfo_8h}{segmentinfo.\+h}}\end{DoxyCompactItemize}

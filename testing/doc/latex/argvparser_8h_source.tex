@@ -1,0 +1,53 @@
+\doxysection{argvparser.\+h}
+\hypertarget{argvparser_8h_source}{}\label{argvparser_8h_source}\index{/home/misha/prog/MemoryAccessor/src/argvparser.h@{/home/misha/prog/MemoryAccessor/src/argvparser.h}}
+\mbox{\hyperlink{argvparser_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_SRC\_ARGVPARSER\_H\_}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_SRC\_ARGVPARSER\_H\_}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{console_8h}{console.h}}"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classArgvParser}{ArgvParser}}\ \{}
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classArgvParser_aaf3d8998163a50bf90cfbf7f27c278ef}{ArgvParser}}(\mbox{\hyperlink{classConsole}{Console}}\ \&\mbox{\hyperlink{project__test_8cc_aab149b82d48456f68e17ad68d29720a0}{console}})\ noexcept\ :\ console\_(\mbox{\hyperlink{project__test_8cc_aab149b82d48456f68e17ad68d29720a0}{console}})\ \{\}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classArgvParser_a837c299aff0a06ffcfd1e4e140ea11e2}{ParseArgv}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&\mbox{\hyperlink{project__test_8cc_ad1447518f4372828b8435ae82e48499e}{argc}},\ \textcolor{keywordtype}{char}\ **\mbox{\hyperlink{project__test_8cc_af2efa898e9eed6fe6715279cb1ec35b0}{argv}})\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{using\ }KeyFuncP\ =\ void\ (\mbox{\hyperlink{classArgvParser}{ArgvParser}}::*)(}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&\mbox{\hyperlink{project__test_8cc_ad1447518f4372828b8435ae82e48499e}{argc}},\ \textcolor{keywordtype}{char}\ **\mbox{\hyperlink{project__test_8cc_af2efa898e9eed6fe6715279cb1ec35b0}{argv}});\ }
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{void}\ Usage()\ const\ noexcept;}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ PrintErrPrefix()\ const\ noexcept;}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{void}\ TypeHelp()\ const\ noexcept;}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ ArgReq(const\ std::\textcolor{keywordtype}{string}\ \&key)\ const\ noexcept;}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ ArgUnkn(const\ std::\textcolor{keywordtype}{string}\ \&key)\ const\ noexcept;}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{void}\ FileNotEx(const\ std::\textcolor{keywordtype}{string}\ \&path)\ const\ noexcept;}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ FileErr(const\ std::\textcolor{keywordtype}{string}\ \&path)\ const\ noexcept;}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{void}\ KeyHelp(const\ \textcolor{keywordtype}{int}\ \&\mbox{\hyperlink{project__test_8cc_ad1447518f4372828b8435ae82e48499e}{argc}},\ \textcolor{keywordtype}{char}\ **\mbox{\hyperlink{project__test_8cc_af2efa898e9eed6fe6715279cb1ec35b0}{argv}})\ noexcept;}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ KeyCommand(const\ \textcolor{keywordtype}{int}\ \&\mbox{\hyperlink{project__test_8cc_ad1447518f4372828b8435ae82e48499e}{argc}},\ \textcolor{keywordtype}{char}\ **\mbox{\hyperlink{project__test_8cc_af2efa898e9eed6fe6715279cb1ec35b0}{argv}})\ noexcept;}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{void}\ KeyFile(const\ \textcolor{keywordtype}{int}\ \&\mbox{\hyperlink{project__test_8cc_ad1447518f4372828b8435ae82e48499e}{argc}},\ \textcolor{keywordtype}{char}\ **\mbox{\hyperlink{project__test_8cc_af2efa898e9eed6fe6715279cb1ec35b0}{argv}})\ noexcept;}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \mbox{\hyperlink{classConsole}{Console}}\ \&console\_;\ }
+\DoxyCodeLine{00053\ \ \ const\ std::vector<std::array<std::\textcolor{keywordtype}{string},\ 2>>\ kKeyManuals\{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/-\/help"{}},\ \textcolor{stringliteral}{"{}show\ help"{}}\},}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/-\/command\ COMMAND"{}},\ \textcolor{stringliteral}{"{}do\ command"{}}\},}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/-\/file\ FILE"{}},\ \textcolor{stringliteral}{"{}do\ commands\ from\ file"{}}\},}
+\DoxyCodeLine{00057\ \ \ \};\ }
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{const}\ std::map<std::string,\ KeyFuncP>\ kKeys\{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/-\/help"{}},\ \&ArgvParser::KeyHelp\},}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/-\/command"{}},\ \&ArgvParser::KeyCommand\},}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/-\/file"{}},\ \&ArgvParser::KeyFile\},}
+\DoxyCodeLine{00063\ \ \ \};\ }
+\DoxyCodeLine{00064\ \};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_SRC\_ARGVPARSER\_H\_}}
+
+\end{DoxyCode}

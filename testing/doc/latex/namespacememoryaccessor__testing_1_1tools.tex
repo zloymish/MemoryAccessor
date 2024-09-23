@@ -1,0 +1,60 @@
+\doxysection{memoryaccessor\+\_\+testing\+::tools Namespace Reference}
+\hypertarget{namespacememoryaccessor__testing_1_1tools}{}\label{namespacememoryaccessor__testing_1_1tools}\index{memoryaccessor\_testing::tools@{memoryaccessor\_testing::tools}}
+
+
+Fields used in testing tools.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespacememoryaccessor__testing_1_1tools_a61cbe0b5d2df3292e828a4f47bccebdd}{SIGINT\+\_\+handler}} (int signum)
+\begin{DoxyCompactList}\small\item\em SIGINT handler. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespacememoryaccessor__testing_1_1tools_a96329f6944a116f2f925ca7a6e27b612}{get\+\_\+self\+\_\+name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of the current process. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespacememoryaccessor__testing_1_1tools_abf994a338ca123e7ed1688081de8e7f5}\label{namespacememoryaccessor__testing_1_1tools_abf994a338ca123e7ed1688081de8e7f5} 
+bool {\bfseries check\+\_\+sigint} \{false\}
+\begin{DoxyCompactList}\small\item\em Shows if SIGINT was sent. \end{DoxyCompactList}\item 
+\Hypertarget{namespacememoryaccessor__testing_1_1tools_a9079b3aae82caa7e9581f5ee43373717}\label{namespacememoryaccessor__testing_1_1tools_a9079b3aae82caa7e9581f5ee43373717} 
+pid\+\_\+t {\bfseries max\+\_\+pid\+\_\+t} \{(1 $<$$<$ (sizeof(pid\+\_\+t) -\/ 1)) -\/ 1\}
+\begin{DoxyCompactList}\small\item\em Maximum positive value of pid\+\_\+t. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Fields used in testing tools. 
+
+Functions and variables that are used in tests related to \doxylink{classTools}{Tools} class. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacememoryaccessor__testing_1_1tools_a96329f6944a116f2f925ca7a6e27b612}\index{memoryaccessor\_testing::tools@{memoryaccessor\_testing::tools}!get\_self\_name@{get\_self\_name}}
+\index{get\_self\_name@{get\_self\_name}!memoryaccessor\_testing::tools@{memoryaccessor\_testing::tools}}
+\doxysubsubsection{\texorpdfstring{get\_self\_name()}{get\_self\_name()}}
+{\footnotesize\ttfamily \label{namespacememoryaccessor__testing_1_1tools_a96329f6944a116f2f925ca7a6e27b612} 
+std\+::string memoryaccessor\+\_\+testing\+::tools\+::get\+\_\+self\+\_\+name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get name of the current process. 
+
+\begin{DoxyReturn}{Returns}
+Name of the process in type std\+::string.
+\end{DoxyReturn}
+Get name of the current process from /proc/self/status. In this "{}file"{} names longer than 15 characters are cut, such shortened names are also used in pgrep. \Hypertarget{namespacememoryaccessor__testing_1_1tools_a61cbe0b5d2df3292e828a4f47bccebdd}\index{memoryaccessor\_testing::tools@{memoryaccessor\_testing::tools}!SIGINT\_handler@{SIGINT\_handler}}
+\index{SIGINT\_handler@{SIGINT\_handler}!memoryaccessor\_testing::tools@{memoryaccessor\_testing::tools}}
+\doxysubsubsection{\texorpdfstring{SIGINT\_handler()}{SIGINT\_handler()}}
+{\footnotesize\ttfamily \label{namespacememoryaccessor__testing_1_1tools_a61cbe0b5d2df3292e828a4f47bccebdd} 
+void memoryaccessor\+\_\+testing\+::tools\+::\+SIGINT\+\_\+handler (\begin{DoxyParamCaption}\item[{int}]{signum}{}\end{DoxyParamCaption})}
+
+
+
+SIGINT handler. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em signum} & Number of handled signal.\\
+\hline
+\end{DoxyParams}
+A function that should be called when SIGINT is sent. Sets check\+\_\+sigint variable to true. 
