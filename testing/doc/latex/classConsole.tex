@@ -45,8 +45,7 @@ const std\+::string {\bfseries k\+Project\+Version} \{"{}v1.\+0"{}\}
 \begin{DoxyCompactList}\small\item\em Project version. \end{DoxyCompactList}\item 
 const std\+::string \mbox{\hyperlink{classConsole_a213548ca270289b15639497b4f6cefd2}{k\+Project\+Description}}
 \begin{DoxyCompactList}\small\item\em Project description. \end{DoxyCompactList}\item 
-\Hypertarget{classConsole_abfad51f712b017dcabc7d86179046cd1}\label{classConsole_abfad51f712b017dcabc7d86179046cd1} 
-const std\+::string {\bfseries k\+Console\+Prefix} \{"{}(Mem\+Acc)"{}\}
+const std\+::string \mbox{\hyperlink{classConsole_abfad51f712b017dcabc7d86179046cd1}{k\+Console\+Prefix}}
 \begin{DoxyCompactList}\small\item\em Prefix shown in console input. \end{DoxyCompactList}\item 
 \Hypertarget{classConsole_ad183ac921462e3ae223a26756280c6ec}\label{classConsole_ad183ac921462e3ae223a26756280c6ec} 
 \mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \& {\bfseries memory\+\_\+accessor\+\_\+}
@@ -87,7 +86,7 @@ Constructor.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in,out}}  & {\em memory\+\_\+accessor} & A reference to an instance of \doxylink{classMemoryAccessor}{Memory\+Accessor} class.\\
 \hline
-\mbox{\texttt{ in,out}}  & {\em hex\+\_\+viewer} & A reference to an instance of \doxylink{classHexViewer}{Hex\+Viewer} class. \\
+\mbox{\texttt{ in,out}}  & {\em hex\+\_\+viewer} & A reference to an instance of \doxylink{classHexViewer}{Hex\+Viewer} class.\\
 \hline
 \mbox{\texttt{ in,out}}  & {\em tools} & A reference to an instance of \doxylink{classTools}{Tools} struct. \\
 \hline
@@ -249,6 +248,22 @@ int Console\+::k\+Commands\+Number\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily
 
 Number of the commands available. 
 
+\Hypertarget{classConsole_abfad51f712b017dcabc7d86179046cd1}\index{Console@{Console}!kConsolePrefix@{kConsolePrefix}}
+\index{kConsolePrefix@{kConsolePrefix}!Console@{Console}}
+\doxysubsubsection{\texorpdfstring{kConsolePrefix}{kConsolePrefix}}
+{\footnotesize\ttfamily \label{classConsole_abfad51f712b017dcabc7d86179046cd1} 
+const std\+::string Console\+::k\+Console\+Prefix}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \ \ \textcolor{stringliteral}{"{}(MemAcc)"{}}\}}
+
+\end{DoxyCode}
+
+
+Prefix shown in console input. 
+
 \Hypertarget{classConsole_a213548ca270289b15639497b4f6cefd2}\index{Console@{Console}!kProjectDescription@{kProjectDescription}}
 \index{kProjectDescription@{kProjectDescription}!Console@{Console}}
 \doxysubsubsection{\texorpdfstring{kProjectDescription}{kProjectDescription}}
@@ -258,8 +273,9 @@ const std\+::string Console\+::k\+Project\+Description}
 {\bfseries Initial value\+:}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\{}
-\DoxyCodeLine{\ \ \ \ \textcolor{stringliteral}{"{}A\ command-\/line\ front-\/end\ for\ exploring\ virtual\ memory\ of\ a\ linux\ process\ "{}}}
-\DoxyCodeLine{\ \ \ \ \textcolor{stringliteral}{"{}by\ accessing\ /proc/PID/mem\ file."{}}\}}
+\DoxyCodeLine{\ \ \ \ \ \ \textcolor{stringliteral}{"{}A\ command-\/line\ front-\/end\ for\ exploring\ virtual\ memory\ of\ a\ linux\ "{}}}
+\DoxyCodeLine{\ \ \ \ \ \ \textcolor{stringliteral}{"{}process\ "{}}}
+\DoxyCodeLine{\ \ \ \ \ \ \textcolor{stringliteral}{"{}by\ accessing\ /proc/PID/mem\ file."{}}\}}
 
 \end{DoxyCode}
 
@@ -270,5 +286,5 @@ Project description.
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/misha/prog/\+Memory\+Accessor/src/\mbox{\hyperlink{console_8h}{console.\+h}}\item 
-/home/misha/prog/\+Memory\+Accessor/src/\mbox{\hyperlink{console_8cc}{console.\+cc}}\end{DoxyCompactItemize}
+/home/misha/prog/ma/\+Memory\+Accessor/src/\mbox{\hyperlink{console_8h}{console.\+h}}\item 
+/home/misha/prog/ma/\+Memory\+Accessor/src/\mbox{\hyperlink{console_8cc}{console.\+cc}}\end{DoxyCompactItemize}

@@ -1,63 +1,82 @@
 \doxysection{project\+\_\+test.\+h}
 \hypertarget{project__test_8h_source}{}\label{project__test_8h_source}\mbox{\hyperlink{project__test_8h}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ }
-\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_TESTING\_TESTING\_H\_}}
-\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_TESTING\_TESTING\_H\_}}
-\DoxyCodeLine{00010\ }
-\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
-\DoxyCodeLine{00012\ }
-\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <cstdint>}}
-\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <ios>}}
-\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <sstream>}}
-\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <streambuf>}}
-\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <string>}}
-\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <vector>}}
-\DoxyCodeLine{00019\ }
-\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{segmentinfo_8h}{segmentinfo.h}}"{}}}
-\DoxyCodeLine{00021\ }
-\DoxyCodeLine{00027\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacememoryaccessor__testing}{memoryaccessor\_testing}}\ \{}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ \ \ \ MemoryAccessor\ -\/\ A\ tool\ for\ accessing\ /proc/PID/mem}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ \ \ \ Copyright\ (C)\ 2024\ \ zloymish}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ \ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ \ \ \ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the\ License,\ or}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ \ \ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ \ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ \ \ \ GNU\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ along\ with\ this\ program.\ \ If\ not,\ see\ <https://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_TESTING\_TESTING\_H\_}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_TESTING\_TESTING\_H\_}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
 \DoxyCodeLine{00028\ }
-\DoxyCodeLine{00034\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{project__test_8cc_a0a884c8dc64177499af32c4fa5698aad}{tools}}\ \{}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ <ios>}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ <streambuf>}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ <vector>}}
 \DoxyCodeLine{00035\ }
-\DoxyCodeLine{00036\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
-\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1tools_a61cbe0b5d2df3292e828a4f47bccebdd}{SIGINT\_handler}}(\textcolor{keywordtype}{int}\ signum);}
-\DoxyCodeLine{00038\ \}}
-\DoxyCodeLine{00039\ }
-\DoxyCodeLine{00040\ std::string\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1tools_a96329f6944a116f2f925ca7a6e27b612}{get\_self\_name}}();}
-\DoxyCodeLine{00041\ }
-\DoxyCodeLine{00042\ \}\ \ \textcolor{comment}{//\ namespace\ tools}}
-\DoxyCodeLine{00043\ }
-\DoxyCodeLine{00049\ \textcolor{keyword}{namespace\ }memoryaccessor\ \{}
-\DoxyCodeLine{00050\ }
-\DoxyCodeLine{00051\ pid\_t\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a95d65a988133e077668f0e0be1209a39}{get\_paused\_child}}();}
-\DoxyCodeLine{00052\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a0cf93f4598450e68a7262bd5b3fe327c}{read\_urandom}}(\textcolor{keywordtype}{char}*\ dst,\ \textcolor{keywordtype}{size\_t}\ amount);}
-\DoxyCodeLine{00053\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_aee68f0a9215173f0d457c44b7cc10633}{are\_arrays\_same}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ arr1,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ arr2,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\&\ size);}
-\DoxyCodeLine{00054\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a6fca17b0fc001bd6195de4fd390fd644}{seg\_num\_by\_name}}(\textcolor{keyword}{const}\ std::string\&\ name,\ \textcolor{keyword}{const}\ std::vector<SegmentInfo>\&\ infos);}
-\DoxyCodeLine{00055\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a44f24f65262ef575562e94b3bc6b9346}{find\_gap\_start}}(\textcolor{keyword}{const}\ std::vector<SegmentInfo>\&\ infos);}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{segmentinfo_8h}{segmentinfo.h}}"{}}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacememoryaccessor__testing}{memoryaccessor\_testing}}\ \{}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{project__test_8cc_a0a884c8dc64177499af32c4fa5698aad}{tools}}\ \{}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00054\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1tools_a61cbe0b5d2df3292e828a4f47bccebdd}{SIGINT\_handler}}(\textcolor{keywordtype}{int}\ signum);}
+\DoxyCodeLine{00055\ \}}
 \DoxyCodeLine{00056\ }
-\DoxyCodeLine{00057\ \}\ \ \textcolor{comment}{//\ namespace\ memoryaccessor}}
+\DoxyCodeLine{00057\ std::string\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1tools_a96329f6944a116f2f925ca7a6e27b612}{get\_self\_name}}();}
 \DoxyCodeLine{00058\ }
-\DoxyCodeLine{00064\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{project__test_8cc_aab149b82d48456f68e17ad68d29720a0}{console}}\ \{}
-\DoxyCodeLine{00065\ }
-\DoxyCodeLine{00066\ std::streambuf*\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1console_ae17729cb472b2ccbd6755bcd1b252f68}{replace\_streambuf}}(std::ios\&\ stream,\ \textcolor{keyword}{const}\ std::ostringstream\&\ oss);}
-\DoxyCodeLine{00067\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1console_a818802496a46415ea473fb77e86f6b75}{test\_handle\_command}}(std::ostringstream\&\ oss,\ \textcolor{keyword}{const}\ std::string\&\ command,\ \textcolor{keyword}{const}\ std::string\&\ result\_substr);}
-\DoxyCodeLine{00068\ std::string\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1console_aa45549c37ce5d9d1254e82e7f28829cb}{size\_t\_to\_hex}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\&\ num,\ \textcolor{keywordtype}{size\_t}\ width\ =\ 0);}
-\DoxyCodeLine{00069\ }
-\DoxyCodeLine{00070\ \}\ \ \textcolor{comment}{//\ namespace\ console}}
-\DoxyCodeLine{00071\ }
-\DoxyCodeLine{00077\ \textcolor{keyword}{namespace\ }argvparser\ \{}
-\DoxyCodeLine{00078\ }
-\DoxyCodeLine{00079\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
-\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1argvparser_ad6da842028c72f3a7ac21bb0dacb4b0d}{exit\_handler}}();}
-\DoxyCodeLine{00081\ \}}
-\DoxyCodeLine{00082\ }
-\DoxyCodeLine{00083\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1argvparser_ac468ed3d332a66f258d2be46ea81d21f}{test\_parse\_argv}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ \mbox{\hyperlink{project__test_8cc_ad1447518f4372828b8435ae82e48499e}{argc}},\ \textcolor{keywordtype}{char}**\ \mbox{\hyperlink{project__test_8cc_af2efa898e9eed6fe6715279cb1ec35b0}{argv}},\ \textcolor{keyword}{const}\ std::string\&\ result\_substr);}
+\DoxyCodeLine{00059\ \}\ \textcolor{comment}{//\ namespace\ tools}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00067\ \textcolor{keyword}{namespace\ }memoryaccessor\ \{}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ pid\_t\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a95d65a988133e077668f0e0be1209a39}{get\_paused\_child}}();}
+\DoxyCodeLine{00070\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a0cf93f4598450e68a7262bd5b3fe327c}{read\_urandom}}(\textcolor{keywordtype}{char}\ *dst,\ \textcolor{keywordtype}{size\_t}\ amount);}
+\DoxyCodeLine{00071\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_aee68f0a9215173f0d457c44b7cc10633}{are\_arrays\_same}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *arr1,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *arr2,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \&size);}
+\DoxyCodeLine{00072\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a6fca17b0fc001bd6195de4fd390fd644}{seg\_num\_by\_name}}(\textcolor{keyword}{const}\ std::string\ \&name,}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::vector<SegmentInfo>\ \&infos);}
+\DoxyCodeLine{00074\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1memoryaccessor_a44f24f65262ef575562e94b3bc6b9346}{find\_gap\_start}}(\textcolor{keyword}{const}\ std::vector<SegmentInfo>\ \&infos);}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \}\ \textcolor{comment}{//\ namespace\ memoryaccessor}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00083\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{project__test_8cc_aab149b82d48456f68e17ad68d29720a0}{console}}\ \{}
 \DoxyCodeLine{00084\ }
-\DoxyCodeLine{00085\ \}\ \ \textcolor{comment}{//\ namespace\ argvparser}}
-\DoxyCodeLine{00086\ }
-\DoxyCodeLine{00087\ \}\ \ \textcolor{comment}{//\ namespace\ memoryaccessor\_testing}}
-\DoxyCodeLine{00088\ }
-\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_TESTING\_TESTING\_H\_}}
+\DoxyCodeLine{00085\ std::streambuf\ *\mbox{\hyperlink{namespacememoryaccessor__testing_1_1console_ae17729cb472b2ccbd6755bcd1b252f68}{replace\_streambuf}}(std::ios\ \&stream,}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::ostringstream\ \&oss);}
+\DoxyCodeLine{00087\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1console_a818802496a46415ea473fb77e86f6b75}{test\_handle\_command}}(std::ostringstream\ \&oss,\ \textcolor{keyword}{const}\ std::string\ \&command,}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \&result\_substr);}
+\DoxyCodeLine{00089\ std::string\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1console_aa45549c37ce5d9d1254e82e7f28829cb}{size\_t\_to\_hex}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \&num,\ \textcolor{keywordtype}{size\_t}\ width\ =\ 0);}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \}\ \textcolor{comment}{//\ namespace\ console}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00098\ \textcolor{keyword}{namespace\ }argvparser\ \{}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00101\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1argvparser_ad6da842028c72f3a7ac21bb0dacb4b0d}{exit\_handler}}();}
+\DoxyCodeLine{00102\ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacememoryaccessor__testing_1_1argvparser_ac468ed3d332a66f258d2be46ea81d21f}{test\_parse\_argv}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&\mbox{\hyperlink{project__test_8cc_ad1447518f4372828b8435ae82e48499e}{argc}},\ \textcolor{keywordtype}{char}\ **\mbox{\hyperlink{project__test_8cc_af2efa898e9eed6fe6715279cb1ec35b0}{argv}},}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \&result\_substr);}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \}\ \textcolor{comment}{//\ namespace\ argvparser}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \}\ \textcolor{comment}{//\ namespace\ memoryaccessor\_testing}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_TESTING\_TESTING\_H\_}}
 
 \end{DoxyCode}

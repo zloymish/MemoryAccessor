@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.12.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MemoryAccessor testing: /home/misha/prog/MemoryAccessor/src/segmentinfo.h Source File</title>
+<title>MemoryAccessor testing: /home/misha/prog/ma/MemoryAccessor/src/segmentinfo.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -92,41 +92,56 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">segmentinfo.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="segmentinfo_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#ifndef MEMORYACCESSOR_SRC_SEGMENTINFO_H_</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#define MEMORYACCESSOR_SRC_SEGMENTINFO_H_</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="foldopen" id="foldopen00021" data-start="{" data-end="};">
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="structSegmentInfo.html">   21</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSegmentInfo.html">SegmentInfo</a> {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#af588bc52c02be4dc3e65766b6d95cca2">   22</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="structSegmentInfo.html#af588bc52c02be4dc3e65766b6d95cca2">start</a>; </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keywordtype">size_t</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#a1714d1f616d39a23a64fc4ca67c633ea">   24</a></span>      <a class="code hl_variable" href="structSegmentInfo.html#a1714d1f616d39a23a64fc4ca67c633ea">end</a>; </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#ac0132b8aea8466bd99d637e7d026bc64">   25</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="structSegmentInfo.html#ac0132b8aea8466bd99d637e7d026bc64">offset</a>; </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#a17e292dbd8fd13d78a213cddefa2ce45">   28</a></span>  uint8_t <a class="code hl_variable" href="structSegmentInfo.html#a17e292dbd8fd13d78a213cddefa2ce45">mode</a>{0}; </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#af5dfea101d2e1fe705b45aa46d84fa69">   31</a></span>  uint32_t <a class="code hl_variable" href="structSegmentInfo.html#af5dfea101d2e1fe705b45aa46d84fa69">major_id</a>; </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#a948a2f330b409b099db480faff8489ed">   32</a></span>  uint32_t <a class="code hl_variable" href="structSegmentInfo.html#a948a2f330b409b099db480faff8489ed">minor_id</a>; </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#ab9b3f5c8ee2e0688d983c5aed557ca80">   34</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="structSegmentInfo.html#ab9b3f5c8ee2e0688d983c5aed557ca80">inode_id</a>; </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#a887e77f1b7fee76ed6f63b62925d6df4">   37</a></span>  std::string <a class="code hl_variable" href="structSegmentInfo.html#a887e77f1b7fee76ed6f63b62925d6df4">path</a>; </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>};</div>
+<a href="segmentinfo_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//    MemoryAccessor - A tool for accessing /proc/PID/mem</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//    Copyright (C) 2024  zloymish</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//    This program is free software: you can redistribute it and/or modify</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//    it under the terms of the GNU General Public License as published by</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">//    the Free Software Foundation, either version 3 of the License, or</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">//    (at your option) any later version.</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">//</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">//    This program is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">//    but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">//    GNU General Public License for more details.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">//</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">//    You should have received a copy of the GNU General Public License</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">//    along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#ifndef MEMORYACCESSOR_SRC_SEGMENTINFO_H_</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#define MEMORYACCESSOR_SRC_SEGMENTINFO_H_</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="};">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="structSegmentInfo.html">   37</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSegmentInfo.html">SegmentInfo</a> {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#af588bc52c02be4dc3e65766b6d95cca2">   38</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="structSegmentInfo.html#af588bc52c02be4dc3e65766b6d95cca2">start</a>; </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordtype">size_t</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#a1714d1f616d39a23a64fc4ca67c633ea">   40</a></span>      <a class="code hl_variable" href="structSegmentInfo.html#a1714d1f616d39a23a64fc4ca67c633ea">end</a>; </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#ac0132b8aea8466bd99d637e7d026bc64">   41</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="structSegmentInfo.html#ac0132b8aea8466bd99d637e7d026bc64">offset</a>; </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#a17e292dbd8fd13d78a213cddefa2ce45">   44</a></span>  uint8_t <a class="code hl_variable" href="structSegmentInfo.html#a17e292dbd8fd13d78a213cddefa2ce45">mode</a>{0}; </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#af5dfea101d2e1fe705b45aa46d84fa69">   47</a></span>  uint32_t <a class="code hl_variable" href="structSegmentInfo.html#af5dfea101d2e1fe705b45aa46d84fa69">major_id</a>; </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#a948a2f330b409b099db480faff8489ed">   48</a></span>  uint32_t <a class="code hl_variable" href="structSegmentInfo.html#a948a2f330b409b099db480faff8489ed">minor_id</a>; </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#ab9b3f5c8ee2e0688d983c5aed557ca80">   50</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="structSegmentInfo.html#ab9b3f5c8ee2e0688d983c5aed557ca80">inode_id</a>; </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="structSegmentInfo.html#a887e77f1b7fee76ed6f63b62925d6df4">   53</a></span>  std::string <a class="code hl_variable" href="structSegmentInfo.html#a887e77f1b7fee76ed6f63b62925d6df4">path</a>; </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>};</div>
 </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#endif </span><span class="comment">// MEMORYACCESSOR_SRC_SEGMENTINFO_H_</span></div>
-<div class="ttc" id="astructSegmentInfo_html"><div class="ttname"><a href="structSegmentInfo.html">SegmentInfo</a></div><div class="ttdoc">A struct to store the information of a memory segment.</div><div class="ttdef"><b>Definition</b> segmentinfo.h:21</div></div>
-<div class="ttc" id="astructSegmentInfo_html_a1714d1f616d39a23a64fc4ca67c633ea"><div class="ttname"><a href="structSegmentInfo.html#a1714d1f616d39a23a64fc4ca67c633ea">SegmentInfo::end</a></div><div class="ttdeci">size_t end</div><div class="ttdoc">End address (first address that does not belong to the segment)</div><div class="ttdef"><b>Definition</b> segmentinfo.h:24</div></div>
-<div class="ttc" id="astructSegmentInfo_html_a17e292dbd8fd13d78a213cddefa2ce45"><div class="ttname"><a href="structSegmentInfo.html#a17e292dbd8fd13d78a213cddefa2ce45">SegmentInfo::mode</a></div><div class="ttdeci">uint8_t mode</div><div class="ttdef"><b>Definition</b> segmentinfo.h:28</div></div>
-<div class="ttc" id="astructSegmentInfo_html_a887e77f1b7fee76ed6f63b62925d6df4"><div class="ttname"><a href="structSegmentInfo.html#a887e77f1b7fee76ed6f63b62925d6df4">SegmentInfo::path</a></div><div class="ttdeci">std::string path</div><div class="ttdoc">Path or name.</div><div class="ttdef"><b>Definition</b> segmentinfo.h:37</div></div>
-<div class="ttc" id="astructSegmentInfo_html_a948a2f330b409b099db480faff8489ed"><div class="ttname"><a href="structSegmentInfo.html#a948a2f330b409b099db480faff8489ed">SegmentInfo::minor_id</a></div><div class="ttdeci">uint32_t minor_id</div><div class="ttdoc">Minor ID.</div><div class="ttdef"><b>Definition</b> segmentinfo.h:32</div></div>
-<div class="ttc" id="astructSegmentInfo_html_ab9b3f5c8ee2e0688d983c5aed557ca80"><div class="ttname"><a href="structSegmentInfo.html#ab9b3f5c8ee2e0688d983c5aed557ca80">SegmentInfo::inode_id</a></div><div class="ttdeci">size_t inode_id</div><div class="ttdef"><b>Definition</b> segmentinfo.h:34</div></div>
-<div class="ttc" id="astructSegmentInfo_html_ac0132b8aea8466bd99d637e7d026bc64"><div class="ttname"><a href="structSegmentInfo.html#ac0132b8aea8466bd99d637e7d026bc64">SegmentInfo::offset</a></div><div class="ttdeci">size_t offset</div><div class="ttdef"><b>Definition</b> segmentinfo.h:25</div></div>
-<div class="ttc" id="astructSegmentInfo_html_af588bc52c02be4dc3e65766b6d95cca2"><div class="ttname"><a href="structSegmentInfo.html#af588bc52c02be4dc3e65766b6d95cca2">SegmentInfo::start</a></div><div class="ttdeci">size_t start</div><div class="ttdoc">Start address.</div><div class="ttdef"><b>Definition</b> segmentinfo.h:22</div></div>
-<div class="ttc" id="astructSegmentInfo_html_af5dfea101d2e1fe705b45aa46d84fa69"><div class="ttname"><a href="structSegmentInfo.html#af5dfea101d2e1fe705b45aa46d84fa69">SegmentInfo::major_id</a></div><div class="ttdeci">uint32_t major_id</div><div class="ttdoc">Major ID.</div><div class="ttdef"><b>Definition</b> segmentinfo.h:31</div></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#endif </span><span class="comment">// MEMORYACCESSOR_SRC_SEGMENTINFO_H_</span></div>
+<div class="ttc" id="astructSegmentInfo_html"><div class="ttname"><a href="structSegmentInfo.html">SegmentInfo</a></div><div class="ttdoc">A struct to store the information of a memory segment.</div><div class="ttdef"><b>Definition</b> segmentinfo.h:37</div></div>
+<div class="ttc" id="astructSegmentInfo_html_a1714d1f616d39a23a64fc4ca67c633ea"><div class="ttname"><a href="structSegmentInfo.html#a1714d1f616d39a23a64fc4ca67c633ea">SegmentInfo::end</a></div><div class="ttdeci">size_t end</div><div class="ttdoc">End address (first address that does not belong to the segment)</div><div class="ttdef"><b>Definition</b> segmentinfo.h:40</div></div>
+<div class="ttc" id="astructSegmentInfo_html_a17e292dbd8fd13d78a213cddefa2ce45"><div class="ttname"><a href="structSegmentInfo.html#a17e292dbd8fd13d78a213cddefa2ce45">SegmentInfo::mode</a></div><div class="ttdeci">uint8_t mode</div><div class="ttdef"><b>Definition</b> segmentinfo.h:44</div></div>
+<div class="ttc" id="astructSegmentInfo_html_a887e77f1b7fee76ed6f63b62925d6df4"><div class="ttname"><a href="structSegmentInfo.html#a887e77f1b7fee76ed6f63b62925d6df4">SegmentInfo::path</a></div><div class="ttdeci">std::string path</div><div class="ttdoc">Path or name.</div><div class="ttdef"><b>Definition</b> segmentinfo.h:53</div></div>
+<div class="ttc" id="astructSegmentInfo_html_a948a2f330b409b099db480faff8489ed"><div class="ttname"><a href="structSegmentInfo.html#a948a2f330b409b099db480faff8489ed">SegmentInfo::minor_id</a></div><div class="ttdeci">uint32_t minor_id</div><div class="ttdoc">Minor ID.</div><div class="ttdef"><b>Definition</b> segmentinfo.h:48</div></div>
+<div class="ttc" id="astructSegmentInfo_html_ab9b3f5c8ee2e0688d983c5aed557ca80"><div class="ttname"><a href="structSegmentInfo.html#ab9b3f5c8ee2e0688d983c5aed557ca80">SegmentInfo::inode_id</a></div><div class="ttdeci">size_t inode_id</div><div class="ttdef"><b>Definition</b> segmentinfo.h:50</div></div>
+<div class="ttc" id="astructSegmentInfo_html_ac0132b8aea8466bd99d637e7d026bc64"><div class="ttname"><a href="structSegmentInfo.html#ac0132b8aea8466bd99d637e7d026bc64">SegmentInfo::offset</a></div><div class="ttdeci">size_t offset</div><div class="ttdef"><b>Definition</b> segmentinfo.h:41</div></div>
+<div class="ttc" id="astructSegmentInfo_html_af588bc52c02be4dc3e65766b6d95cca2"><div class="ttname"><a href="structSegmentInfo.html#af588bc52c02be4dc3e65766b6d95cca2">SegmentInfo::start</a></div><div class="ttdeci">size_t start</div><div class="ttdoc">Start address.</div><div class="ttdef"><b>Definition</b> segmentinfo.h:38</div></div>
+<div class="ttc" id="astructSegmentInfo_html_af5dfea101d2e1fe705b45aa46d84fa69"><div class="ttname"><a href="structSegmentInfo.html#af5dfea101d2e1fe705b45aa46d84fa69">SegmentInfo::major_id</a></div><div class="ttdeci">uint32_t major_id</div><div class="ttdoc">Major ID.</div><div class="ttdef"><b>Definition</b> segmentinfo.h:47</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,30 +1,45 @@
 \doxysection{segmentinfo.\+h}
-\hypertarget{segmentinfo_8h_source}{}\label{segmentinfo_8h_source}\index{/home/misha/prog/MemoryAccessor/src/segmentinfo.h@{/home/misha/prog/MemoryAccessor/src/segmentinfo.h}}
+\hypertarget{segmentinfo_8h_source}{}\label{segmentinfo_8h_source}\index{/home/misha/prog/ma/MemoryAccessor/src/segmentinfo.h@{/home/misha/prog/ma/MemoryAccessor/src/segmentinfo.h}}
 \mbox{\hyperlink{segmentinfo_8h}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ }
-\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
-\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
-\DoxyCodeLine{00010\ }
-\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <cstdint>}}
-\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <string>}}
-\DoxyCodeLine{00013\ }
-\DoxyCodeLine{00021\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structSegmentInfo}{SegmentInfo}}\ \{}
-\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structSegmentInfo_af588bc52c02be4dc3e65766b6d95cca2}{start}};\ }
-\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{size\_t}}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \mbox{\hyperlink{structSegmentInfo_a1714d1f616d39a23a64fc4ca67c633ea}{end}};\ }
-\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structSegmentInfo_ac0132b8aea8466bd99d637e7d026bc64}{offset}};\ }
-\DoxyCodeLine{00027\ }
-\DoxyCodeLine{00028\ \ \ uint8\_t\ \mbox{\hyperlink{structSegmentInfo_a17e292dbd8fd13d78a213cddefa2ce45}{mode}}\{0\};\ }
-\DoxyCodeLine{00030\ }
-\DoxyCodeLine{00031\ \ \ uint32\_t\ \mbox{\hyperlink{structSegmentInfo_af5dfea101d2e1fe705b45aa46d84fa69}{major\_id}};\ }
-\DoxyCodeLine{00032\ \ \ uint32\_t\ \mbox{\hyperlink{structSegmentInfo_a948a2f330b409b099db480faff8489ed}{minor\_id}};\ }
-\DoxyCodeLine{00033\ }
-\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structSegmentInfo_ab9b3f5c8ee2e0688d983c5aed557ca80}{inode\_id}};\ }
-\DoxyCodeLine{00036\ }
-\DoxyCodeLine{00037\ \ \ std::string\ \mbox{\hyperlink{structSegmentInfo_a887e77f1b7fee76ed6f63b62925d6df4}{path}};\ }
-\DoxyCodeLine{00038\ \};}
-\DoxyCodeLine{00039\ }
-\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ \ \ \ MemoryAccessor\ -\/\ A\ tool\ for\ accessing\ /proc/PID/mem}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ \ \ \ Copyright\ (C)\ 2024\ \ zloymish}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ \ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ \ \ \ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the\ License,\ or}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ \ \ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ \ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ \ \ \ GNU\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ along\ with\ this\ program.\ \ If\ not,\ see\ <https://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structSegmentInfo}{SegmentInfo}}\ \{}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structSegmentInfo_af588bc52c02be4dc3e65766b6d95cca2}{start}};\ }
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{size\_t}}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \mbox{\hyperlink{structSegmentInfo_a1714d1f616d39a23a64fc4ca67c633ea}{end}};\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structSegmentInfo_ac0132b8aea8466bd99d637e7d026bc64}{offset}};\ }
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ uint8\_t\ \mbox{\hyperlink{structSegmentInfo_a17e292dbd8fd13d78a213cddefa2ce45}{mode}}\{0\};\ }
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ uint32\_t\ \mbox{\hyperlink{structSegmentInfo_af5dfea101d2e1fe705b45aa46d84fa69}{major\_id}};\ }
+\DoxyCodeLine{00048\ \ \ uint32\_t\ \mbox{\hyperlink{structSegmentInfo_a948a2f330b409b099db480faff8489ed}{minor\_id}};\ }
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structSegmentInfo_ab9b3f5c8ee2e0688d983c5aed557ca80}{inode\_id}};\ }
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ std::string\ \mbox{\hyperlink{structSegmentInfo_a887e77f1b7fee76ed6f63b62925d6df4}{path}};\ }
+\DoxyCodeLine{00054\ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
 
 \end{DoxyCode}

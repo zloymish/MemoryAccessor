@@ -1,210 +1,234 @@
 \doxysection{console.\+h}
-\hypertarget{console_8h_source}{}\label{console_8h_source}\index{/home/misha/prog/MemoryAccessor/src/console.h@{/home/misha/prog/MemoryAccessor/src/console.h}}
+\hypertarget{console_8h_source}{}\label{console_8h_source}\index{/home/misha/prog/ma/MemoryAccessor/src/console.h@{/home/misha/prog/ma/MemoryAccessor/src/console.h}}
 \mbox{\hyperlink{console_8h}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ }
-\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_SRC\_CONSOLE\_H\_}}
-\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_SRC\_CONSOLE\_H\_}}
-\DoxyCodeLine{00011\ }
-\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <array>}}
-\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <cstdint>}}
-\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <exception>}}
-\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <string>}}
-\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <vector>}}
-\DoxyCodeLine{00017\ }
-\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{hexviewer_8h}{hexviewer.h}}"{}}}
-\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{memoryaccessor_8h}{memoryaccessor.h}}"{}}}
-\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{segmentinfo_8h}{segmentinfo.h}}"{}}}
-\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{tools_8h}{tools.h}}"{}}}
-\DoxyCodeLine{00022\ }
-\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classConsole}{Console}};}
-\DoxyCodeLine{00024\ }
-\DoxyCodeLine{00032\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structCommand}{Command}}\ \{}
-\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structCommand_a82844920745698521b0194202e581277}{CommandFuncP}}\ =\ void\ (\mbox{\hyperlink{classConsole}{Console}}::*)(}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,\ \textcolor{keyword}{const}\ std::vector<std::string>}
-\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&);\ }
-\DoxyCodeLine{00036\ }
-\DoxyCodeLine{00037\ \ \ std::string\ \mbox{\hyperlink{structCommand_a8d66550a9895cbd96373a9a221fa2b25}{name}};\ \ \ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00038\ \ \ \mbox{\hyperlink{structCommand_a82844920745698521b0194202e581277}{CommandFuncP}}\ \mbox{\hyperlink{structCommand_aa34611124fb2b915b0d8ed56b79cdbac}{func}}\{\textcolor{keyword}{nullptr}\};\ }
-\DoxyCodeLine{00039\ \ \ std::vector<std::array<std::string,\ 2>>}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \mbox{\hyperlink{structCommand_a1e18f0b1cc88f4e737f93bcd62acaca9}{description}};\ }
-\DoxyCodeLine{00042\ \};}
-\DoxyCodeLine{00043\ }
-\DoxyCodeLine{00052\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classConsole}{Console}}\ \{}
-\DoxyCodeLine{00053\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classConsole_a6c36dfaa8baac56df6544226689b4c43}{kCommandsNumber}}\{}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ 9\};\ }
-\DoxyCodeLine{00056\ }
-\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classConsole_a69817bdccb3726aa8ff844c577454228}{Console}}(\mbox{\hyperlink{classMemoryAccessor}{MemoryAccessor}}\ \&\mbox{\hyperlink{project__test_8cc_a886c5e6253200afc139cfc52ed12e158}{memory\_accessor}},\ \mbox{\hyperlink{classHexViewer}{HexViewer}}\ \&\mbox{\hyperlink{project__test_8cc_a63d11e33b7f28e2b723a7d5a5ea31e66}{hex\_viewer}},}
-\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTools}{Tools}}\ \&\mbox{\hyperlink{project__test_8cc_a0a884c8dc64177499af32c4fa5698aad}{tools}})\ \textcolor{keyword}{noexcept}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ \ \ \ MemoryAccessor\ -\/\ A\ tool\ for\ accessing\ /proc/PID/mem}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ \ \ \ Copyright\ (C)\ 2024\ \ zloymish}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ \ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ \ \ \ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the\ License,\ or}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ \ \ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ \ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ \ \ \ GNU\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ along\ with\ this\ program.\ \ If\ not,\ see\ <https://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_SRC\_CONSOLE\_H\_}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_SRC\_CONSOLE\_H\_}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ <exception>}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{hexviewer_8h}{hexviewer.h}}"{}}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{memoryaccessor_8h}{memoryaccessor.h}}"{}}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{segmentinfo_8h}{segmentinfo.h}}"{}}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{tools_8h}{tools.h}}"{}}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classConsole}{Console}};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structCommand}{Command}}\ \{}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structCommand_a82844920745698521b0194202e581277}{CommandFuncP}}\ =\ void\ (\mbox{\hyperlink{classConsole}{Console}}::*)(}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,\ \textcolor{keyword}{const}\ std::vector<std::string>}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&);\ }
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ std::string\ \mbox{\hyperlink{structCommand_a8d66550a9895cbd96373a9a221fa2b25}{name}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00054\ \ \ \mbox{\hyperlink{structCommand_a82844920745698521b0194202e581277}{CommandFuncP}}\ \mbox{\hyperlink{structCommand_aa34611124fb2b915b0d8ed56b79cdbac}{func}}\{\textcolor{keyword}{nullptr}\};\ }
+\DoxyCodeLine{00055\ \ \ std::vector<std::array<std::string,\ 2>>}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \mbox{\hyperlink{structCommand_a1e18f0b1cc88f4e737f93bcd62acaca9}{description}};\ }
+\DoxyCodeLine{00058\ \};}
 \DoxyCodeLine{00059\ }
-\DoxyCodeLine{00066\ \ \ \mbox{\hyperlink{classConsole_a4365050250c2c042e9f4f18a6b368f80}{Console}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConsole}{Console}}\ \&origin)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00067\ }
-\DoxyCodeLine{00074\ \ \ \mbox{\hyperlink{classConsole_a2cd0bd2528ec6314e677f1616a1e1447}{Console}}(\mbox{\hyperlink{classConsole}{Console}}\ \&\&origin)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00068\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classConsole}{Console}}\ \{}
+\DoxyCodeLine{00069\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classConsole_a6c36dfaa8baac56df6544226689b4c43}{kCommandsNumber}}\{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ 9\};\ }
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classConsole_a69817bdccb3726aa8ff844c577454228}{Console}}(\mbox{\hyperlink{classMemoryAccessor}{MemoryAccessor}}\ \&\mbox{\hyperlink{project__test_8cc_a886c5e6253200afc139cfc52ed12e158}{memory\_accessor}},\ \mbox{\hyperlink{classHexViewer}{HexViewer}}\ \&\mbox{\hyperlink{project__test_8cc_a63d11e33b7f28e2b723a7d5a5ea31e66}{hex\_viewer}},}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTools}{Tools}}\ \&\mbox{\hyperlink{project__test_8cc_a0a884c8dc64177499af32c4fa5698aad}{tools}})\ \textcolor{keyword}{noexcept}(\textcolor{keyword}{false});}
 \DoxyCodeLine{00075\ }
-\DoxyCodeLine{00082\ \ \ \mbox{\hyperlink{classConsole}{Console}}\ \&\mbox{\hyperlink{classConsole_a0e1b64b22d04acb22d8ca2ae4f8bd625}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConsole}{Console}}\ \&origin)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00082\ \ \ \mbox{\hyperlink{classConsole_a4365050250c2c042e9f4f18a6b368f80}{Console}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConsole}{Console}}\ \&origin)\ =\ \textcolor{keyword}{delete};}
 \DoxyCodeLine{00083\ }
-\DoxyCodeLine{00090\ \ \ \mbox{\hyperlink{classConsole}{Console}}\ \&\mbox{\hyperlink{classConsole_a4a8bf0c5b5d02d8688c8986a76110da0}{operator=}}(\mbox{\hyperlink{classConsole}{Console}}\ \&\&origin)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00090\ \ \ \mbox{\hyperlink{classConsole_a2cd0bd2528ec6314e677f1616a1e1447}{Console}}(\mbox{\hyperlink{classConsole}{Console}}\ \&\&origin)\ =\ \textcolor{keyword}{delete};}
 \DoxyCodeLine{00091\ }
-\DoxyCodeLine{00092\ \ \ \mbox{\hyperlink{classConsole_ad03f47007c1feab0c18b15f1aa933b98}{\string~Console}}()\ noexcept;}
-\DoxyCodeLine{00093\ }
-\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classConsole_a0b22211d85059d54a78cd03109900672}{SetBufferSize}}(const\ \textcolor{keywordtype}{size\_t}\&\ buffer\_size)\ \{}
-\DoxyCodeLine{00101\ \ \ \ \ buffer\_size\_\ =\ buffer\_size;}
-\DoxyCodeLine{00102\ \ \ \}}
-\DoxyCodeLine{00103\ \ \ }
-\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classConsole_afe2e985b3d6df508524b952d74a7c7c5}{PrintNameVer}}()\ const\ noexcept;}
-\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classConsole_a4caf358d9f8bdf91790e97129e7642e2}{Start}}()\ noexcept;}
-\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classConsole_a62987bb460dd29b26262513669f9fabe}{ReadStdin}}()\ noexcept;}
-\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classConsole_a734562e8b24e4011703a9b245c28d5b2}{HandleCommand}}(const\ std::\textcolor{keywordtype}{string}\ \&line)\ noexcept;}
-\DoxyCodeLine{00108\ }
-\DoxyCodeLine{00109\ \ \ const\ std::\textcolor{keywordtype}{string}\ \mbox{\hyperlink{classConsole_a441f7d34d10420ab1c795e7f9f314493}{kProjectName}}\{\textcolor{stringliteral}{"{}MemoryAccessor"{}}\};\ }
-\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{classConsole_abc411673721eaf0a2f29a7cf02c4f9dd}{kProjectVersion}}\{\textcolor{stringliteral}{"{}v1.0"{}}\};\ }
-\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{classConsole_a213548ca270289b15639497b4f6cefd2}{kProjectDescription}}\{}
-\DoxyCodeLine{00112\ \ \ \ \ \textcolor{stringliteral}{"{}A\ command-\/line\ front-\/end\ for\ exploring\ virtual\ memory\ of\ a\ linux\ process\ "{}}}
-\DoxyCodeLine{00113\ \ \ \ \ \textcolor{stringliteral}{"{}by\ accessing\ /proc/PID/mem\ file."{}}\};\ }
-\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{classConsole_abfad51f712b017dcabc7d86179046cd1}{kConsolePrefix}}\{\textcolor{stringliteral}{"{}(MemAcc)"{}}\};\ }
-\DoxyCodeLine{00115\ \ \ }
-\DoxyCodeLine{00116\ \ \ \mbox{\hyperlink{classMemoryAccessor}{MemoryAccessor}}}
-\DoxyCodeLine{00117\ \ \ \ \ \ \ \&\mbox{\hyperlink{classConsole_ad183ac921462e3ae223a26756280c6ec}{memory\_accessor\_}};\ \ }
-\DoxyCodeLine{00118\ \ \ \mbox{\hyperlink{classHexViewer}{HexViewer}}\ \&\mbox{\hyperlink{classConsole_af66eccb21baba280a63bd409da538d18}{hex\_viewer\_}};\ }
-\DoxyCodeLine{00119\ \ \ \mbox{\hyperlink{classTools}{Tools}}\ \&\mbox{\hyperlink{classConsole_aba86c5220c00fac630d3557648034fa0}{tools\_}};\ \ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00120\ }
-\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structCommand}{Command}}\ \mbox{\hyperlink{classConsole_a9d333d05aec9868208093379b7259616}{kCommands}}[\mbox{\hyperlink{classConsole_a6c36dfaa8baac56df6544226689b4c43}{kCommandsNumber}}]\{}
-\DoxyCodeLine{00122\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}help"{}},\ \&Console::CommandHelp,\ \{\{\textcolor{stringliteral}{"{}help"{}},\ \textcolor{stringliteral}{"{}Show\ help"{}}\}\}\},}
-\DoxyCodeLine{00123\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}name"{}},}
-\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \&Console::CommandName,}
-\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}name\ name\ [pid\_num]"{}},}
-\DoxyCodeLine{00126\ \textcolor{stringliteral}{"{}Search\ for\ PID\ by\ name\ and\ set\ PID\ if\ only\ 1\ PID\ found,\ or\ set\ PID\ number"{}}\},\ }
-\DoxyCodeLine{00127\ \{\textcolor{stringliteral}{"{}"{}},\ \textcolor{stringliteral}{"{}pid\_num\ of\ found\ PIDs\ if\ pid\_num\ is\ specified\ (starting\ from\ 0)."{}}\}}
-\DoxyCodeLine{00128\ \}\},}
-\DoxyCodeLine{00129\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}pid"{}},}
-\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \&Console::CommandPid,}
-\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}pid\ PID"{}},\ \textcolor{stringliteral}{"{}Set\ PID\ and\ parse\ /proc/PID/maps."{}}\}\}\},}
-\DoxyCodeLine{00132\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}maps"{}},}
-\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \&Console::CommandMaps,}
-\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}maps"{}},\ \textcolor{stringliteral}{"{}List\ memory\ segments\ found\ by\ parsing\ /proc/PID/maps."{}}\}\}\},}
-\DoxyCodeLine{00135\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}view"{}},}
-\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \&Console::CommandView,}
-\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}view\ SEGMENT"{}},\ }
-\DoxyCodeLine{00139\ \textcolor{stringliteral}{"{}Print\ data\ of\ memory\ segment,\ where\ SEGMENT\ is\ its\ \(\backslash\)"{}maps\(\backslash\)"{}\ number,\ or\ first"{}}\},}
-\DoxyCodeLine{00140\ \{\textcolor{stringliteral}{"{}"{}},\ \textcolor{stringliteral}{"{}with\ matching\ name."{}}\},}
-\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/h"{}},\ \textcolor{stringliteral}{"{}show\ hex\ (if\ no\ -\/r\ specified)"{}}\},}
-\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/r"{}},\ \textcolor{stringliteral}{"{}print\ raw\ data"{}}\},}
-\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/f\ file"{}},\ \textcolor{stringliteral}{"{}output\ to\ file"{}}\}\}\},}
-\DoxyCodeLine{00144\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}read"{}},}
-\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \&Console::CommandRead,}
-\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}read\ address\ amount"{}},\ \textcolor{stringliteral}{"{}Read\ amount\ bytes\ starting\ from\ address."{}}\},}
-\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/h"{}},\ \textcolor{stringliteral}{"{}show\ hex\ (if\ no\ -\/r\ specified)"{}}\},}
-\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/r"{}},\ \textcolor{stringliteral}{"{}print\ raw\ data"{}}\},}
-\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/f\ file"{}},\ \textcolor{stringliteral}{"{}output\ to\ file"{}}\}\}\},}
-\DoxyCodeLine{00150\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}write"{}},}
-\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \&Console::CommandWrite,}
-\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}write\ address\ amount\ string"{}},}
-\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Write\ amount\ bytes\ of\ string\ to\ memory\ starting\ from\ address."{}}\},}
-\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}or"{}},\ \textcolor{stringliteral}{"{}"{}}\},}
-\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}write\ address\ amount\ -\/f\ file"{}},}
-\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Write\ amount\ bytes\ from\ file\ to\ memory\ starting\ from\ address."{}}\}\}\},}
-\DoxyCodeLine{00157\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}diff"{}},}
-\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \&Console::CommandDiff,}
-\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}diff\ length\ [replacement]"{}},}
-\DoxyCodeLine{00160\ \textcolor{stringliteral}{"{}Find\ difference\ in\ memory\ states\ by\ length\ and\ replace\ to\ string,\ if\ specified."{}}\}\}\},}
-\DoxyCodeLine{00161\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}await"{}},}
-\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \&Console::CommandAwait,}
-\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}await\ process\_name"{}},\ \textcolor{stringliteral}{"{}Wait\ for\ the\ process\ with\ matching\ name."{}}\},}
-\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}await\ -\/p\ pid"{}},\ \textcolor{stringliteral}{"{}Wait\ for\ the\ process\ with\ PID."{}}\}\}\},}
-\DoxyCodeLine{00165\ \ \ \};\ }
-\DoxyCodeLine{00166\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{enum\ class}\ Error0Arg\ \{}
-\DoxyCodeLine{00174\ \ \ \ \ kPidNotSet,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00175\ \ \ \ \ kPidNotSetUnexpectably,\ \ \ }
-\DoxyCodeLine{00176\ \ \ \ \ kErrCheckingPid,\ \ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00177\ \ \ \ \ kPrintErrCheckingProcess,\ }
-\DoxyCodeLine{00178\ \ \ \ \ kPrintErrOpenMaps,\ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00179\ \ \ \ \ kPrintErrParseMaps,\ \ \ \ \ \ \ }
-\DoxyCodeLine{00180\ \ \ \ \ kPrintErrOpenMem,\ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00181\ \ \ \ \ kPrintSegNotExist,\ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00182\ \ \ \ \ kPrintSegNoAccess,\ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00183\ \ \ \};}
-\DoxyCodeLine{00184\ }
-\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{class\ }WrapperException\ :\ \textcolor{keyword}{public}\ std::exception\ \{}
-\DoxyCodeLine{00193\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00200\ \ \ \ \ WrapperException(uint8\_t\ \_return\_code)\ :\ return\_code(\_return\_code)\ \{\}}
-\DoxyCodeLine{00201\ }
-\DoxyCodeLine{00202\ \ \ \ \ uint8\_t\ return\_code;\ }
-\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ const\ noexcept\textcolor{keyword}{\ override\ }\{}
-\DoxyCodeLine{00211\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Wrapper\ exception"{}};}
-\DoxyCodeLine{00212\ \ \ \ \ \}}
-\DoxyCodeLine{00213\ \ \ \};}
-\DoxyCodeLine{00214\ }
-\DoxyCodeLine{00215\ \ \ \textcolor{keywordtype}{void}\ PrintDescription(\textcolor{keyword}{const}\ \mbox{\hyperlink{structCommand}{Command}}\ \&command,\ uint32\_t\ left\ =\ 2,}
-\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ middle\ =\ 0)\ const\ noexcept;}
-\DoxyCodeLine{00217\ \ \ \textcolor{keywordtype}{void}\ ShowUsage(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&command)\ const\ noexcept;}
-\DoxyCodeLine{00218\ \ \ \textcolor{keywordtype}{void}\ PrintError0Arg(const\ Error0Arg\ \&error)\ const\ noexcept;}
-\DoxyCodeLine{00219\ \ \ \textcolor{keywordtype}{void}\ PrintFileNotOpened(const\ std::\textcolor{keywordtype}{string}\ \&path)\ const\ noexcept;}
-\DoxyCodeLine{00220\ \ \ \textcolor{keywordtype}{void}\ PrintFileFail(const\ std::\textcolor{keywordtype}{string}\ \&path)\ const\ noexcept;}
-\DoxyCodeLine{00221\ }
-\DoxyCodeLine{00222\ \ \ \textcolor{keywordtype}{void}\ PrintSegment(const\ \mbox{\hyperlink{structSegmentInfo}{SegmentInfo}}\ \&segmentInfo)\ const\ noexcept;}
-\DoxyCodeLine{00223\ \ \ \textcolor{keywordtype}{void}}
-\DoxyCodeLine{00224\ \ \ PrintSegments(const\ std::vector<\mbox{\hyperlink{structSegmentInfo}{SegmentInfo}}>\ \&segment\_infos)\ const\ noexcept;}
-\DoxyCodeLine{00225\ }
-\DoxyCodeLine{00226\ \ \ std::vector<std::\textcolor{keywordtype}{string}>\ ParseCmdline(std::\textcolor{keywordtype}{string}\ line)\ const\ noexcept;}
-\DoxyCodeLine{00227\ }
-\DoxyCodeLine{00228\ \ \ uint8\_t\ ParseAddress(const\ std::\textcolor{keywordtype}{string}\ \&s,\ \textcolor{keywordtype}{size\_t}\ \&result)\ const\ noexcept;}
-\DoxyCodeLine{00229\ \ \ uint8\_t\ StoiWrapper(const\ std::\textcolor{keywordtype}{string}\ \&s,\ \textcolor{keywordtype}{int}\ \&result,}
-\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::\textcolor{keywordtype}{string}\ \&name)\ const\ noexcept;}
-\DoxyCodeLine{00231\ \ \ uint8\_t\ StoullWrapper(const\ std::\textcolor{keywordtype}{string}\ \&s,\ uint64\_t\ \&result,}
-\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::\textcolor{keywordtype}{string}\ \&name)\ const\ noexcept;}
-\DoxyCodeLine{00233\ \ \ uint8\_t\ ParseMapsWrapper()\ const\ noexcept;}
-\DoxyCodeLine{00234\ \ \ uint8\_t\ CheckPidWrapper()\ const\ noexcept;}
-\DoxyCodeLine{00235\ \ \ uint8\_t\ CheckSegNumWrapper(const\ \textcolor{keywordtype}{size\_t}\ \&num)\ const\ noexcept;}
-\DoxyCodeLine{00236\ \ \ uint8\_t\ ReadSegWrapper(\textcolor{keywordtype}{char}\ *dst,\ const\ \textcolor{keywordtype}{size\_t}\ \&num,\ \textcolor{keywordtype}{size\_t}\ start\ =\ 0,}
-\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ amount\ =\ SIZE\_MAX)\ const\ noexcept;}
-\DoxyCodeLine{00238\ \ \ uint8\_t\ WriteSegWrapper(\textcolor{keywordtype}{char}\ *src,\ const\ \textcolor{keywordtype}{size\_t}\ \&num,\ \textcolor{keywordtype}{size\_t}\ start\ =\ 0,}
-\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ amount\ =\ SIZE\_MAX)\ const\ noexcept;}
-\DoxyCodeLine{00240\ \ \ uint8\_t\ ReadWrapper(\textcolor{keywordtype}{char}\ *dst,\ \textcolor{keywordtype}{size\_t}\ address,\ \textcolor{keywordtype}{size\_t}\ amount,}
-\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \&done\_amount)\ const\ noexcept;}
-\DoxyCodeLine{00242\ \ \ uint8\_t\ WriteWrapper(\textcolor{keywordtype}{char}\ *src,\ \textcolor{keywordtype}{size\_t}\ address,\ \textcolor{keywordtype}{size\_t}\ amount,}
-\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \&done\_amount)\ const\ noexcept;}
-\DoxyCodeLine{00244\ \ \ }
-\DoxyCodeLine{00245\ \ \ uint8\_t\ DiffReadSeg(std::unique\_ptr<\textcolor{keywordtype}{char}[]>\&\ mem\_dump,\ const\ \textcolor{keywordtype}{size\_t}\&\ num)\ noexcept;}
-\DoxyCodeLine{00246\ \ \ \textcolor{keywordtype}{void}\ DiffCompare(const\ \textcolor{keywordtype}{char}\ *old\_dump,\ const\ \textcolor{keywordtype}{char}\ *new\_dump,\ const\ \textcolor{keywordtype}{size\_t}\&\ o\_offs,\ const\ \textcolor{keywordtype}{size\_t}\&\ n\_offs,\ \textcolor{keywordtype}{size\_t}\ amount,\ \textcolor{keywordtype}{size\_t}\ start\_addr,\ const\ \textcolor{keywordtype}{size\_t}\&\ length,\ const\ std::\textcolor{keywordtype}{string}\&\ replacement)\ noexcept;}
-\DoxyCodeLine{00247\ \ \ uint8\_t\ DiffOldNext(\textcolor{keywordtype}{size\_t}\&\ i,\ const\ \textcolor{keywordtype}{size\_t}\&\ old\_segments\_amount,\ std::vector<std::unique\_ptr<\textcolor{keywordtype}{char}[]>>::iterator\&\ it,\ std::vector<std::unique\_ptr<\textcolor{keywordtype}{char}[]>>\&\ full\_dump)\ noexcept;}
-\DoxyCodeLine{00248\ \ \ uint8\_t\ DiffNewNext(\textcolor{keywordtype}{size\_t}\&\ j,\ std::vector<std::unique\_ptr<\textcolor{keywordtype}{char}[]>>::iterator\&\ it,\ std::unique\_ptr<\textcolor{keywordtype}{char}[]>\&\ mem\_dump,\ std::vector<std::unique\_ptr<\textcolor{keywordtype}{char}[]>>\&\ full\_dump)\ noexcept;}
-\DoxyCodeLine{00249\ \ \ }
-\DoxyCodeLine{00250\ \ \ \textcolor{keywordtype}{void}\ CommandHelp(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
-\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
-\DoxyCodeLine{00252\ \ \ \textcolor{keywordtype}{void}\ CommandName(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
-\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
-\DoxyCodeLine{00254\ \ \ \textcolor{keywordtype}{void}\ CommandPid(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
-\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
-\DoxyCodeLine{00256\ \ \ \textcolor{keywordtype}{void}\ CommandMaps(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
-\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
-\DoxyCodeLine{00258\ \ \ \textcolor{keywordtype}{void}\ CommandView(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
-\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
-\DoxyCodeLine{00260\ \ \ \textcolor{keywordtype}{void}\ CommandRead(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
-\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
-\DoxyCodeLine{00262\ \ \ \textcolor{keywordtype}{void}\ CommandWrite(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
-\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
-\DoxyCodeLine{00264\ \ \ \textcolor{keywordtype}{void}\ CommandDiff(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
-\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
-\DoxyCodeLine{00266\ \ \ \textcolor{keywordtype}{void}\ CommandAwait(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
-\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
-\DoxyCodeLine{00268\ }
-\DoxyCodeLine{00269\ \ \ static\ \textcolor{keywordtype}{bool}\ one\_instance\_created\_;\ }
-\DoxyCodeLine{00271\ \ \ const\ std::\textcolor{keywordtype}{string}\ kCheckSudoStr\{}
-\DoxyCodeLine{00272\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Check\ if\ you're\ running\ with\ \(\backslash\)"{}sudo\(\backslash\)"{}."{}}\};\ }
-\DoxyCodeLine{00276\ }
-\DoxyCodeLine{00277\ \ \ \textcolor{keywordtype}{size\_t}\ buffer\_size\_\{}
-\DoxyCodeLine{00278\ \ \ \ \ \ \ 0x1000\};\ }
-\DoxyCodeLine{00279\ \ \ }
-\DoxyCodeLine{00280\ \ \ \textcolor{keywordtype}{bool}\ seg\_not\_exist\_msg\_enabled\_\{}
-\DoxyCodeLine{00281\ \ \ \ \ \ \ \textcolor{keyword}{true}\};\ }
-\DoxyCodeLine{00282\ \ \ \textcolor{keywordtype}{bool}\ seg\_no\_access\_msg\_enabled\_\{}
-\DoxyCodeLine{00283\ \ \ \ \ \ \ \textcolor{keyword}{true}\};\ }
-\DoxyCodeLine{00284\ \};}
-\DoxyCodeLine{00285\ }
-\DoxyCodeLine{00286\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_SRC\_CONSOLE\_H\_}}
+\DoxyCodeLine{00098\ \ \ \mbox{\hyperlink{classConsole}{Console}}\ \&\mbox{\hyperlink{classConsole_a0e1b64b22d04acb22d8ca2ae4f8bd625}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConsole}{Console}}\ \&origin)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00106\ \ \ \mbox{\hyperlink{classConsole}{Console}}\ \&\mbox{\hyperlink{classConsole_a4a8bf0c5b5d02d8688c8986a76110da0}{operator=}}(\mbox{\hyperlink{classConsole}{Console}}\ \&\&origin)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \mbox{\hyperlink{classConsole_ad03f47007c1feab0c18b15f1aa933b98}{\string~Console}}()\ noexcept;}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classConsole_a0b22211d85059d54a78cd03109900672}{SetBufferSize}}(const\ \textcolor{keywordtype}{size\_t}\ \&buffer\_size)\ \{\ buffer\_size\_\ =\ buffer\_size;\ \}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classConsole_afe2e985b3d6df508524b952d74a7c7c5}{PrintNameVer}}()\ const\ noexcept;}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classConsole_a4caf358d9f8bdf91790e97129e7642e2}{Start}}()\ noexcept;}
+\DoxyCodeLine{00120\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classConsole_a62987bb460dd29b26262513669f9fabe}{ReadStdin}}()\ noexcept;}
+\DoxyCodeLine{00121\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classConsole_a734562e8b24e4011703a9b245c28d5b2}{HandleCommand}}(const\ std::\textcolor{keywordtype}{string}\ \&line)\ noexcept;}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ const\ std::\textcolor{keywordtype}{string}\ \mbox{\hyperlink{classConsole_a441f7d34d10420ab1c795e7f9f314493}{kProjectName}}\{\textcolor{stringliteral}{"{}MemoryAccessor"{}}\};\ }
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{classConsole_abc411673721eaf0a2f29a7cf02c4f9dd}{kProjectVersion}}\{\textcolor{stringliteral}{"{}v1.0"{}}\};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{classConsole_a213548ca270289b15639497b4f6cefd2}{kProjectDescription}}\{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}A\ command-\/line\ front-\/end\ for\ exploring\ virtual\ memory\ of\ a\ linux\ "{}}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}process\ "{}}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}by\ accessing\ /proc/PID/mem\ file."{}}\};\ }
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{classConsole_abfad51f712b017dcabc7d86179046cd1}{kConsolePrefix}}\{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}(MemAcc)"{}}\};\ }
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \mbox{\hyperlink{classMemoryAccessor}{MemoryAccessor}}}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \&\mbox{\hyperlink{classConsole_ad183ac921462e3ae223a26756280c6ec}{memory\_accessor\_}};\ \ }
+\DoxyCodeLine{00134\ \ \ \mbox{\hyperlink{classHexViewer}{HexViewer}}\ \&\mbox{\hyperlink{classConsole_af66eccb21baba280a63bd409da538d18}{hex\_viewer\_}};\ }
+\DoxyCodeLine{00135\ \ \ \mbox{\hyperlink{classTools}{Tools}}\ \&\mbox{\hyperlink{classConsole_aba86c5220c00fac630d3557648034fa0}{tools\_}};\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structCommand}{Command}}\ \mbox{\hyperlink{classConsole_a9d333d05aec9868208093379b7259616}{kCommands}}[\mbox{\hyperlink{classConsole_a6c36dfaa8baac56df6544226689b4c43}{kCommandsNumber}}]\{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}help"{}},\ \&Console::CommandHelp,\ \{\{\textcolor{stringliteral}{"{}help"{}},\ \textcolor{stringliteral}{"{}Show\ help"{}}\}\}\},}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}name"{}},}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \&Console::CommandName,}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}name\ name\ [pid\_num]"{}},\ \textcolor{stringliteral}{"{}Search\ for\ PID\ by\ name\ and\ set\ PID\ if\ only\ 1\ "{}}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}PID\ found,\ or\ set\ PID\ number"{}}\},}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}"{}},}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}pid\_num\ of\ found\ PIDs\ if\ pid\_num\ is\ specified\ (starting\ from\ 0)."{}}\}\}\},}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}pid"{}},}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \&Console::CommandPid,}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}pid\ PID"{}},\ \textcolor{stringliteral}{"{}Set\ PID\ and\ parse\ /proc/PID/maps."{}}\}\}\},}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}maps"{}},}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \&Console::CommandMaps,}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}maps"{}},\ \textcolor{stringliteral}{"{}List\ memory\ segments\ found\ by\ parsing\ /proc/PID/maps."{}}\}\}\},}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}view"{}},}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \&Console::CommandView,}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}view\ SEGMENT"{}},\ \textcolor{stringliteral}{"{}Print\ data\ of\ memory\ segment,\ where\ SEGMENT\ is\ its\ "{}}}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\(\backslash\)"{}maps\(\backslash\)"{}\ number,\ or\ first"{}}\},}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}"{}},\ \textcolor{stringliteral}{"{}with\ matching\ name."{}}\},}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/h"{}},\ \textcolor{stringliteral}{"{}show\ hex\ (if\ no\ -\/r\ specified)"{}}\},}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/r"{}},\ \textcolor{stringliteral}{"{}print\ raw\ data"{}}\},}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/f\ file"{}},\ \textcolor{stringliteral}{"{}output\ to\ file"{}}\}\}\},}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}read"{}},}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \&Console::CommandRead,}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}read\ address\ amount"{}},\ \textcolor{stringliteral}{"{}Read\ amount\ bytes\ starting\ from\ address."{}}\},}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/h"{}},\ \textcolor{stringliteral}{"{}show\ hex\ (if\ no\ -\/r\ specified)"{}}\},}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/r"{}},\ \textcolor{stringliteral}{"{}print\ raw\ data"{}}\},}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/f\ file"{}},\ \textcolor{stringliteral}{"{}output\ to\ file"{}}\}\}\},}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}write"{}},}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \&Console::CommandWrite,}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}write\ address\ amount\ string"{}},}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Write\ amount\ bytes\ of\ string\ to\ memory\ starting\ from\ address."{}}\},}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}or"{}},\ \textcolor{stringliteral}{"{}"{}}\},}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}write\ address\ amount\ -\/f\ file"{}},}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Write\ amount\ bytes\ from\ file\ to\ memory\ starting\ from\ address."{}}\}\}\},}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}diff"{}},}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \&Console::CommandDiff,}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}diff\ length\ [replacement]"{}},}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Find\ difference\ in\ memory\ states\ by\ length\ and\ replace\ to\ string,\ if\ "{}}}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}specified."{}}\}\}\},}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}await"{}},}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \&Console::CommandAwait,}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \{\{\textcolor{stringliteral}{"{}await\ process\_name"{}},\ \textcolor{stringliteral}{"{}Wait\ for\ the\ process\ with\ matching\ name."{}}\},}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}await\ -\/p\ pid"{}},\ \textcolor{stringliteral}{"{}Wait\ for\ the\ process\ with\ PID."{}}\}\}\},}
+\DoxyCodeLine{00181\ \ \ \};\ }
+\DoxyCodeLine{00182\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{enum\ class}\ Error0Arg\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ kPidNotSet,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00191\ \ \ \ \ kPidNotSetUnexpectably,\ \ \ }
+\DoxyCodeLine{00192\ \ \ \ \ kErrCheckingPid,\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00193\ \ \ \ \ kPrintErrCheckingProcess,\ }
+\DoxyCodeLine{00194\ \ \ \ \ kPrintErrOpenMaps,\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00195\ \ \ \ \ kPrintErrParseMaps,\ \ \ \ \ \ \ }
+\DoxyCodeLine{00196\ \ \ \ \ kPrintErrOpenMem,\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00197\ \ \ \ \ kPrintSegNotExist,\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00198\ \ \ \ \ kPrintSegNoAccess,\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00199\ \ \ \};}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{class\ }WrapperException\ :\ \textcolor{keyword}{public}\ std::exception\ \{}
+\DoxyCodeLine{00209\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00216\ \ \ \ \ WrapperException(uint8\_t\ \_return\_code)\ :\ return\_code(\_return\_code)\ \{\}}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \ \ uint8\_t\ return\_code;\ }
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *what()\ const\ noexcept\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Wrapper\ exception"{}};}
+\DoxyCodeLine{00228\ \ \ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \};}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \ \ \textcolor{keywordtype}{void}\ PrintDescription(\textcolor{keyword}{const}\ \mbox{\hyperlink{structCommand}{Command}}\ \&command,\ uint32\_t\ left\ =\ 2,}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ middle\ =\ 0)\ const\ noexcept;}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{void}\ ShowUsage(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&command)\ const\ noexcept;}
+\DoxyCodeLine{00234\ \ \ \textcolor{keywordtype}{void}\ PrintError0Arg(const\ Error0Arg\ \&error)\ const\ noexcept;}
+\DoxyCodeLine{00235\ \ \ \textcolor{keywordtype}{void}\ PrintFileNotOpened(const\ std::\textcolor{keywordtype}{string}\ \&path)\ const\ noexcept;}
+\DoxyCodeLine{00236\ \ \ \textcolor{keywordtype}{void}\ PrintFileFail(const\ std::\textcolor{keywordtype}{string}\ \&path)\ const\ noexcept;}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ \textcolor{keywordtype}{void}\ PrintSegment(const\ \mbox{\hyperlink{structSegmentInfo}{SegmentInfo}}\ \&segmentInfo)\ const\ noexcept;}
+\DoxyCodeLine{00239\ \ \ \textcolor{keywordtype}{void}}
+\DoxyCodeLine{00240\ \ \ PrintSegments(const\ std::vector<\mbox{\hyperlink{structSegmentInfo}{SegmentInfo}}>\ \&segment\_infos)\ const\ noexcept;}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ \ \ std::vector<std::\textcolor{keywordtype}{string}>\ ParseCmdline(std::\textcolor{keywordtype}{string}\ line)\ const\ noexcept;}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \ \ uint8\_t\ ParseAddress(const\ std::\textcolor{keywordtype}{string}\ \&s,\ \textcolor{keywordtype}{size\_t}\ \&result)\ const\ noexcept;}
+\DoxyCodeLine{00245\ \ \ uint8\_t\ StoiWrapper(const\ std::\textcolor{keywordtype}{string}\ \&s,\ \textcolor{keywordtype}{int}\ \&result,}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::\textcolor{keywordtype}{string}\ \&name)\ const\ noexcept;}
+\DoxyCodeLine{00247\ \ \ uint8\_t\ StoullWrapper(const\ std::\textcolor{keywordtype}{string}\ \&s,\ uint64\_t\ \&result,}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::\textcolor{keywordtype}{string}\ \&name)\ const\ noexcept;}
+\DoxyCodeLine{00249\ \ \ uint8\_t\ ParseMapsWrapper()\ const\ noexcept;}
+\DoxyCodeLine{00250\ \ \ uint8\_t\ CheckPidWrapper()\ const\ noexcept;}
+\DoxyCodeLine{00251\ \ \ uint8\_t\ CheckSegNumWrapper(const\ \textcolor{keywordtype}{size\_t}\ \&num)\ const\ noexcept;}
+\DoxyCodeLine{00252\ \ \ uint8\_t\ ReadSegWrapper(\textcolor{keywordtype}{char}\ *dst,\ const\ \textcolor{keywordtype}{size\_t}\ \&num,\ \textcolor{keywordtype}{size\_t}\ start\ =\ 0,}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ amount\ =\ SIZE\_MAX)\ const\ noexcept;}
+\DoxyCodeLine{00254\ \ \ uint8\_t\ WriteSegWrapper(\textcolor{keywordtype}{char}\ *src,\ const\ \textcolor{keywordtype}{size\_t}\ \&num,\ \textcolor{keywordtype}{size\_t}\ start\ =\ 0,}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ amount\ =\ SIZE\_MAX)\ const\ noexcept;}
+\DoxyCodeLine{00256\ \ \ uint8\_t\ ReadWrapper(\textcolor{keywordtype}{char}\ *dst,\ \textcolor{keywordtype}{size\_t}\ address,\ \textcolor{keywordtype}{size\_t}\ amount,}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \&done\_amount)\ const\ noexcept;}
+\DoxyCodeLine{00258\ \ \ uint8\_t\ WriteWrapper(\textcolor{keywordtype}{char}\ *src,\ \textcolor{keywordtype}{size\_t}\ address,\ \textcolor{keywordtype}{size\_t}\ amount,}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \&done\_amount)\ const\ noexcept;}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ uint8\_t\ DiffReadSeg(std::unique\_ptr<\textcolor{keywordtype}{char}[]>\ \&mem\_dump,}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ \textcolor{keywordtype}{size\_t}\ \&num)\ noexcept;}
+\DoxyCodeLine{00263\ \ \ \textcolor{keywordtype}{void}\ DiffCompare(const\ \textcolor{keywordtype}{char}\ *old\_dump,\ const\ \textcolor{keywordtype}{char}\ *new\_dump,}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ \textcolor{keywordtype}{size\_t}\ \&o\_offs,\ const\ \textcolor{keywordtype}{size\_t}\ \&n\_offs,\ \textcolor{keywordtype}{size\_t}\ amount,}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ start\_addr,\ const\ \textcolor{keywordtype}{size\_t}\ \&length,}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::\textcolor{keywordtype}{string}\ \&replacement)\ noexcept;}
+\DoxyCodeLine{00267\ \ \ uint8\_t\ DiffOldNext(\textcolor{keywordtype}{size\_t}\ \&i,\ const\ \textcolor{keywordtype}{size\_t}\ \&old\_segments\_amount,}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::unique\_ptr<\textcolor{keywordtype}{char}[]>>::iterator\ \&it,}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::unique\_ptr<\textcolor{keywordtype}{char}[]>>\ \&full\_dump)\ noexcept;}
+\DoxyCodeLine{00270\ \ \ uint8\_t\ DiffNewNext(\textcolor{keywordtype}{size\_t}\ \&j,}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::unique\_ptr<\textcolor{keywordtype}{char}[]>>::iterator\ \&it,}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::unique\_ptr<\textcolor{keywordtype}{char}[]>\ \&mem\_dump,}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::unique\_ptr<\textcolor{keywordtype}{char}[]>>\ \&full\_dump)\ noexcept;}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \textcolor{keywordtype}{void}\ CommandHelp(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
+\DoxyCodeLine{00277\ \ \ \textcolor{keywordtype}{void}\ CommandName(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
+\DoxyCodeLine{00279\ \ \ \textcolor{keywordtype}{void}\ CommandPid(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
+\DoxyCodeLine{00281\ \ \ \textcolor{keywordtype}{void}\ CommandMaps(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
+\DoxyCodeLine{00283\ \ \ \textcolor{keywordtype}{void}\ CommandView(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
+\DoxyCodeLine{00285\ \ \ \textcolor{keywordtype}{void}\ CommandRead(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
+\DoxyCodeLine{00287\ \ \ \textcolor{keywordtype}{void}\ CommandWrite(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
+\DoxyCodeLine{00289\ \ \ \textcolor{keywordtype}{void}\ CommandDiff(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
+\DoxyCodeLine{00291\ \ \ \textcolor{keywordtype}{void}\ CommandAwait(const\ \mbox{\hyperlink{structCommand}{Command}}\ \&parent,}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::vector<std::\textcolor{keywordtype}{string}>\ \&args)\ noexcept;}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \ \ static\ \textcolor{keywordtype}{bool}\ one\_instance\_created\_;\ }
+\DoxyCodeLine{00296\ \ \ const\ std::\textcolor{keywordtype}{string}\ kCheckSudoStr\{}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Check\ if\ you're\ running\ with\ \(\backslash\)"{}sudo\(\backslash\)"{}."{}}\};\ }
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \ \ \textcolor{keywordtype}{size\_t}\ buffer\_size\_\{}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ 0x1000\};\ }
+\DoxyCodeLine{00304\ }
+\DoxyCodeLine{00305\ \ \ \textcolor{keywordtype}{bool}\ seg\_not\_exist\_msg\_enabled\_\{}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \textcolor{keyword}{true}\};\ }
+\DoxyCodeLine{00307\ \ \ \textcolor{keywordtype}{bool}\ seg\_no\_access\_msg\_enabled\_\{}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \textcolor{keyword}{true}\};\ }
+\DoxyCodeLine{00309\ \};}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00311\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_SRC\_CONSOLE\_H\_}}
 
 \end{DoxyCode}
