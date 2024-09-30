@@ -121,7 +121,7 @@ public:
   void HandleCommand(const std::string &line) noexcept;
 
   const std::string kProjectName{"MemoryAccessor"}; //!< Name of the project.
-  const std::string kProjectVersion{"v1.0"};        //!< Project version.
+  const std::string kProjectVersion{"v1.1"};        //!< Project version.
   const std::string kProjectDescription{
       "A command-line front-end for exploring virtual memory of a linux "
       "process "
