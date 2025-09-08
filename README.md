@@ -16,7 +16,7 @@ or
 
     name process_name [PID number]
 
-The PID is be checked if it exists, and the /proc/PID/maps are parsed to get information about memory segments. This info is shown with the command "maps".
+The PID is checked if it exists, and the /proc/PID/maps are parsed to get information about memory segments. This info is shown with the command "maps".
 
 Now reading/writing operations can be performed. Data can be read by command
 
@@ -49,7 +49,7 @@ Start program with "--help" to see info about arguments.
 
 One command can be run by typing "--command COMMAND".
 
-Commands from file can be executed line-by-line by specifying file: "--file PATH"
+Commands from file can be executed line-by-line by specifying file: "--file PATH".
 
 ## Build
 
