@@ -43,16 +43,12 @@
  received.
 */
 int Tools::SetSigint(void (*handler)(int)) const noexcept {
-  // Заимствование, источник кода:
-  // https://stackoverflow.com/questions/51920435/how-to-call-sigaction-from-c
-  // Начало заимствования (присутствуют небольшие изменения):
   struct sigaction sigbreak;
   sigbreak.sa_handler = handler;
   sigemptyset(&sigbreak.sa_mask);
   sigbreak.sa_flags = 0;
 
   return sigaction(SIGINT, &sigbreak, nullptr);
-  // Конец заимствования.
 }
 
 /*!

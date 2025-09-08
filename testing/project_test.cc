@@ -84,9 +84,6 @@ int main(int argc, char **argv) {
   tools.SetBufferSize(kBufferSize);
   console.SetBufferSize(kBufferSize);
 
-  // Заимствование, источник кода:
-  // https://github.com/doctest/doctest/blob/master/doc/markdown/main.md
-  // Начало заимствования (есть изменения):
   doctest::Context context;
 
   context.applyCommandLine(argc, argv);
@@ -99,7 +96,6 @@ int main(int argc, char **argv) {
   int client_stuff_return_code = 0;
 
   return res + client_stuff_return_code;
-  // Конец заимствования.
 }
 
 TEST_SUITE_BEGIN("Tools");
@@ -1259,13 +1255,9 @@ namespace memoryaccessor_testing::console {
 */
 std::streambuf *replace_streambuf(std::ios &stream,
                                   const std::ostringstream &oss) {
-  // Заимствование, источник кода:
-  // https://stackoverflow.com/questions/4191089/how-to-unit-test-function-writing-to-stdout-stdcout
-  // Начало заимствования (есть изменения):
   std::streambuf *p_streambuf = stream.rdbuf();
   stream.rdbuf(oss.rdbuf());
   return p_streambuf;
-  // Конец заимствования.
 }
 
 } // namespace memoryaccessor_testing::console

@@ -91,20 +91,13 @@ static void CtrlC(int signum) noexcept {
   std::cout << std::endl;
 
   if (rl_readline_state & RL_STATE_READCMD) {
-    // Заимствование, источник кода:
-    // https://stackoverflow.com/questions/16828378/readline-get-a-new-prompt-on-sigint
-    // Начало заимствования:
     rl_on_new_line();       // Regenerate the prompt on a newline
     rl_replace_line("", 0); // Clear the previous text
     rl_redisplay();
-    // Конец заимствования.
   }
 
   ctrl_c_pressed = true;
 }
-
-// Ниже 4 функции, за основу которых была взята функция из
-// документации: command_generator
 
 /*!
  \brief Command completion generator.
@@ -116,9 +109,6 @@ static void CtrlC(int signum) noexcept {
  commands. It returns next match every time it is called. If it runs out of
  matches, it returns nullptr.
 */
-// Заимствование, источник кода:
-// https://tiswww.case.edu/php/chet/readline/readline.html 
-// Начало заимствования (есть изменения):
 static char *CompletionCommandGenerator(const char *text, int state) noexcept {
   static int list_index, len;
 
@@ -136,7 +126,6 @@ static char *CompletionCommandGenerator(const char *text, int state) noexcept {
   }
   return (char *)nullptr;
 }
-// Конец заимствования.
 
 /*!
  \brief PID completion generator.
@@ -148,9 +137,6 @@ static char *CompletionCommandGenerator(const char *text, int state) noexcept {
  std::string format. It returns next match every time it is called. If it runs
  out of matches, it returns nullptr.
 */
-// Заимствование, источник кода:
-// https://tiswww.case.edu/php/chet/readline/readline.html
-//Начало заимствования (есть изменения):
 static char *CompletionPidGenerator(const char *text, int state) noexcept {
   static int len;
   static std::unordered_set<pid_t>::iterator it, end_it;
@@ -170,7 +156,6 @@ static char *CompletionPidGenerator(const char *text, int state) noexcept {
   }
   return (char *)nullptr;
 }
-// Конец заимствования.
 
 /*!
  \brief Process name completion generator.
@@ -182,9 +167,6 @@ static char *CompletionPidGenerator(const char *text, int state) noexcept {
  names. It returns next match every time it is called. If it runs out of
  matches, it returns nullptr.
 */
-// Заимствование, источник кода:
-// https://tiswww.case.edu/php/chet/readline/readline.html
-// Начало заимствования (есть изменения):
 static char *CompletionNameGenerator(const char *text, int state) noexcept {
   static int len;
   static std::unordered_set<std::string>::iterator it, end_it;
@@ -204,7 +186,6 @@ static char *CompletionNameGenerator(const char *text, int state) noexcept {
   }
   return (char *)nullptr;
 }
-// Конец заимствования.
 
 /*!
  \brief Segment name completion generator.
@@ -216,9 +197,6 @@ static char *CompletionNameGenerator(const char *text, int state) noexcept {
  names. It returns next match every time it is called. If it runs out of
  matches, it returns nullptr.
 */
-// Заимствование, источник кода:
-// https://tiswww.case.edu/php/chet/readline/readline.html
-// Начало заимствования (есть изменения):
 static char *CompletionSegmentNameGenerator(const char *text,
                                             int state) noexcept {
   static int len;
@@ -239,10 +217,6 @@ static char *CompletionSegmentNameGenerator(const char *text,
   }
   return (char *)nullptr;
 }
-// Конец заимствования.
-
-// Ниже функция, за основу которой была взята функция из документации
-// (command_completion)
 
 /*!
  \brief Completion function.
@@ -261,9 +235,6 @@ static char *CompletionSegmentNameGenerator(const char *text,
  completion array is returned. If the line starts from "view ", a segment name
  completion array is returned.
 */
-// Заимствование, источник кода:
-// https://tiswww.case.edu/php/chet/readline/readline.html Начало заимствования
-// (есть изменения):
 static char **completion(const char *text, int start, int end) noexcept {
   char **matches{(char **)nullptr};
 
@@ -286,7 +257,6 @@ static char **completion(const char *text, int start, int end) noexcept {
 
   return matches;
 }
-// Конец заимствования.
 }
 
 } // namespace memoryaccessor_console_src
@@ -443,12 +413,8 @@ void Console::PrintDescription(const Command &command, uint32_t left,
   }
 
   for (const std::array<std::string, 2> &line : command.description) {
-    // Заимствование, источник кода:
-    // https://unix.stackexchange.com/questions/210325/posix-command-that-moves-cursor-to-specific-position-in-terminal-window
-    // Начало заимствования (есть изменения):
     std::cout << "\33\[" + std::to_string(ws.ws_row) + ";" +
                      std::to_string(left + 1) + "H";
-    // Конец заимствования.
     std::cout << std::setfill(' ') << std::setw(middle + 3) << std::left
               << line[0] << line[1] << std::endl;
   }
