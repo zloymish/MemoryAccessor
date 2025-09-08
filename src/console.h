@@ -70,8 +70,8 @@ public:
   constexpr static int kCommandsNumber{
       9}; //!< Number of the commands available.
 
-  explicit Console(MemoryAccessor &memory_accessor, HexViewer &hex_viewer,
-                   Tools &tools) noexcept(false);
+  explicit Console(MemoryAccessor *memory_accessor, HexViewer *hex_viewer,
+                   Tools *tools) noexcept(false);
 
   /*!
    \brief Copy constructor (deleted).
@@ -130,9 +130,9 @@ public:
       "(MemAcc)"}; //!< Prefix shown in console input.
 
   MemoryAccessor
-      &memory_accessor_;  //!< A reference to a MemoryAccessor class instance.
-  HexViewer &hex_viewer_; //!< A reference to a HexViewer class instance.
-  Tools &tools_;          //!< A reference to a Tools class instance.
+      *memory_accessor_{nullptr};  //!< A pointer to a MemoryAccessor class instance.
+  HexViewer *hex_viewer_{nullptr}; //!< A pointer to a HexViewer class instance.
+  Tools *tools_{nullptr};          //!< A pointer to a Tools class instance.
 
   const Command kCommands[kCommandsNumber]{
       {"help", &Console::CommandHelp, {{"help", "Show help"}}},

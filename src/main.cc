@@ -45,12 +45,12 @@ int main(int argc, char **argv) {
 
   Tools tools;
   tools.SetBufferSize(kBufferSize);
-  MemoryAccessor memory_accessor(tools);
+  MemoryAccessor memory_accessor(&tools);
   HexViewer hex_viewer;
-  Console console(memory_accessor, hex_viewer, tools);
+  Console console(&memory_accessor, &hex_viewer, &tools);
   console.SetBufferSize(kBufferSize);
 
-  ArgvParser argv_parser(console);
+  ArgvParser argv_parser(&console);
   argv_parser.ParseArgv(argc, argv);
 
   console.Start();

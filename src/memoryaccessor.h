@@ -276,7 +276,7 @@ public:
     }
   };
 
-  explicit MemoryAccessor(Tools &tools) noexcept(false);
+  explicit MemoryAccessor(Tools *tools) noexcept(false);
 
   /*!
    \brief Copy constructor (deleted).
@@ -330,7 +330,7 @@ public:
   void Write(const char *src, size_t address, size_t amount,
              size_t &done_amount) noexcept(false);
 
-  Tools &tools_; //!< A reference to a Tools class instance
+  Tools *tools_{nullptr}; //!< A pointer to a Tools class instance
 
   std::map<std::string, SegmentInfo *>
       special_segment_found_; //!< "Special" segment infos found (segments,

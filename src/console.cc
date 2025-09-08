@@ -243,14 +243,14 @@ static char **completion(const char *text, int start, int end) noexcept {
   else {
     std::string s(rl_line_buffer);
     if (s.substr(0, 4) == "pid " || s.substr(0, 9) == "await -p ") {
-      completion_found_pids = current_console_p->tools_.GetAllPids();
+      completion_found_pids = current_console_p->tools_->GetAllPids();
       matches = rl_completion_matches(text, CompletionPidGenerator);
     } else if (s.substr(0, 5) == "name " || s.substr(0, 6) == "await ") {
-      completion_found_names = current_console_p->tools_.GetAllProcessNames();
+      completion_found_names = current_console_p->tools_->GetAllProcessNames();
       matches = rl_completion_matches(text, CompletionNameGenerator);
     } else if (s.substr(0, 5) == "view ") {
       completion_found_segment_names =
-          current_console_p->memory_accessor_.GetAllSegmentNames();
+          current_console_p->memory_accessor_->GetAllSegmentNames();
       matches = rl_completion_matches(text, CompletionSegmentNameGenerator);
     }
   }
@@ -263,18 +263,18 @@ static char **completion(const char *text, int start, int end) noexcept {
 
 /*!
  \brief Constructor.
- \param [in,out] memory_accessor A reference to an instance of MemoryAccessor
- class. \param [in,out] hex_viewer A reference to an instance of HexViewer
- class. \param [in,out] tools A reference to an instance of Tools struct. \throw
+ \param [in,out] memory_accessor A pointer to an instance of MemoryAccessor
+ class. \param [in,out] hex_viewer A pointer to an instance of HexViewer
+ class. \param [in,out] tools A pointer to an instance of Tools struct. \throw
  std::logic_error If an instance of the class have already been created and it
  is a second instance.
 
- Initializes MemoryAccessor class, HexViewer class and Tools struct references
+ Initializes MemoryAccessor class, HexViewer class and Tools struct pointers
  by values got as parameters. Throws an exception if an instance of the class
- have already been created. Sets one_instance_created_ to true.
+ has already been created. Sets one_instance_created_ to true.
 */
-Console::Console(MemoryAccessor &memory_accessor, HexViewer &hex_viewer,
-                 Tools &tools) noexcept(false)
+Console::Console(MemoryAccessor *memory_accessor, HexViewer *hex_viewer,
+                 Tools *tools) noexcept(false)
     : memory_accessor_(memory_accessor), hex_viewer_(hex_viewer),
       tools_(tools) {
   if (one_instance_created_)
@@ -294,7 +294,7 @@ Console::~Console() noexcept {
   sigaction(SIGINT, nullptr, &old_sigact);
 
   if (old_sigact.sa_handler == memoryaccessor_console_src::CtrlC)
-    tools_.SetSigint(SIG_DFL);
+    tools_->SetSigint(SIG_DFL);
 
   memoryaccessor_console_src::current_console_p = nullptr;
   rl_attempted_completion_function = nullptr;
@@ -319,7 +319,7 @@ void Console::PrintNameVer() const noexcept {
  and print greeting message to stdout.
 */
 void Console::Start() noexcept {
-  if (tools_.SetSigint(memoryaccessor_console_src::CtrlC))
+  if (tools_->SetSigint(memoryaccessor_console_src::CtrlC))
     std::cerr
         << "Couldn't assign handler to SIGINT. Ctrl-C will not be working."
         << std::endl;
@@ -508,7 +508,7 @@ void Console::PrintFileFail(const std::string &path) const noexcept {
 void Console::PrintSegment(const SegmentInfo &segmentInfo) const noexcept {
   std::ostringstream oss;
   oss << std::hex << segmentInfo.start << '-' << segmentInfo.end << ' '
-      << tools_.EncodePermissions(segmentInfo.mode) << ' ' << std::setfill('0')
+      << tools_->EncodePermissions(segmentInfo.mode) << ' ' << std::setfill('0')
       << std::setw(8) << std::right << segmentInfo.offset << ' '
       << std::setfill('0') << std::setw(2) << std::right << segmentInfo.major_id
       << ':' << std::setfill('0') << std::setw(2) << std::right
@@ -713,7 +713,7 @@ uint8_t Console::StoullWrapper(const std::string &s, uint64_t &result,
 uint8_t Console::ParseMapsWrapper() const noexcept {
   try {
     try {
-      memory_accessor_.ParseMaps();
+      memory_accessor_->ParseMaps();
     } catch (const MemoryAccessor::MapsFileEx &ex) {
       PrintError0Arg(Error0Arg::kPrintErrOpenMaps);
       throw WrapperException(1);
@@ -725,7 +725,7 @@ uint8_t Console::ParseMapsWrapper() const noexcept {
       throw WrapperException(1);
     }
   } catch (const WrapperException &ex) {
-    memory_accessor_.Reset();
+    memory_accessor_->Reset();
     return ex.return_code;
   }
 
@@ -740,7 +740,7 @@ uint8_t Console::ParseMapsWrapper() const noexcept {
 */
 uint8_t Console::CheckPidWrapper() const noexcept {
   try {
-    memory_accessor_.CheckPid();
+    memory_accessor_->CheckPid();
   } catch (const MemoryAccessor::PidNotSetEx &ex) {
     PrintError0Arg(Error0Arg::kPidNotSet);
     return 1;
@@ -759,7 +759,7 @@ uint8_t Console::CheckPidWrapper() const noexcept {
 uint8_t Console::CheckSegNumWrapper(const size_t &num) const noexcept {
   try {
     try {
-      memory_accessor_.CheckSegNum(num);
+      memory_accessor_->CheckSegNum(num);
     } catch (const MemoryAccessor::PidNotSetEx &ex) {
       PrintError0Arg(Error0Arg::kPidNotSet);
       throw WrapperException(1);
@@ -790,7 +790,7 @@ uint8_t Console::ReadSegWrapper(char *dst, const size_t &num, size_t start,
                                 size_t amount) const noexcept {
   try {
     try {
-      memory_accessor_.ReadSegment(dst, num, start, amount);
+      memory_accessor_->ReadSegment(dst, num, start, amount);
     } catch (const MemoryAccessor::PidNotSetEx &ex) {
       PrintError0Arg(Error0Arg::kPidNotSet);
       throw WrapperException(1);
@@ -827,7 +827,7 @@ uint8_t Console::WriteSegWrapper(char *src, const size_t &num, size_t start,
                                  size_t amount) const noexcept {
   try {
     try {
-      memory_accessor_.WriteSegment(src, num, start, amount);
+      memory_accessor_->WriteSegment(src, num, start, amount);
     } catch (const MemoryAccessor::PidNotSetEx &ex) {
       PrintError0Arg(Error0Arg::kPidNotSet);
       throw WrapperException(1);
@@ -863,7 +863,7 @@ uint8_t Console::ReadWrapper(char *dst, size_t address, size_t amount,
                              size_t &done_amount) const noexcept {
   try {
     try {
-      memory_accessor_.Read(dst, address, amount, done_amount);
+      memory_accessor_->Read(dst, address, amount, done_amount);
     } catch (const MemoryAccessor::PidNotSetEx &ex) {
       PrintError0Arg(Error0Arg::kPidNotSet);
       throw WrapperException(1);
@@ -899,7 +899,7 @@ uint8_t Console::WriteWrapper(char *src, size_t address, size_t amount,
                               size_t &done_amount) const noexcept {
   try {
     try {
-      memory_accessor_.Write(src, address, amount, done_amount);
+      memory_accessor_->Write(src, address, amount, done_amount);
     } catch (const MemoryAccessor::PidNotSetEx &ex) {
       PrintError0Arg(Error0Arg::kPidNotSet);
       throw WrapperException(1);
@@ -934,8 +934,8 @@ uint8_t Console::WriteWrapper(char *src, size_t address, size_t amount,
 uint8_t Console::DiffReadSeg(std::unique_ptr<char[]> &mem_dump,
                              const size_t &num) noexcept {
   mem_dump =
-      std::make_unique<char[]>(memory_accessor_.segment_infos_[num].end -
-                               memory_accessor_.segment_infos_[num].start);
+      std::make_unique<char[]>(memory_accessor_->segment_infos_[num].end -
+                               memory_accessor_->segment_infos_[num].start);
   switch (ReadSegWrapper(mem_dump.get(), num)) {
   case 1:
     return 1;
@@ -976,7 +976,7 @@ void Console::DiffCompare(const char *old_dump, const char *new_dump,
 
     while (amount) {
       found =
-          tools_.FindDifferencesOfLen(old_dump, new_dump, amount, done, length);
+          tools_->FindDifferencesOfLen(old_dump, new_dump, amount, done, length);
       old_dump += done;
       new_dump += done;
       amount -= done;
@@ -984,9 +984,9 @@ void Console::DiffCompare(const char *old_dump, const char *new_dump,
 
       if (found[0] && found[1]) {
         std::cout << "Found:\n";
-        hex_viewer_.PrintHex(&std::cout, found[0].get(), length, start_addr,
+        hex_viewer_->PrintHex(&std::cout, found[0].get(), length, start_addr,
                              true);
-        hex_viewer_.PrintHex(&std::cout, found[1].get(), length, start_addr,
+        hex_viewer_->PrintHex(&std::cout, found[1].get(), length, start_addr,
                              true);
 
         if (!replacement.empty()) {
@@ -1047,7 +1047,7 @@ Console::DiffNewNext(size_t &j,
   j++;
   if (DiffReadSeg(mem_dump, j))
     return 2;
-  if (j == memory_accessor_.segment_infos_.size())
+  if (j == memory_accessor_->segment_infos_.size())
     return 1;
   return 0;
 }
@@ -1103,7 +1103,7 @@ void Console::CommandName(const Command &parent,
     if (StoiWrapper(args[1], pid_num, "pid number") != 0)
       return;
 
-  std::unordered_set<pid_t> pids{tools_.FindPidsByName(args[0])};
+  std::unordered_set<pid_t> pids{tools_->FindPidsByName(args[0])};
   switch (pids.size()) {
   case 0:
     std::cerr << "No PID found by name: " + args[0] << std::endl;
@@ -1154,7 +1154,7 @@ void Console::CommandPid(const Command &parent,
     return;
 
   try {
-    memory_accessor_.SetPid(pid);
+    memory_accessor_->SetPid(pid);
     std::cout << "Set PID: " << args[0] << std::endl;
   } catch (const MemoryAccessor::ErrCheckingPidEx &ex) {
     PrintError0Arg(Error0Arg::kErrCheckingPid);
@@ -1171,7 +1171,7 @@ void Console::CommandPid(const Command &parent,
 
   bool any_special_segment_found{false};
   for (const std::pair<std::string, SegmentInfo *> &p :
-       memory_accessor_.special_segment_found_) {
+       memory_accessor_->special_segment_found_) {
     if (std::get<1>(p)) {
       if (!any_special_segment_found) {
         any_special_segment_found = true;
@@ -1184,8 +1184,8 @@ void Console::CommandPid(const Command &parent,
     std::cout << std::endl;
 
   std::cout << "Found "
-            << std::to_string(memory_accessor_.segment_infos_.size())
-            << (memory_accessor_.segment_infos_.size() == 1 ? " segment"
+            << std::to_string(memory_accessor_->segment_infos_.size())
+            << (memory_accessor_->segment_infos_.size() == 1 ? " segment"
                                                             : " segments")
             << " in total." << std::endl;
 }
@@ -1200,8 +1200,8 @@ void Console::CommandPid(const Command &parent,
 void Console::CommandMaps(const Command &parent,
                           const std::vector<std::string> &args) noexcept {
   try {
-    memory_accessor_.CheckPid();
-    PrintSegments(memory_accessor_.segment_infos_);
+    memory_accessor_->CheckPid();
+    PrintSegments(memory_accessor_->segment_infos_);
   } catch (const MemoryAccessor::PidNotSetEx &ex) {
     PrintError0Arg(Error0Arg::kPidNotSet);
   }
@@ -1266,7 +1266,7 @@ void Console::CommandView(const Command &parent,
   if (CheckPidWrapper() != 0)
     return;
 
-  size_t num{0}, segment_infos_size{memory_accessor_.segment_infos_.size()};
+  size_t num{0}, segment_infos_size{memory_accessor_->segment_infos_.size()};
   try {
     num = std::stoull(segment);
     if (num >= segment_infos_size) {
@@ -1277,7 +1277,7 @@ void Console::CommandView(const Command &parent,
     size_t i{0};
 
     for (; i < segment_infos_size; i++) {
-      if (memory_accessor_.segment_infos_[i].path == segment) {
+      if (memory_accessor_->segment_infos_[i].path == segment) {
         num = i;
         break;
       }
@@ -1305,8 +1305,8 @@ void Console::CommandView(const Command &parent,
   if (CheckSegNumWrapper(num) != 0)
     return;
 
-  size_t size{memory_accessor_.segment_infos_[num].end -
-              memory_accessor_.segment_infos_[num].start},
+  size_t size{memory_accessor_->segment_infos_[num].end -
+              memory_accessor_->segment_infos_[num].start},
       done_size{0};
   auto buf{std::make_unique<char[]>(buffer_size_)};
   uint8_t last_wrapper_exit_code{0};
@@ -1343,17 +1343,17 @@ void Console::CommandView(const Command &parent,
       if (last_wrapper_exit_code != 0)
         break;
 
-      hex_viewer_.PrintHex(
+      hex_viewer_->PrintHex(
           stream_p, buf.get(), buffer_size_,
-          memory_accessor_.segment_infos_[num].start + done_size, hex);
+          memory_accessor_->segment_infos_[num].start + done_size, hex);
       done_size += buffer_size_;
     }
     if (size && last_wrapper_exit_code == 0) {
       last_wrapper_exit_code = ReadSegWrapper(buf.get(), num, done_size);
       if (last_wrapper_exit_code == 0)
-        hex_viewer_.PrintHex(
+        hex_viewer_->PrintHex(
             stream_p, buf.get(), buffer_size_,
-            memory_accessor_.segment_infos_[num].start + done_size, hex);
+            memory_accessor_->segment_infos_[num].start + done_size, hex);
     }
   }
 
@@ -1480,7 +1480,7 @@ void Console::CommandRead(const Command &parent,
           ReadWrapper(buf.get(), address, buffer_size_, temp_done_amount);
       if (last_wrapper_exit_code != 0)
         break;
-      hex_viewer_.PrintHex(stream_p, buf.get(), temp_done_amount, address, hex);
+      hex_viewer_->PrintHex(stream_p, buf.get(), temp_done_amount, address, hex);
       done_amount += temp_done_amount;
       address += temp_done_amount;
     }
@@ -1488,7 +1488,7 @@ void Console::CommandRead(const Command &parent,
       last_wrapper_exit_code =
           ReadWrapper(buf.get(), address, amount, temp_done_amount);
       if (last_wrapper_exit_code == 0) {
-        hex_viewer_.PrintHex(stream_p, buf.get(), temp_done_amount, address,
+        hex_viewer_->PrintHex(stream_p, buf.get(), temp_done_amount, address,
                              hex);
         done_amount += temp_done_amount;
         address += temp_done_amount;
@@ -1500,7 +1500,7 @@ void Console::CommandRead(const Command &parent,
     if (raw)
       stream_p->write(buf.get(), temp_done_amount);
     else
-      hex_viewer_.PrintHex(stream_p, buf.get(), temp_done_amount, address, hex);
+      hex_viewer_->PrintHex(stream_p, buf.get(), temp_done_amount, address, hex);
     done_amount += temp_done_amount;
   }
 
@@ -1683,7 +1683,7 @@ void Console::CommandDiff(const Command &parent,
   uint8_t last_exit_code{0};
   size_t num{0};     // used in for loops
   size_t i{0}, j{0}; // i - old, j - new
-  size_t old_segments_amount{memory_accessor_.segment_infos_.size()};
+  size_t old_segments_amount{memory_accessor_->segment_infos_.size()};
   std::vector<SegmentInfo> old_segment_infos;
   size_t o_offs{0}, n_offs{0}, amount{0};
   std::unique_ptr<char[]> mem_dump;
@@ -1721,18 +1721,18 @@ void Console::CommandDiff(const Command &parent,
       goto diff_return;
     }
 
-    old_segments_amount = memory_accessor_.segment_infos_.size();
-    old_segment_infos = memory_accessor_.segment_infos_;
+    old_segments_amount = memory_accessor_->segment_infos_.size();
+    old_segment_infos = memory_accessor_->segment_infos_;
 
     if (ParseMapsWrapper() != 0)
       break;
 
     // Now have:
-    // Maps - old_segment_infos and new memory_accessor_.segment_infos_
+    // Maps - old_segment_infos and new memory_accessor_->segment_infos_
     // Segment amounts - old_segments_amount and new
-    // memory_accessor_.segment_infos_.size() Old segments dumped - full_dump
+    // memory_accessor_->segment_infos_.size() Old segments dumped - full_dump
 
-    if (!old_segments_amount || !memory_accessor_.segment_infos_.size())
+    if (!old_segments_amount || !memory_accessor_->segment_infos_.size())
       continue;
 
     // It makes no sense checking anything below the first (0th) old segment
@@ -1756,14 +1756,14 @@ void Console::CommandDiff(const Command &parent,
 
       // Old segment is below the new -> erase old, i++, continue
       if (old_segment_infos[i].end <=
-          memory_accessor_.segment_infos_[j].start) {
+          memory_accessor_->segment_infos_[j].start) {
         if (DiffOldNext(i, old_segments_amount, it, full_dump))
           break;
         continue;
       }
 
       // New segment is below the old -> push new, j++, continue
-      if (memory_accessor_.segment_infos_[j].end <=
+      if (memory_accessor_->segment_infos_[j].end <=
           old_segment_infos[i].start) {
         last_exit_code = DiffNewNext(j, it, mem_dump, full_dump);
         if (last_exit_code == 0)
@@ -1776,21 +1776,21 @@ void Console::CommandDiff(const Command &parent,
 
       // The beginning of "collision" - max start of 2 segments. In other
       // segment adding offset is needed.
-      if (memory_accessor_.segment_infos_[j].start <=
+      if (memory_accessor_->segment_infos_[j].start <=
           old_segment_infos[i].start) {
         n_offs = old_segment_infos[i].start -
-                 memory_accessor_.segment_infos_[j].start;
+                 memory_accessor_->segment_infos_[j].start;
       } else {
-        o_offs = memory_accessor_.segment_infos_[j].start -
+        o_offs = memory_accessor_->segment_infos_[j].start -
                  old_segment_infos[i].start;
       }
 
       // The end of "collision" - min end of 2 segments.
       // Therefore, amount = (min end) - (related offset).
       // The segment, in which the end is reached, is replaced by a new one.
-      if (memory_accessor_.segment_infos_[j].end <= old_segment_infos[i].end) {
-        amount = memory_accessor_.segment_infos_[j].end -
-                 memory_accessor_.segment_infos_[j].start - n_offs;
+      if (memory_accessor_->segment_infos_[j].end <= old_segment_infos[i].end) {
+        amount = memory_accessor_->segment_infos_[j].end -
+                 memory_accessor_->segment_infos_[j].start - n_offs;
         DiffCompare(it->get(), mem_dump.get(), o_offs, n_offs, amount,
                     old_segment_infos[i].start + o_offs, length, replacement);
         last_exit_code = DiffNewNext(j, it, mem_dump, full_dump);
@@ -1801,7 +1801,7 @@ void Console::CommandDiff(const Command &parent,
         else
           goto diff_return;
         // If ends are the same, both segments are updated
-        if (memory_accessor_.segment_infos_[j].end ==
+        if (memory_accessor_->segment_infos_[j].end ==
             old_segment_infos[i].end) {
           if (DiffOldNext(i, old_segments_amount, it, full_dump))
             break;
@@ -1818,7 +1818,7 @@ void Console::CommandDiff(const Command &parent,
     // Proceeding remaining segments
     while (i < old_segments_amount)
       DiffOldNext(i, old_segments_amount, it, full_dump);
-    if (j < memory_accessor_.segment_infos_.size())
+    if (j < memory_accessor_->segment_infos_.size())
       for (;;) {
         last_exit_code = DiffNewNext(j, it, mem_dump, full_dump);
         if (last_exit_code == 1)
@@ -1893,7 +1893,7 @@ void Console::CommandAwait(const Command &parent,
         break;
       }
 
-      switch (tools_.PidExists(pid)) {
+      switch (tools_->PidExists(pid)) {
       case 0:
         std::cout << "PID was found: " << pid_str << std::endl;
         return;
@@ -1911,7 +1911,7 @@ void Console::CommandAwait(const Command &parent,
         break;
       }
 
-      switch (tools_.ProcessExists(name)) {
+      switch (tools_->ProcessExists(name)) {
       case 0:
         std::cout << "Process was found: " << name << std::endl;
         return;

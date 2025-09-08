@@ -40,15 +40,15 @@ bool MemoryAccessor::one_instance_created_{false};
 
 /*!
  \brief Constructor.
- \param [in,out] tools A reference to an instance of Tools struct.
+ \param [in,out] tools A pointer to an instance of Tools struct.
  \throw std::logic_error If an instance of the class have already been created
  and it is a second instance.
 
- Initializes Tools struct reference by value got as an parameter. Throws an
+ Initializes Tools struct pointer by value got as an parameter. Throws an
  exception if an instance of the class have already been created. Sets
  one_instance_created_ to true.
 */
-MemoryAccessor::MemoryAccessor(Tools &tools) noexcept(false) : tools_(tools) {
+MemoryAccessor::MemoryAccessor(Tools *tools) noexcept(false) : tools_(tools) {
   if (one_instance_created_)
     throw std::logic_error(
         "Only one instance of MemoryAccessor can be created");
@@ -83,7 +83,7 @@ pid_t MemoryAccessor::GetPid() const noexcept(false) {
  Reset all objects of an instance that are related to PID and set new PID.
 */
 void MemoryAccessor::SetPid(const pid_t &pid) noexcept(false) {
-  switch (tools_.PidExists(pid)) {
+  switch (tools_->PidExists(pid)) {
   case 0:
     break;
   case 1:
@@ -143,14 +143,14 @@ void MemoryAccessor::ParseMaps() noexcept(false) {
         permissions >> segmentInfo.offset >> segmentInfo.major_id >> trash >>
         segmentInfo.minor_id >> std::dec >> segmentInfo.inode_id;
 
-    segmentInfo.mode = tools_.DecodePermissions(permissions);
+    segmentInfo.mode = tools_->DecodePermissions(permissions);
 
     if (iss.fail() || iss.bad() || segmentInfo.mode == 255) {
       ResetSegments();
       throw BadMapsEx();
     }
 
-    segmentInfo.mode = tools_.DecodePermissions(permissions);
+    segmentInfo.mode = tools_->DecodePermissions(permissions);
 
     do {
       iss >> trash;

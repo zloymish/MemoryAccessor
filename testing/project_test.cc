@@ -61,12 +61,12 @@ constexpr size_t kBufferSize{0x1000}; //!< Size of buffers used.
 
 Tools tools; //!< tools instance to perform testing on.
 MemoryAccessor
-    memory_accessor(tools); //!< memory_accessor instance to perform testing on.
+    memory_accessor(&tools); //!< memory_accessor instance to perform testing on.
 HexViewer hex_viewer;       //!< hex_viewer instance to perform testing on.
-Console console(memory_accessor, hex_viewer,
-                tools); //!< console instance to perform testing on.
+Console console(&memory_accessor, &hex_viewer,
+                &tools); //!< console instance to perform testing on.
 ArgvParser
-    argv_parser(console); //!< argv_parser instance to perform testing on.
+    argv_parser(&console); //!< argv_parser instance to perform testing on.
 
 /*!
  \brief Main function.

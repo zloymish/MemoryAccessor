@@ -41,11 +41,11 @@ class ArgvParser {
 public:
   /*!
    \brief Constructor.
-   \param [in,out] console An reference to an instance of Console class.
+   \param [in,out] console An pointer to an instance of Console class.
 
-   Initializes Console class reference by value got as a parameter.
+   Initializes Console class pointer by value got as a parameter.
   */
-  explicit ArgvParser(Console &console) noexcept : console_(console) {}
+  explicit ArgvParser(Console *console) noexcept : console_(console) {}
 
   void ParseArgv(const int &argc, char **argv) noexcept;
 
@@ -65,7 +65,7 @@ private:
   void KeyCommand(const int &argc, char **argv) noexcept;
   void KeyFile(const int &argc, char **argv) noexcept;
 
-  Console &console_; //!< A reference to a Console class instance.
+  Console *console_{nullptr}; //!< A pointer to a Console class instance.
   const std::vector<std::array<std::string, 2>> kKeyManuals{
       {"--help", "show help"},
       {"--command COMMAND", "do command"},

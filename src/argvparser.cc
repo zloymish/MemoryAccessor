@@ -64,11 +64,11 @@ void ArgvParser::ParseArgv(const int &argc, char **argv) noexcept {
  every key properly formatted.
 */
 void ArgvParser::Usage() const noexcept {
-  console_.PrintNameVer();
-  std::cout << console_.kProjectDescription << std::endl;
+  console_->PrintNameVer();
+  std::cout << console_->kProjectDescription << std::endl;
 
   std::cout << std::endl;
-  std::cout << "Usage: " << console_.kProjectName << " [OPTION]..."
+  std::cout << "Usage: " << console_->kProjectName << " [OPTION]..."
             << std::endl;
   std::cout << std::endl;
 
@@ -91,7 +91,7 @@ void ArgvParser::Usage() const noexcept {
  different error messages.
 */
 void ArgvParser::PrintErrPrefix() const noexcept {
-  std::cerr << console_.kProjectName << ": ";
+  std::cerr << console_->kProjectName << ": ";
 }
 
 /*!
@@ -183,7 +183,7 @@ void ArgvParser::KeyCommand(const int &argc, char **argv) noexcept {
   if (argc < 3)
     ArgReq("--command");
 
-  console_.HandleCommand(std::string(argv[2]));
+  console_->HandleCommand(std::string(argv[2]));
 
   std::exit(0);
 }
@@ -213,7 +213,7 @@ void ArgvParser::KeyFile(const int &argc, char **argv) noexcept {
 
   std::string line;
   while (std::getline(file, line))
-    console_.HandleCommand(line);
+    console_->HandleCommand(line);
 
   std::exit(0);
 }
