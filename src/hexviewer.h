@@ -24,6 +24,7 @@
 #ifndef MEMORYACCESSOR_SRC_HEXVIEWER_H_
 #define MEMORYACCESSOR_SRC_HEXVIEWER_H_
 
+#include <cstdint>
 #include <ostream>
 
 /*!

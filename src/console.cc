@@ -31,6 +31,7 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 
+#include <algorithm>
 #include <array>
 #include <cmath> // log10
 #include <cstdint>
