@@ -508,7 +508,7 @@ void Console::PrintFileFail(const std::string &path) const noexcept {
 void Console::PrintSegment(const SegmentInfo &segmentInfo) const noexcept {
   std::ostringstream oss;
   oss << std::hex << segmentInfo.start_ << '-' << segmentInfo.end_ << ' '
-      << tools_->EncodePermissions(segmentInfo.mode_) << ' ' << std::setfill('0')
+      << segmentInfo.EncodePermissions() << ' ' << std::setfill('0')
       << std::setw(8) << std::right << segmentInfo.offset_ << ' '
       << std::setfill('0') << std::setw(2) << std::right << segmentInfo.major_id_
       << ':' << std::setfill('0') << std::setw(2) << std::right

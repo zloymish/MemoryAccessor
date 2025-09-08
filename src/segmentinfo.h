@@ -36,6 +36,16 @@
 */
 class SegmentInfo {
 public:
+  // SegmentInfo() = default;
+  // SegmentInfo(const SegmentInfo &) = default;
+  // SegmentInfo(SegmentInfo &&) = default;
+  // SegmentInfo &operator=(const SegmentInfo &) = default;
+  // SegmentInfo &operator=(SegmentInfo &&) = default;
+  // ~SegmentInfo() = default;
+
+  uint8_t DecodePermissions(const std::string &permissions) noexcept;
+  std::string EncodePermissions() const noexcept;
+
   size_t start_{0}; //!< Start address
   size_t
       end_{0}; //!< End address (first address that does not belong to the segment)
@@ -52,6 +62,12 @@ public:
                    //!< ROM)
 
   std::string path_; //!< Path or name
+
+private:
+  static constexpr std::string kModes{"rwxs"}; //!< Permissions that give 1 while decoding
+                                    //!< std::string to number.
+  static constexpr uint8_t kModesLength{static_cast<uint8_t>(
+      kModes.length())}; //!< Length of permissions' std::string.
 };
 
 #endif // MEMORYACCESSOR_SRC_SEGMENTINFO_H_

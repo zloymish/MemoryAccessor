@@ -143,14 +143,14 @@ void MemoryAccessor::ParseMaps() noexcept(false) {
         permissions >> segmentInfo.offset_ >> segmentInfo.major_id_ >> trash >>
         segmentInfo.minor_id_ >> std::dec >> segmentInfo.inode_id_;
 
-    segmentInfo.mode_ = tools_->DecodePermissions(permissions);
+    segmentInfo.DecodePermissions(permissions);
 
     if (iss.fail() || iss.bad() || segmentInfo.mode_ == 255) {
       ResetSegments();
       throw BadMapsEx();
     }
 
-    segmentInfo.mode_ = tools_->DecodePermissions(permissions);
+    segmentInfo.DecodePermissions(permissions);
 
     do {
       iss >> trash;

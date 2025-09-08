@@ -48,6 +48,10 @@ namespace memoryaccessor_testing {
 
   Functions and variables that are used in tests related to Tools class.
 */
+
+namespace segmentinfo {
+} // namespace segmentinfo
+
 namespace tools {
 
 extern "C" {

@@ -62,18 +62,11 @@ public:
   uint8_t PidExists(const pid_t &pid) const noexcept;
   uint8_t ProcessExists(const std::string &pname) const noexcept;
 
-  uint8_t DecodePermissions(const std::string &permissions) const noexcept;
-  std::string EncodePermissions(const uint8_t &mode) const noexcept;
-
   std::array<std::unique_ptr<char[]>, 2>
   FindDifferencesOfLen(const char *old_str, const char *new_str, size_t str_len,
                        size_t &done, const size_t &len) const noexcept;
 
 private:
-  const std::string kModes{"rwxs"}; //!< Permissions that give 1 while decoding
-                                    //!< std::string to number.
-  const uint8_t kModesLength{static_cast<uint8_t>(
-      kModes.length())}; //!< Length of permissions' std::string.
   size_t buffer_size_{
       0x1000}; //!< Size of buffers used (less than 128 may cause bugs).
 };

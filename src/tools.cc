@@ -198,61 +198,6 @@ uint8_t Tools::ProcessExists(const std::string &pname) const noexcept {
 }
 
 /*!
- \brief Get permissions stored as uint8_t from std::string.
- \param [in] permissions Permissions stored as std::string, for example, "rwxp".
- Some additional characters after are not prohibited. \return Value where the
- last 4 bits represent permissions (rwxs are 1, others are 0). If the input
- std::string is too short or an unexpected character is found, the return value
- is -1 (255).
-
- Process permissions of a memory segment from std::string to uint8_t.
-*/
-uint8_t
-Tools::DecodePermissions(const std::string &permissions) const noexcept {
-  if (kModesLength > permissions.length())
-    return -1;
-
-  uint8_t mode{0}, i{0};
-
-  for (; i < kModesLength - 1; i++) {
-    if (permissions[i] == kModes[i])
-      mode |= 1 << (kModesLength - 1 - i);
-    else if (permissions[i] != '-')
-      return -1;
-  }
-
-  if (permissions[i] == kModes[i])
-    mode |= 1 << (kModesLength - 1 - i);
-  else if (permissions[i] != 'p')
-    return -1;
-
-  return mode;
-}
-
-/*!
- \brief Get permissions stored as std::string from uint8_t.
- \param [in] mode Value, where the last 4 bits represent permissions (rwxs are
- 1, others are 0). \return Permissions stored as std::string, for example,
- "rwxp".
-
- Process permissions of a memory segment from uint8_t to std::string.
-*/
-std::string Tools::EncodePermissions(const uint8_t &mode) const noexcept {
-  std::string permissions;
-  for (uint8_t i{0}; i < kModesLength - 1; i++) {
-    if (mode & (1 << (kModesLength - 1 - i)))
-      permissions.push_back(kModes[i]);
-    else
-      permissions.push_back('-');
-  }
-  if (mode & 1)
-    permissions.push_back('s');
-  else
-    permissions.push_back('p');
-  return permissions;
-}
-
-/*!
  \brief Find differences of given length comparing two arrays of char.
  \param [in] old_str First "old" array of char.
  \param [in] new_str Second "new" array of char.

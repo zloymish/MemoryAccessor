@@ -59,14 +59,15 @@ char **argv{nullptr}; //!< Array of arguments sent with the program.
 
 constexpr size_t kBufferSize{0x1000}; //!< Size of buffers used.
 
-Tools tools; //!< tools instance to perform testing on.
+Tools tools; //!< Tools instance to perform testing on.
 MemoryAccessor
-    memory_accessor(&tools); //!< memory_accessor instance to perform testing on.
-HexViewer hex_viewer;       //!< hex_viewer instance to perform testing on.
+    memory_accessor(&tools); //!< MemoryAccessor instance to perform testing on.
+HexViewer hex_viewer;       //!< HexViewer instance to perform testing on.
 Console console(&memory_accessor, &hex_viewer,
-                &tools); //!< console instance to perform testing on.
+                &tools); //!< Console instance to perform testing on.
 ArgvParser
-    argv_parser(&console); //!< argv_parser instance to perform testing on.
+    argv_parser(&console); //!< ArgvParser instance to perform testing on.
+SegmentInfo segment_info; //!< SegmentInfo instance to perform testing on.
 
 /*!
  \brief Main function.
@@ -97,6 +98,84 @@ int main(int argc, char **argv) {
 
   return res + client_stuff_return_code;
 }
+
+TEST_SUITE_BEGIN("SegmentInfo");
+
+TEST_CASE("Decode permissions: return zero") {
+  REQUIRE(segment_info.DecodePermissions("---p") == 0);
+  REQUIRE(segment_info.mode_ == 0);
+}
+
+TEST_CASE("Decode permissions: full") {
+  REQUIRE(segment_info.DecodePermissions("rwxs") == 0);
+  REQUIRE(segment_info.mode_ == 15);
+}
+
+TEST_CASE("Decode permissions: various") {
+  REQUIRE(segment_info.DecodePermissions("--xp") == 0);
+  REQUIRE(segment_info.mode_ == 2);
+
+  REQUIRE(segment_info.DecodePermissions("-w-p") == 0);
+  REQUIRE(segment_info.mode_ == 4);
+
+  REQUIRE(segment_info.DecodePermissions("r--p") == 0);
+  REQUIRE(segment_info.mode_ == 8);
+  
+  REQUIRE(segment_info.DecodePermissions("r--s") == 0);
+  REQUIRE(segment_info.mode_ == 9);
+  
+  REQUIRE(segment_info.DecodePermissions("r-xp") == 0);
+  REQUIRE(segment_info.mode_ == 10);
+}
+
+TEST_CASE("Decode permissions: long") {
+  REQUIRE(segment_info.DecodePermissions("rwxp123456") == 0);
+  REQUIRE(segment_info.mode_ == 14);
+}
+
+TEST_CASE("Decode permissions: short") {
+  REQUIRE(segment_info.DecodePermissions("r") == 0);
+  REQUIRE(segment_info.mode_ == 255);
+}
+
+TEST_CASE("Decode permissions: invalid") {
+  REQUIRE(segment_info.DecodePermissions("rwxa") == 0);
+  REQUIRE(segment_info.mode_ == 255);
+}
+
+TEST_CASE("Encode permissions: zero") {
+  segment_info.mode_ = 0;
+  REQUIRE(segment_info.EncodePermissions() == "---p");
+}
+
+TEST_CASE("Encode permissions: full") {
+  segment_info.mode_ = 15;
+  REQUIRE(segment_info.EncodePermissions() == "rwxs");
+}
+
+TEST_CASE("Encode permissions: various") {
+  segment_info.mode_ = 1;
+  REQUIRE(segment_info.EncodePermissions() == "---s");
+  
+  segment_info.mode_ = 6;
+  REQUIRE(segment_info.EncodePermissions() == "-wxp");
+  
+  segment_info.mode_ = 7;
+  REQUIRE(segment_info.EncodePermissions() == "-wxs");
+  
+  segment_info.mode_ = 11;
+  REQUIRE(segment_info.EncodePermissions() == "r-xs");
+  
+  segment_info.mode_ = 13;
+  REQUIRE(segment_info.EncodePermissions() == "rw-s");
+}
+
+TEST_CASE("Encode permissions: additional bits") {
+  segment_info.mode_ = 20;
+  REQUIRE(segment_info.EncodePermissions() == "-w-p");
+}
+
+TEST_SUITE_END();
 
 TEST_SUITE_BEGIN("Tools");
 
@@ -221,54 +300,6 @@ TEST_CASE("Process exists: self name") {
 TEST_CASE("Process with name does not exist") {
   REQUIRE(tools.ProcessExists(std::string(16, 'a')) ==
           1); // using pgrep limit to 15 chars
-}
-
-TEST_CASE("Decode permissions: return zero") {
-  REQUIRE(tools.DecodePermissions("---p") == 0);
-}
-
-TEST_CASE("Decode permissions: full") {
-  REQUIRE(tools.DecodePermissions("rwxs") == 15);
-}
-
-TEST_CASE("Decode permissions: various") {
-  REQUIRE(tools.DecodePermissions("--xp") == 2);
-  REQUIRE(tools.DecodePermissions("-w-p") == 4);
-  REQUIRE(tools.DecodePermissions("r--p") == 8);
-  REQUIRE(tools.DecodePermissions("r--s") == 9);
-  REQUIRE(tools.DecodePermissions("r-xp") == 10);
-}
-
-TEST_CASE("Decode permissions: long") {
-  REQUIRE(tools.DecodePermissions("rwxp123456") == 14);
-}
-
-TEST_CASE("Decode permissions: short") {
-  REQUIRE(tools.DecodePermissions("r") == 255);
-}
-
-TEST_CASE("Decode permissions: invalid") {
-  REQUIRE(tools.DecodePermissions("rwxa") == 255);
-}
-
-TEST_CASE("Encode permissions: zero") {
-  REQUIRE(tools.EncodePermissions(0) == "---p");
-}
-
-TEST_CASE("Encode permissions: full") {
-  REQUIRE(tools.EncodePermissions(15) == "rwxs");
-}
-
-TEST_CASE("Encode permissions: various") {
-  REQUIRE(tools.EncodePermissions(1) == "---s");
-  REQUIRE(tools.EncodePermissions(6) == "-wxp");
-  REQUIRE(tools.EncodePermissions(7) == "-wxs");
-  REQUIRE(tools.EncodePermissions(11) == "r-xs");
-  REQUIRE(tools.EncodePermissions(13) == "rw-s");
-}
-
-TEST_CASE("Encode permissions: additional bits") {
-  REQUIRE(tools.EncodePermissions(20) == "-w-p");
 }
 
 TEST_CASE("Find differences: zeros") {
@@ -1472,7 +1503,7 @@ TEST_CASE("Handle command: maps") {
       std::string(std::log10(memory_accessor.segment_infos_.size() - 1), ' ') +
           "0. " + memoryaccessor_testing::console::size_t_to_hex(si0.start_) +
           "-" + memoryaccessor_testing::console::size_t_to_hex(si0.end_) + " " +
-          tools.EncodePermissions(si0.mode_) + " " +
+          si0.EncodePermissions() + " " +
           memoryaccessor_testing::console::size_t_to_hex(si0.offset_, 8) + " " +
           memoryaccessor_testing::console::size_t_to_hex(si0.major_id_, 2) +
           ":" +

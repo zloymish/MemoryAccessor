@@ -7,12 +7,12 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
 find_package(Readline)
 include_directories(${Readline_INCLUDE_DIR})
  
-add_executable(MemoryAccessor src/main.cc src/argvparser.cc src/console.cc src/hexviewer.cc src/memoryaccessor.cc src/tools.cc)
+add_executable(MemoryAccessor src/main.cc src/argvparser.cc src/console.cc src/hexviewer.cc src/memoryaccessor.cc src/segmentinfo.cc src/tools.cc)
 target_link_libraries(MemoryAccessor ${Readline_LIBRARY})
 
 target_compile_options(MemoryAccessor PRIVATE -std=c++20)
 
-add_executable(project_test testing/project_test.cc src/argvparser.cc src/console.cc src/hexviewer.cc src/memoryaccessor.cc src/tools.cc)
+add_executable(project_test testing/project_test.cc src/argvparser.cc src/console.cc src/hexviewer.cc src/memoryaccessor.cc src/segmentinfo.cc src/tools.cc)
 
 target_link_libraries(project_test ${Readline_LIBRARY})
 
