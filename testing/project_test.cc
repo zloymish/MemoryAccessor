@@ -418,7 +418,7 @@ TEST_CASE("Address in segment") {
     memory_accessor.SetPid(getpid());
     memory_accessor.ParseMaps();
     REQUIRE(memory_accessor.AddressInSegment(
-                memory_accessor.segment_infos_[0].start) == 0);
+                memory_accessor.segment_infos_[0].start_) == 0);
   } catch (...) {
     REQUIRE(false);
   }
@@ -563,7 +563,7 @@ size_t seg_num_by_name(const std::string &name,
                        const std::vector<SegmentInfo> &infos) {
   size_t size{infos.size()};
   for (size_t i{0}; i < size; i++)
-    if (infos[i].path == name)
+    if (infos[i].path_ == name)
       return i;
   return SIZE_MAX;
 }
@@ -578,8 +578,8 @@ TEST_CASE("Read segment to array and compare to initial array") {
     memory_accessor.ParseMaps();
     REQUIRE(memory_accessor.segment_infos_.size() != 0);
 
-    size_t seg_size{memory_accessor.segment_infos_[0].end -
-                    memory_accessor.segment_infos_[0].start};
+    size_t seg_size{memory_accessor.segment_infos_[0].end_ -
+                    memory_accessor.segment_infos_[0].start_};
 
     auto arr1 = std::make_unique<char[]>(seg_size);
     auto arr2 = std::make_unique<char[]>(seg_size);
@@ -609,8 +609,8 @@ TEST_CASE("Read same segment to arrays in different cases") {
     memory_accessor.SetPid(child);
     memory_accessor.ParseMaps();
     REQUIRE(memory_accessor.segment_infos_.size() != 0);
-    size_t seg_size1{memory_accessor.segment_infos_[0].end -
-                     memory_accessor.segment_infos_[0].start};
+    size_t seg_size1{memory_accessor.segment_infos_[0].end_ -
+                     memory_accessor.segment_infos_[0].start_};
     auto arr1 = std::make_unique<char[]>(seg_size1);
     memory_accessor.ReadSegment(arr1.get(), 0);
 
@@ -618,8 +618,8 @@ TEST_CASE("Read same segment to arrays in different cases") {
     memory_accessor.SetPid(child);
     memory_accessor.ParseMaps();
     REQUIRE(memory_accessor.segment_infos_.size() != 0);
-    size_t seg_size2{memory_accessor.segment_infos_[0].end -
-                     memory_accessor.segment_infos_[0].start};
+    size_t seg_size2{memory_accessor.segment_infos_[0].end_ -
+                     memory_accessor.segment_infos_[0].start_};
     auto arr2 = std::make_unique<char[]>(seg_size2);
     memory_accessor.ReadSegment(arr2.get(), 0);
 
@@ -642,8 +642,8 @@ TEST_CASE("Read segment to array and compare to parts") {
     memory_accessor.ParseMaps();
     REQUIRE(memory_accessor.segment_infos_.size() != 0);
 
-    size_t seg_size{memory_accessor.segment_infos_[0].end -
-                    memory_accessor.segment_infos_[0].start};
+    size_t seg_size{memory_accessor.segment_infos_[0].end_ -
+                    memory_accessor.segment_infos_[0].start_};
     auto arr = std::make_unique<char[]>(seg_size);
     memory_accessor.ReadSegment(arr.get(), 0);
 
@@ -702,7 +702,7 @@ TEST_CASE("Read segment: exceptions") {
 
   try {
     memory_accessor.ReadSegment(nullptr, 0,
-                                memory_accessor.segment_infos_[0].end);
+                                memory_accessor.segment_infos_[0].end_);
     REQUIRE(false);
   } catch (const MemoryAccessor::AddressNotInSegmentEx &ex) {
   } catch (...) {
@@ -734,8 +734,8 @@ TEST_CASE("Write array to segment, read back and compare") {
     memory_accessor.ParseMaps();
     REQUIRE(memory_accessor.segment_infos_.size() != 0);
 
-    size_t seg_size{memory_accessor.segment_infos_[0].end -
-                    memory_accessor.segment_infos_[0].start};
+    size_t seg_size{memory_accessor.segment_infos_[0].end_ -
+                    memory_accessor.segment_infos_[0].start_};
 
     auto arr1 = std::make_unique<char[]>(seg_size);
     auto arr2 = std::make_unique<char[]>(seg_size);
@@ -763,8 +763,8 @@ TEST_CASE("Write array parts to segment, read back and compare") {
     memory_accessor.ParseMaps();
     REQUIRE(memory_accessor.segment_infos_.size() != 0);
 
-    size_t seg_size{memory_accessor.segment_infos_[0].end -
-                    memory_accessor.segment_infos_[0].start};
+    size_t seg_size{memory_accessor.segment_infos_[0].end_ -
+                    memory_accessor.segment_infos_[0].start_};
 
     auto arr1 = std::make_unique<char[]>(seg_size);
     memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(), seg_size);
@@ -827,7 +827,7 @@ TEST_CASE("Write segment: exceptions") {
 
   try {
     memory_accessor.WriteSegment(nullptr, 0,
-                                 memory_accessor.segment_infos_[0].end);
+                                 memory_accessor.segment_infos_[0].end_);
     REQUIRE(false);
   } catch (const MemoryAccessor::AddressNotInSegmentEx &ex) {
   } catch (...) {
@@ -864,8 +864,8 @@ namespace memoryaccessor_testing::memoryaccessor {
 size_t find_gap_start(const std::vector<SegmentInfo> &infos) {
   size_t size{infos.size()};
   for (size_t num{0}; num < size - 1; num++)
-    if (infos[num].end != infos[num + 1].start)
-      return infos[num].end;
+    if (infos[num].end_ != infos[num + 1].start_)
+      return infos[num].end_;
   return 0;
 }
 
@@ -889,11 +889,11 @@ TEST_CASE("Read data across segments to array and compare to initial array") {
     REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
         arr1.get(), arr2.get(), kBufferSize));
 
-    REQUIRE(memory_accessor.segment_infos_[0].end ==
-            memory_accessor.segment_infos_[1].start);
+    REQUIRE(memory_accessor.segment_infos_[0].end_ ==
+            memory_accessor.segment_infos_[1].start_);
     size_t done_amount{0};
     memory_accessor.Read(
-        arr1.get(), memory_accessor.segment_infos_[0].end - kBufferSize / 2,
+        arr1.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2,
         kBufferSize, done_amount);
     REQUIRE(done_amount == kBufferSize);
 
@@ -916,11 +916,11 @@ TEST_CASE("Read data across segments to arrays in different cases") {
     memory_accessor.SetPid(child);
     memory_accessor.ParseMaps();
     REQUIRE(memory_accessor.segment_infos_.size() > 1);
-    REQUIRE(memory_accessor.segment_infos_[0].end ==
-            memory_accessor.segment_infos_[1].start);
+    REQUIRE(memory_accessor.segment_infos_[0].end_ ==
+            memory_accessor.segment_infos_[1].start_);
     auto arr1 = std::make_unique<char[]>(kBufferSize);
     memory_accessor.Read(
-        arr1.get(), memory_accessor.segment_infos_[0].end - kBufferSize / 2,
+        arr1.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2,
         kBufferSize, done_amount);
     REQUIRE(done_amount == kBufferSize);
 
@@ -928,11 +928,11 @@ TEST_CASE("Read data across segments to arrays in different cases") {
     memory_accessor.SetPid(child);
     memory_accessor.ParseMaps();
     REQUIRE(memory_accessor.segment_infos_.size() > 1);
-    REQUIRE(memory_accessor.segment_infos_[0].end ==
-            memory_accessor.segment_infos_[1].start);
+    REQUIRE(memory_accessor.segment_infos_[0].end_ ==
+            memory_accessor.segment_infos_[1].start_);
     auto arr2 = std::make_unique<char[]>(kBufferSize);
     memory_accessor.Read(
-        arr2.get(), memory_accessor.segment_infos_[0].end - kBufferSize / 2,
+        arr2.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2,
         kBufferSize, done_amount);
     REQUIRE(done_amount == kBufferSize);
 
@@ -953,13 +953,13 @@ TEST_CASE("Read data across segments to array and compare to parts") {
     memory_accessor.SetPid(child);
     memory_accessor.ParseMaps();
     REQUIRE(memory_accessor.segment_infos_.size() > 1);
-    REQUIRE(memory_accessor.segment_infos_[0].end ==
-            memory_accessor.segment_infos_[1].start);
+    REQUIRE(memory_accessor.segment_infos_[0].end_ ==
+            memory_accessor.segment_infos_[1].start_);
 
     size_t done_amount{0};
 
     auto arr = std::make_unique<char[]>(kBufferSize);
-    size_t begin{memory_accessor.segment_infos_[0].end - kBufferSize / 2};
+    size_t begin{memory_accessor.segment_infos_[0].end_ - kBufferSize / 2};
     memory_accessor.Read(arr.get(), begin, kBufferSize, done_amount);
     REQUIRE(done_amount == kBufferSize);
 
@@ -1029,7 +1029,7 @@ TEST_CASE("Read: exceptions") {
     if (vsyscall_num != SIZE_MAX) {
       auto arr = std::make_unique<char[]>(1);
       memory_accessor.Read(arr.get(),
-                           memory_accessor.segment_infos_[vsyscall_num].start,
+                           memory_accessor.segment_infos_[vsyscall_num].start_,
                            1, done_amount);
       REQUIRE(false);
     } else {
@@ -1052,8 +1052,8 @@ TEST_CASE("Write array to memory across segments, read back and compare") {
     memory_accessor.SetPid(child);
     memory_accessor.ParseMaps();
     REQUIRE(memory_accessor.segment_infos_.size() > 1);
-    REQUIRE(memory_accessor.segment_infos_[0].end ==
-            memory_accessor.segment_infos_[1].start);
+    REQUIRE(memory_accessor.segment_infos_[0].end_ ==
+            memory_accessor.segment_infos_[1].start_);
 
     auto arr1 = std::make_unique<char[]>(kBufferSize);
     auto arr2 = std::make_unique<char[]>(kBufferSize);
@@ -1061,12 +1061,12 @@ TEST_CASE("Write array to memory across segments, read back and compare") {
     memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(),
                                                          kBufferSize);
     memory_accessor.Write(
-        arr1.get(), memory_accessor.segment_infos_[0].end - kBufferSize / 2,
+        arr1.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2,
         kBufferSize, done_amount);
     REQUIRE(done_amount == kBufferSize);
 
     memory_accessor.Read(
-        arr2.get(), memory_accessor.segment_infos_[0].end - kBufferSize / 2,
+        arr2.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2,
         kBufferSize, done_amount);
     REQUIRE(done_amount == kBufferSize);
 
@@ -1088,8 +1088,8 @@ TEST_CASE(
     memory_accessor.SetPid(child);
     memory_accessor.ParseMaps();
     REQUIRE(memory_accessor.segment_infos_.size() > 1);
-    REQUIRE(memory_accessor.segment_infos_[0].end ==
-            memory_accessor.segment_infos_[1].start);
+    REQUIRE(memory_accessor.segment_infos_[0].end_ ==
+            memory_accessor.segment_infos_[1].start_);
 
     size_t done_amount{0};
 
@@ -1100,7 +1100,7 @@ TEST_CASE(
     size_t part12_size{kBufferSize / 3};
     size_t part3_size{kBufferSize - 2 * part12_size};
 
-    size_t begin{memory_accessor.segment_infos_[0].end - kBufferSize / 2};
+    size_t begin{memory_accessor.segment_infos_[0].end_ - kBufferSize / 2};
 
     memory_accessor.Write(arr1.get(), begin, part12_size, done_amount);
     begin += part12_size;
@@ -1115,7 +1115,7 @@ TEST_CASE(
 
     auto arr2 = std::make_unique<char[]>(kBufferSize);
 
-    begin = memory_accessor.segment_infos_[0].end - kBufferSize / 2;
+    begin = memory_accessor.segment_infos_[0].end_ - kBufferSize / 2;
 
     memory_accessor.Read(arr2.get(), begin, part12_size, done_amount);
     begin += part12_size;
@@ -1174,7 +1174,7 @@ TEST_CASE("Write: exceptions") {
     if (vsyscall_num != SIZE_MAX) {
       auto arr = std::make_unique<char[]>(1);
       memory_accessor.Write(arr.get(),
-                            memory_accessor.segment_infos_[vsyscall_num].start,
+                            memory_accessor.segment_infos_[vsyscall_num].start_,
                             1, done_amount);
       REQUIRE(false);
     } else {
@@ -1183,7 +1183,7 @@ TEST_CASE("Write: exceptions") {
   } catch (const MemoryAccessor::SegmentAccessDeniedEx &ex) {
     // Something is wrong with doctest here, it freezes if not perform the write
     // operation below. Without doctest everything works properly though.
-    memory_accessor.Write(nullptr, memory_accessor.segment_infos_[0].start, 0,
+    memory_accessor.Write(nullptr, memory_accessor.segment_infos_[0].start_, 0,
                           done_amount);
   } catch (...) {
     REQUIRE(false);
@@ -1470,14 +1470,14 @@ TEST_CASE("Handle command: maps") {
   memoryaccessor_testing::console::test_handle_command(
       oss, "maps",
       std::string(std::log10(memory_accessor.segment_infos_.size() - 1), ' ') +
-          "0. " + memoryaccessor_testing::console::size_t_to_hex(si0.start) +
-          "-" + memoryaccessor_testing::console::size_t_to_hex(si0.end) + " " +
-          tools.EncodePermissions(si0.mode) + " " +
-          memoryaccessor_testing::console::size_t_to_hex(si0.offset, 8) + " " +
-          memoryaccessor_testing::console::size_t_to_hex(si0.major_id, 2) +
+          "0. " + memoryaccessor_testing::console::size_t_to_hex(si0.start_) +
+          "-" + memoryaccessor_testing::console::size_t_to_hex(si0.end_) + " " +
+          tools.EncodePermissions(si0.mode_) + " " +
+          memoryaccessor_testing::console::size_t_to_hex(si0.offset_, 8) + " " +
+          memoryaccessor_testing::console::size_t_to_hex(si0.major_id_, 2) +
           ":" +
-          memoryaccessor_testing::console::size_t_to_hex(si0.minor_id, 2) +
-          " " + std::to_string(si0.inode_id));
+          memoryaccessor_testing::console::size_t_to_hex(si0.minor_id_, 2) +
+          " " + std::to_string(si0.inode_id_));
 
   std::cout.rdbuf(p_cout_streambuf);
 }
@@ -1494,7 +1494,7 @@ TEST_CASE("Handle command: view") {
   memoryaccessor_testing::console::test_handle_command(
       oss, "view 0",
       memoryaccessor_testing::console::size_t_to_hex(
-          memory_accessor.segment_infos_[0].start));
+          memory_accessor.segment_infos_[0].start_));
 
   std::cout.rdbuf(p_cout_streambuf);
 }
@@ -1512,9 +1512,9 @@ TEST_CASE("Handle command: read") {
   memoryaccessor_testing::console::test_handle_command(oss, "read", "Usage:");
   memoryaccessor_testing::console::test_handle_command(
       oss,
-      "read " + memoryaccessor_testing::console::size_t_to_hex(si0.start) +
+      "read " + memoryaccessor_testing::console::size_t_to_hex(si0.start_) +
           " 1",
-      memoryaccessor_testing::console::size_t_to_hex(si0.start));
+      memoryaccessor_testing::console::size_t_to_hex(si0.start_));
 
   std::cout.rdbuf(p_cout_streambuf);
 }
@@ -1532,7 +1532,7 @@ TEST_CASE("Handle command: write") {
   memoryaccessor_testing::console::test_handle_command(oss, "write", "Usage:");
   memoryaccessor_testing::console::test_handle_command(
       oss,
-      "write " + memoryaccessor_testing::console::size_t_to_hex(si0.start) +
+      "write " + memoryaccessor_testing::console::size_t_to_hex(si0.start_) +
           " 0 a",
       "0 bytes written.");
 

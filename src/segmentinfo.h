@@ -18,7 +18,7 @@
  \file
  \brief SegmentInfo header
 
- A header that contains the definition of SegmentInfo struct.
+ A header that contains the definition of SegmentInfo class.
 */
 
 #ifndef MEMORYACCESSOR_SRC_SEGMENTINFO_H_
@@ -28,29 +28,30 @@
 #include <string>
 
 /*!
- \brief A struct to store the information of a memory segment
+ \brief A class to store the information of a memory segment
 
- This struct stores the information of one memory segment in a way it is given
+ This class stores the information of one memory segment in a way it is given
  in /proc/PID/maps file. It uses its own style of storing the permissions
  though.
 */
-struct SegmentInfo {
-  size_t start; //!< Start address
+class SegmentInfo {
+public:
+  size_t start_{0}; //!< Start address
   size_t
-      end; //!< End address (first address that does not belong to the segment)
-  size_t offset; //!< Offset from the start of the file if it is a file mapping
+      end_{0}; //!< End address (first address that does not belong to the segment)
+  size_t offset_{0}; //!< Offset from the start of the file if it is a file mapping
                  //!< (e.g., executable from ROM)
 
-  uint8_t mode{0}; //!< Permissions, are stored as 0000rwx(p/s), where p is 0, s
+  uint8_t mode_{0}; //!< Permissions, are stored as 0000rwx(p/s), where p is 0, s
                    //!< is 1 (private - shared)
 
-  uint32_t major_id; //!< Major ID
-  uint32_t minor_id; //!< Minor ID
+  uint32_t major_id_{0}; //!< Major ID
+  uint32_t minor_id_{0}; //!< Minor ID
 
-  size_t inode_id; //!< Inode ID if it is a file mapping (e.g., executable from
+  size_t inode_id_{0}; //!< Inode ID if it is a file mapping (e.g., executable from
                    //!< ROM)
 
-  std::string path; //!< Path or name
+  std::string path_; //!< Path or name
 };
 
 #endif // MEMORYACCESSOR_SRC_SEGMENTINFO_H_

@@ -507,15 +507,15 @@ void Console::PrintFileFail(const std::string &path) const noexcept {
 */
 void Console::PrintSegment(const SegmentInfo &segmentInfo) const noexcept {
   std::ostringstream oss;
-  oss << std::hex << segmentInfo.start << '-' << segmentInfo.end << ' '
-      << tools_->EncodePermissions(segmentInfo.mode) << ' ' << std::setfill('0')
-      << std::setw(8) << std::right << segmentInfo.offset << ' '
-      << std::setfill('0') << std::setw(2) << std::right << segmentInfo.major_id
+  oss << std::hex << segmentInfo.start_ << '-' << segmentInfo.end_ << ' '
+      << tools_->EncodePermissions(segmentInfo.mode_) << ' ' << std::setfill('0')
+      << std::setw(8) << std::right << segmentInfo.offset_ << ' '
+      << std::setfill('0') << std::setw(2) << std::right << segmentInfo.major_id_
       << ':' << std::setfill('0') << std::setw(2) << std::right
-      << segmentInfo.minor_id << ' ' << std::dec << segmentInfo.inode_id << ' ';
+      << segmentInfo.minor_id_ << ' ' << std::dec << segmentInfo.inode_id_ << ' ';
 
   std::cout << std::setfill(' ') << std::setw(73) << std::left << oss.str()
-            << segmentInfo.path << '\n';
+            << segmentInfo.path_ << '\n';
 }
 
 /*!
@@ -934,8 +934,8 @@ uint8_t Console::WriteWrapper(char *src, size_t address, size_t amount,
 uint8_t Console::DiffReadSeg(std::unique_ptr<char[]> &mem_dump,
                              const size_t &num) noexcept {
   mem_dump =
-      std::make_unique<char[]>(memory_accessor_->segment_infos_[num].end -
-                               memory_accessor_->segment_infos_[num].start);
+      std::make_unique<char[]>(memory_accessor_->segment_infos_[num].end_ -
+                               memory_accessor_->segment_infos_[num].start_);
   switch (ReadSegWrapper(mem_dump.get(), num)) {
   case 1:
     return 1;
@@ -1277,7 +1277,7 @@ void Console::CommandView(const Command &parent,
     size_t i{0};
 
     for (; i < segment_infos_size; i++) {
-      if (memory_accessor_->segment_infos_[i].path == segment) {
+      if (memory_accessor_->segment_infos_[i].path_ == segment) {
         num = i;
         break;
       }
@@ -1305,8 +1305,8 @@ void Console::CommandView(const Command &parent,
   if (CheckSegNumWrapper(num) != 0)
     return;
 
-  size_t size{memory_accessor_->segment_infos_[num].end -
-              memory_accessor_->segment_infos_[num].start},
+  size_t size{memory_accessor_->segment_infos_[num].end_ -
+              memory_accessor_->segment_infos_[num].start_},
       done_size{0};
   auto buf{std::make_unique<char[]>(buffer_size_)};
   uint8_t last_wrapper_exit_code{0};
@@ -1345,7 +1345,7 @@ void Console::CommandView(const Command &parent,
 
       hex_viewer_->PrintHex(
           stream_p, buf.get(), buffer_size_,
-          memory_accessor_->segment_infos_[num].start + done_size, hex);
+          memory_accessor_->segment_infos_[num].start_ + done_size, hex);
       done_size += buffer_size_;
     }
     if (size && last_wrapper_exit_code == 0) {
@@ -1353,7 +1353,7 @@ void Console::CommandView(const Command &parent,
       if (last_wrapper_exit_code == 0)
         hex_viewer_->PrintHex(
             stream_p, buf.get(), buffer_size_,
-            memory_accessor_->segment_infos_[num].start + done_size, hex);
+            memory_accessor_->segment_infos_[num].start_ + done_size, hex);
     }
   }
 
@@ -1755,16 +1755,16 @@ void Console::CommandDiff(const Command &parent,
       // Either one segment is fully below the other or they have a "collision"
 
       // Old segment is below the new -> erase old, i++, continue
-      if (old_segment_infos[i].end <=
-          memory_accessor_->segment_infos_[j].start) {
+      if (old_segment_infos[i].end_ <=
+          memory_accessor_->segment_infos_[j].start_) {
         if (DiffOldNext(i, old_segments_amount, it, full_dump))
           break;
         continue;
       }
 
       // New segment is below the old -> push new, j++, continue
-      if (memory_accessor_->segment_infos_[j].end <=
-          old_segment_infos[i].start) {
+      if (memory_accessor_->segment_infos_[j].end_ <=
+          old_segment_infos[i].start_) {
         last_exit_code = DiffNewNext(j, it, mem_dump, full_dump);
         if (last_exit_code == 0)
           continue;
@@ -1776,23 +1776,23 @@ void Console::CommandDiff(const Command &parent,
 
       // The beginning of "collision" - max start of 2 segments. In other
       // segment adding offset is needed.
-      if (memory_accessor_->segment_infos_[j].start <=
-          old_segment_infos[i].start) {
-        n_offs = old_segment_infos[i].start -
-                 memory_accessor_->segment_infos_[j].start;
+      if (memory_accessor_->segment_infos_[j].start_ <=
+          old_segment_infos[i].start_) {
+        n_offs = old_segment_infos[i].start_ -
+                 memory_accessor_->segment_infos_[j].start_;
       } else {
-        o_offs = memory_accessor_->segment_infos_[j].start -
-                 old_segment_infos[i].start;
+        o_offs = memory_accessor_->segment_infos_[j].start_ -
+                 old_segment_infos[i].start_;
       }
 
       // The end of "collision" - min end of 2 segments.
       // Therefore, amount = (min end) - (related offset).
       // The segment, in which the end is reached, is replaced by a new one.
-      if (memory_accessor_->segment_infos_[j].end <= old_segment_infos[i].end) {
-        amount = memory_accessor_->segment_infos_[j].end -
-                 memory_accessor_->segment_infos_[j].start - n_offs;
+      if (memory_accessor_->segment_infos_[j].end_ <= old_segment_infos[i].end_) {
+        amount = memory_accessor_->segment_infos_[j].end_ -
+                 memory_accessor_->segment_infos_[j].start_ - n_offs;
         DiffCompare(it->get(), mem_dump.get(), o_offs, n_offs, amount,
-                    old_segment_infos[i].start + o_offs, length, replacement);
+                    old_segment_infos[i].start_ + o_offs, length, replacement);
         last_exit_code = DiffNewNext(j, it, mem_dump, full_dump);
         if (last_exit_code == 0)
           continue;
@@ -1801,15 +1801,15 @@ void Console::CommandDiff(const Command &parent,
         else
           goto diff_return;
         // If ends are the same, both segments are updated
-        if (memory_accessor_->segment_infos_[j].end ==
-            old_segment_infos[i].end) {
+        if (memory_accessor_->segment_infos_[j].end_ ==
+            old_segment_infos[i].end_) {
           if (DiffOldNext(i, old_segments_amount, it, full_dump))
             break;
         }
       } else {
-        amount = old_segment_infos[i].end - old_segment_infos[i].start - o_offs;
+        amount = old_segment_infos[i].end_ - old_segment_infos[i].start_ - o_offs;
         DiffCompare(it->get(), mem_dump.get(), o_offs, n_offs, amount,
-                    old_segment_infos[i].start + o_offs, length, replacement);
+                    old_segment_infos[i].start_ + o_offs, length, replacement);
         if (DiffOldNext(i, old_segments_amount, it, full_dump))
           break;
       }

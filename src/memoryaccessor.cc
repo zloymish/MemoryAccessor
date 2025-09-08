@@ -139,18 +139,18 @@ void MemoryAccessor::ParseMaps() noexcept(false) {
   while (std::getline(maps, line)) {
     std::istringstream iss(line);
 
-    iss >> std::hex >> segmentInfo.start >> trash >> segmentInfo.end >>
-        permissions >> segmentInfo.offset >> segmentInfo.major_id >> trash >>
-        segmentInfo.minor_id >> std::dec >> segmentInfo.inode_id;
+    iss >> std::hex >> segmentInfo.start_ >> trash >> segmentInfo.end_ >>
+        permissions >> segmentInfo.offset_ >> segmentInfo.major_id_ >> trash >>
+        segmentInfo.minor_id_ >> std::dec >> segmentInfo.inode_id_;
 
-    segmentInfo.mode = tools_->DecodePermissions(permissions);
+    segmentInfo.mode_ = tools_->DecodePermissions(permissions);
 
-    if (iss.fail() || iss.bad() || segmentInfo.mode == 255) {
+    if (iss.fail() || iss.bad() || segmentInfo.mode_ == 255) {
       ResetSegments();
       throw BadMapsEx();
     }
 
-    segmentInfo.mode = tools_->DecodePermissions(permissions);
+    segmentInfo.mode_ = tools_->DecodePermissions(permissions);
 
     do {
       iss >> trash;
@@ -158,13 +158,13 @@ void MemoryAccessor::ParseMaps() noexcept(false) {
 
     if (trash != ' ' && !iss.eof()) {
       iss.unget();
-      std::getline(iss, segmentInfo.path);
+      std::getline(iss, segmentInfo.path_);
     }
 
     segment_infos_.push_back(segmentInfo);
 
-    if (segmentInfo.path[0] == '[') {
-      special_segment_found_[segmentInfo.path] = &segment_infos_.back();
+    if (segmentInfo.path_[0] == '[') {
+      special_segment_found_[segmentInfo.path_] = &segment_infos_.back();
     }
   }
 }
@@ -180,8 +180,8 @@ MemoryAccessor::GetAllSegmentNames() const noexcept {
   std::unordered_set<std::string> result;
 
   for (const SegmentInfo &segmentInfo : segment_infos_) {
-    if (!segmentInfo.path.empty())
-      result.insert(segmentInfo.path);
+    if (!segmentInfo.path_.empty())
+      result.insert(segmentInfo.path_);
   }
 
   return result;
@@ -202,7 +202,7 @@ size_t MemoryAccessor::AddressInSegment(const size_t &address) const
   size_t segment_infos_size{segment_infos_.size()};
 
   for (size_t i{0}; i < segment_infos_size; i++)
-    if (segment_infos_[i].end > address)
+    if (segment_infos_[i].end_ > address)
       return i;
 
   throw AddressNotInSegmentEx();
@@ -327,7 +327,7 @@ void MemoryAccessor::Read(char *dst, size_t address, size_t amount,
       segment_infos_size{segment_infos_.size()}, ret_size{0};
   done_amount = 0;
 
-  address -= segment_infos_[cur_segment_num].start;
+  address -= segment_infos_[cur_segment_num].start_;
 
   ret_size = ReadSegment(dst, cur_segment_num, address, amount);
   amount -= ret_size;
@@ -337,8 +337,8 @@ void MemoryAccessor::Read(char *dst, size_t address, size_t amount,
   for (; amount; cur_segment_num++) {
     //		if (cur_segment_num == segment_infos_size)
     //			throw AddressNotInSegmentEx();
-    if (segment_infos_[cur_segment_num - 1].end !=
-        segment_infos_[cur_segment_num].start)
+    if (segment_infos_[cur_segment_num - 1].end_ !=
+        segment_infos_[cur_segment_num].start_)
       throw AddressNotInSegmentEx();
     ret_size = ReadSegment(dst + done_amount, cur_segment_num, 0, amount);
     amount -= ret_size;
@@ -370,7 +370,7 @@ void MemoryAccessor::Write(const char *src, size_t address, size_t amount,
       segment_infos_size{segment_infos_.size()}, ret_size{0};
   done_amount = 0;
 
-  address -= segment_infos_[cur_segment_num].start;
+  address -= segment_infos_[cur_segment_num].start_;
 
   ret_size = WriteSegment(src, cur_segment_num, address, amount);
   amount -= ret_size;
@@ -380,8 +380,8 @@ void MemoryAccessor::Write(const char *src, size_t address, size_t amount,
   for (; amount; cur_segment_num++) {
     //		if (cur_segment_num == segment_infos_size)
     //			throw AddressNotInSegmentEx();
-    if (segment_infos_[cur_segment_num - 1].end !=
-        segment_infos_[cur_segment_num].start)
+    if (segment_infos_[cur_segment_num - 1].end_ !=
+        segment_infos_[cur_segment_num].start_)
       throw AddressNotInSegmentEx();
     ret_size = WriteSegment(src + done_amount, cur_segment_num, 0, amount);
     amount -= ret_size;
@@ -440,7 +440,7 @@ void MemoryAccessor::CheckSegBoundaries(const size_t &num, const size_t &start,
                                         size_t &amount) const noexcept(false) {
   CheckSegNum(num);
 
-  size_t seg_size{segment_infos_[num].end - segment_infos_[num].start};
+  size_t seg_size{segment_infos_[num].end_ - segment_infos_[num].start_};
 
   if (start >= seg_size)
     throw AddressNotInSegmentEx();
@@ -468,5 +468,5 @@ void MemoryAccessor::PrepareMemSegment(const size_t &num, const size_t &start,
   CheckPid();
   CheckMem();
   CheckSegBoundaries(num, start, amount);
-  mem_.seekg(segment_infos_[num].start + start);
+  mem_.seekg(segment_infos_[num].start_ + start);
 }
