@@ -33,12 +33,12 @@
 #include <unordered_set>
 
 /*!
- \brief A struct with various tools that are independent or depend on operating
+ \brief A class with various tools that are independent or depend on operating
  system.
 
- This struct provides a set of functions that are useful in some parts of the
+ This class provides a set of functions that are useful in some parts of the
  project, but cannot be attributed to any existing category. These functions do
- not depend on any parts of the program. The struct includes such functionality
+ not depend on any parts of the program. The class includes such functionality
  as working with signals (SIGINT), getting terminal window size, making shell
  commands, comparing memory arrays and so on.
 */

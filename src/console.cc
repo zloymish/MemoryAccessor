@@ -265,11 +265,11 @@ static char **completion(const char *text, int start, int end) noexcept {
  \brief Constructor.
  \param [in,out] memory_accessor A pointer to an instance of MemoryAccessor
  class. \param [in,out] hex_viewer A pointer to an instance of HexViewer
- class. \param [in,out] tools A pointer to an instance of Tools struct. \throw
+ class. \param [in,out] tools A pointer to an instance of Tools class. \throw
  std::logic_error If an instance of the class have already been created and it
  is a second instance.
 
- Initializes MemoryAccessor class, HexViewer class and Tools struct pointers
+ Initializes MemoryAccessor class, HexViewer class and Tools class pointers
  by values got as parameters. Throws an exception if an instance of the class
  has already been created. Sets one_instance_created_ to true.
 */

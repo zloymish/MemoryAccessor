@@ -44,7 +44,7 @@ bool MemoryAccessor::one_instance_created_{false};
  \throw std::logic_error If an instance of the class have already been created
  and it is a second instance.
 
- Initializes Tools struct pointer by value got as an parameter. Throws an
+ Initializes Tools class pointer by value got as an parameter. Throws an
  exception if an instance of the class have already been created. Sets
  one_instance_created_ to true.
 */
