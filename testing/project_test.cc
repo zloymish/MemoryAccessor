@@ -1629,8 +1629,10 @@ TEST_CASE("Parse argv: no key") {
       memoryaccessor_testing::console::replace_streambuf(std::cerr, oss)};
 
   int argc{2};
-  char *argv[]{::argv[0], "abcdef"};
+  char *argv1{strdup("abcdef")};
+  char *argv[]{::argv[0], argv1};
   argv_parser.ParseArgv(argc, argv);
+  std::free(argv1);
   REQUIRE(oss.str().length() == 0);
 
   std::cout.rdbuf(p_cout_streambuf);
@@ -1713,26 +1715,32 @@ void test_parse_argv(const int &argc, char **argv,
 
 TEST_CASE("Parse argv: unknown key") {
   int argc{2};
-  char *argv[]{::argv[0], "--abcdef"};
+  char *argv1{strdup("--abcdef")};
+  char *argv[]{::argv[0], argv1};
 
   memoryaccessor_testing::argvparser::test_parse_argv(
       argc, argv, console.kProjectName + ": unknown key --abcdef\n");
+  std::free(argv1);
 }
 
 TEST_CASE("Parse argv: key help") {
   int argc{2};
-  char *argv[]{::argv[0], "--help"};
+  char *argv1{strdup("--help")};
+  char *argv[]{::argv[0], argv1};
 
   memoryaccessor_testing::argvparser::test_parse_argv(
       argc, argv,
       console.kProjectName + " " + console.kProjectVersion + "\n" +
           console.kProjectDescription + "\n\nUsage: " + console.kProjectName +
           " [OPTION]...\n\n  --help");
+  std::free(argv1);
 }
 
 TEST_CASE("Parse argv: key command") {
   int argc{2};
-  char *argv[]{::argv[0], "--command", "help"};
+  char *argv1{strdup("--command")};
+  char *argv2{strdup("help")};
+  char *argv[]{::argv[0], argv1, argv2};
 
   memoryaccessor_testing::argvparser::test_parse_argv(
       argc, argv,
@@ -1743,13 +1751,15 @@ TEST_CASE("Parse argv: key command") {
       argc, argv,
       console.kProjectName + " " + console.kProjectVersion + "\n" +
           console.kProjectDescription + "\nCommands:\n");
+  std::free(argv1);
+  std::free(argv2);
 }
 
 TEST_CASE("Parse argv: key file") {
-  std::string file_path{"./script.txt"};
-
   int argc{2};
-  char *argv[]{::argv[0], "--file", strdup(file_path.c_str())};
+  char *argv1{strdup("--file")};
+  std::string file_path{"./script.txt"};
+  char *argv[]{::argv[0], argv1, strdup(file_path.c_str())};
 
   memoryaccessor_testing::argvparser::test_parse_argv(
       argc, argv,
@@ -1770,6 +1780,7 @@ TEST_CASE("Parse argv: key file") {
           console.kProjectDescription + "\nCommands:\n");
 
   WARN(std::remove(file_path.c_str()) == 0);
+  free(argv1);
   free(argv[2]);
 }
 
