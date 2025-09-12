@@ -54,9 +54,9 @@ namespace segmentinfo {
 
 namespace tools {
 
-extern "C" {
-void SIGINT_handler(int signum);
-}
+// extern "C" {
+// void SIGINT_handler(int signum);
+// }
 
 std::string get_self_name();
 

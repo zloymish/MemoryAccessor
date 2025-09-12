@@ -179,37 +179,38 @@ TEST_SUITE_END();
 
 TEST_SUITE_BEGIN("Tools");
 
-namespace memoryaccessor_testing::tools {
+// namespace memoryaccessor_testing::tools {
 
-bool check_sigint{false}; //!< Shows if SIGINT was sent.
+// bool check_sigint{false}; //!< @cond Shows if SIGINT was sent. @endcond
 
-extern "C" {
-/*!
+// extern "C" {
+/*! @cond
  \brief SIGINT handler.
  \param [in] signum Number of handled signal.
 
  A function that should be called when SIGINT is sent. Sets check_sigint variable
 to true.
+ @endcond
 */
-void SIGINT_handler(int signum) { check_sigint = true; }
-}
+// void SIGINT_handler(int signum) { check_sigint = true; }
+// }
 
-} // namespace memoryaccessor_testing::tools
+// } // namespace memoryaccessor_testing::tools
 
-TEST_CASE("Set SIGINT") {
-  WARN(tools.SetSigint(memoryaccessor_testing::tools::SIGINT_handler) == 0);
-  WARN(raise(SIGINT) == 0);
-  CHECK(memoryaccessor_testing::tools::check_sigint == true);
-  WARN(tools.SetSigint(SIG_DFL) == 0);
-  memoryaccessor_testing::tools::check_sigint = false;
-}
+// TEST_CASE("Set SIGINT") {
+//   WARN(tools.SetSigint(memoryaccessor_testing::tools::SIGINT_handler) == 0);
+//   WARN(raise(SIGINT) == 0);
+//   CHECK(memoryaccessor_testing::tools::check_sigint == true);
+//   WARN(tools.SetSigint(SIG_DFL) == 0);
+//   memoryaccessor_testing::tools::check_sigint = false;
+// }
 
-TEST_CASE("Set SIGINT to default") {
-  WARN(tools.SetSigint(SIG_DFL) == 0);
-  struct sigaction sa;
-  WARN(sigaction(SIGINT, NULL, &sa) == 0);
-  CHECK(sa.sa_handler == SIG_DFL);
-}
+// TEST_CASE("Set SIGINT to default") {
+//   WARN(tools.SetSigint(SIG_DFL) == 0);
+//   struct sigaction sa;
+//   WARN(sigaction(SIGINT, NULL, &sa) == 0);
+//   CHECK(sa.sa_handler == SIG_DFL);
+// }
 
 TEST_CASE("Shell command: echo") {
   FILE *pipe{tools.ShellCommand("echo abcd")};

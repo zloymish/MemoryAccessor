@@ -294,7 +294,7 @@ Console::~Console() noexcept {
   sigaction(SIGINT, nullptr, &old_sigact);
 
   if (old_sigact.sa_handler == memoryaccessor_console_src::CtrlC)
-    tools_->SetSigint(SIG_DFL);
+    SetSigint(SIG_DFL);
 
   memoryaccessor_console_src::current_console_p = nullptr;
   rl_attempted_completion_function = nullptr;
@@ -319,7 +319,7 @@ void Console::PrintNameVer() const noexcept {
  and print greeting message to stdout.
 */
 void Console::Start() noexcept {
-  if (tools_->SetSigint(memoryaccessor_console_src::CtrlC))
+  if (SetSigint(memoryaccessor_console_src::CtrlC))
     std::cerr
         << "Couldn't assign handler to SIGINT. Ctrl-C will not be working."
         << std::endl;
@@ -385,6 +385,24 @@ void Console::HandleCommand(const std::string &line) noexcept {
   } else {
     std::cerr << command_name << ": command not found" << std::endl;
   }
+}
+
+/*!
+ \brief Attach handler to SIGINT signal.
+ \param [in] handler Pointer to handler function.
+ \return Return value of calling sigaction function (success is 0, error is
+ other value).
+
+ Attach handler function to SIGINT, which will be called every time SIGINT is
+ received.
+*/
+int Console::SetSigint(void (*handler)(int)) const noexcept {
+  struct sigaction sigbreak;
+  sigbreak.sa_handler = handler;
+  sigemptyset(&sigbreak.sa_mask);
+  sigbreak.sa_flags = 0;
+
+  return sigaction(SIGINT, &sigbreak, nullptr);
 }
 
 /*!

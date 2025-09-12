@@ -52,8 +52,6 @@ public:
   */
   void SetBufferSize(const size_t &buffer_size) { buffer_size_ = buffer_size; }
 
-  int SetSigint(void (*handler)(int)) const noexcept;
-
   std::FILE *ShellCommand(const std::string &command) const noexcept;
   std::unordered_set<pid_t> GetAllPids() const noexcept;
   std::unordered_set<std::string> GetAllProcessNames() const noexcept;

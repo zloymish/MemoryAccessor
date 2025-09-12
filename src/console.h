@@ -228,6 +228,8 @@ private:
     }
   };
 
+  int SetSigint(void (*handler)(int)) const noexcept;
+  
   void PrintDescription(const Command &command, uint32_t left = 2,
                         uint32_t middle = 0) const noexcept;
   void ShowUsage(const Command &command) const noexcept;

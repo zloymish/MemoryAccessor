@@ -23,7 +23,7 @@
 
 #include "tools.h"
 
-#include <signal.h>
+//#include <signal.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -32,24 +32,6 @@
 #include <memory>
 #include <string>
 #include <unordered_set>
-
-/*!
- \brief Attach handler to SIGINT signal.
- \param [in] handler Pointer to handler function.
- \return Return value of calling sigaction function (success is 0, error is
- other value).
-
- Attach handler function to SIGINT, which will be called every time SIGINT is
- received.
-*/
-int Tools::SetSigint(void (*handler)(int)) const noexcept {
-  struct sigaction sigbreak;
-  sigbreak.sa_handler = handler;
-  sigemptyset(&sigbreak.sa_mask);
-  sigbreak.sa_flags = 0;
-
-  return sigaction(SIGINT, &sigbreak, nullptr);
-}
 
 /*!
  \brief Do a command in system shell.
