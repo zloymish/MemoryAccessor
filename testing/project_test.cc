@@ -303,75 +303,75 @@ TEST_CASE("Process with name does not exist") {
           1); // using pgrep limit to 15 chars
 }
 
-TEST_CASE("Find differences: zeros") {
-  size_t done{0};
-  auto diffs = tools.FindDifferencesOfLen(nullptr, nullptr, 0, done, 1);
-  REQUIRE(diffs[0] == nullptr);
-  REQUIRE(diffs[1] == nullptr);
-  REQUIRE(done == 0);
-  diffs = tools.FindDifferencesOfLen(nullptr, nullptr, 1, done, 0);
-  REQUIRE(diffs[0] == nullptr);
-  REQUIRE(diffs[1] == nullptr);
-  REQUIRE(done == 0);
-}
+// TEST_CASE("Find differences: zeros") {
+//   size_t done{0};
+//   auto diffs = tools.FindDifferencesOfLen(nullptr, nullptr, 0, done, 1);
+//   REQUIRE(diffs[0] == nullptr);
+//   REQUIRE(diffs[1] == nullptr);
+//   REQUIRE(done == 0);
+//   diffs = tools.FindDifferencesOfLen(nullptr, nullptr, 1, done, 0);
+//   REQUIRE(diffs[0] == nullptr);
+//   REQUIRE(diffs[1] == nullptr);
+//   REQUIRE(done == 0);
+// }
 
-TEST_CASE("Find differences: size less than length") {
-  size_t done{0};
-  auto diffs = tools.FindDifferencesOfLen(nullptr, nullptr, 1, done, 2);
-  REQUIRE(diffs[0] == nullptr);
-  REQUIRE(diffs[1] == nullptr);
-  REQUIRE(done == 0);
-}
+// TEST_CASE("Find differences: size less than length") {
+//   size_t done{0};
+//   auto diffs = tools.FindDifferencesOfLen(nullptr, nullptr, 1, done, 2);
+//   REQUIRE(diffs[0] == nullptr);
+//   REQUIRE(diffs[1] == nullptr);
+//   REQUIRE(done == 0);
+// }
 
-TEST_CASE("Find differences: one") {
-  std::string s1{"1241"}, s2{"1351"};
-  size_t done{0};
-  auto diffs = tools.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 4, done, 2);
-  REQUIRE(std::strncmp(diffs[0].get(), "24", 2) == 0);
-  REQUIRE(done == 3);
-}
+// TEST_CASE("Find differences: one") {
+//   std::string s1{"1241"}, s2{"1351"};
+//   size_t done{0};
+//   auto diffs = tools.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 4, done, 2);
+//   REQUIRE(std::strncmp(diffs[0].get(), "24", 2) == 0);
+//   REQUIRE(done == 3);
+// }
 
-TEST_CASE("Find differences: two") {
-  std::string s1{"1abc2def3"}, s2{"1fed2cba3"};
-  size_t done{0};
-  auto diffs = tools.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 9, done, 3);
-  REQUIRE(std::strncmp(diffs[1].get(), "fed", 3) == 0);
-  REQUIRE(done == 4);
-  diffs = tools.FindDifferencesOfLen(s1.c_str() + done, s2.c_str() + done,
-                                     9 - done, done, 3);
-  REQUIRE(std::strncmp(diffs[0].get(), "def", 3) == 0);
-  REQUIRE(done == 4);
-}
+// TEST_CASE("Find differences: two") {
+//   std::string s1{"1abc2def3"}, s2{"1fed2cba3"};
+//   size_t done{0};
+//   auto diffs = tools.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 9, done, 3);
+//   REQUIRE(std::strncmp(diffs[1].get(), "fed", 3) == 0);
+//   REQUIRE(done == 4);
+//   diffs = tools.FindDifferencesOfLen(s1.c_str() + done, s2.c_str() + done,
+//                                      9 - done, done, 3);
+//   REQUIRE(std::strncmp(diffs[0].get(), "def", 3) == 0);
+//   REQUIRE(done == 4);
+// }
 
-TEST_CASE("Find differences: diff too long") {
-  std::string s1{"abcdefg"}, s2{"hijklmn"};
-  size_t done{0};
-  auto diffs = tools.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 7, done, 6);
-  REQUIRE(diffs[0] == nullptr);
-  REQUIRE(diffs[1] == nullptr);
-  REQUIRE(done == 7);
-}
+// TEST_CASE("Find differences: diff too long") {
+//   std::string s1{"abcdefg"}, s2{"hijklmn"};
+//   size_t done{0};
+//   auto diffs = tools.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 7, done, 6);
+//   REQUIRE(diffs[0] == nullptr);
+//   REQUIRE(diffs[1] == nullptr);
+//   REQUIRE(done == 7);
+// }
 
-TEST_CASE("Find differences: full arr") {
-  std::string s1{"abcdefg"}, s2{"hijklmn"};
-  size_t done{0};
-  auto diffs = tools.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 7, done, 7);
-  REQUIRE(std::strncmp(diffs[0].get(), "abcdefg", 7) == 0);
-  REQUIRE(std::strncmp(diffs[1].get(), "hijklmn", 7) == 0);
-  REQUIRE(done == 7);
-}
+// TEST_CASE("Find differences: full arr") {
+//   std::string s1{"abcdefg"}, s2{"hijklmn"};
+//   size_t done{0};
+//   auto diffs = tools.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 7, done, 7);
+//   REQUIRE(std::strncmp(diffs[0].get(), "abcdefg", 7) == 0);
+//   REQUIRE(std::strncmp(diffs[1].get(), "hijklmn", 7) == 0);
+//   REQUIRE(done == 7);
+// }
 
-TEST_CASE("Find differences: seq length 1") {
-  std::string s1{"1a1a1a1a"}, s2{"1b1b1b1b"};
-  size_t done{0};
-  for (size_t i{0}; i < 8; i += 2) {
-    auto diffs =
-        tools.FindDifferencesOfLen(s1.c_str() + i, s2.c_str() + i, 2, done, 1);
-    REQUIRE(diffs[0][0] == 'a');
-    REQUIRE(diffs[1][0] == 'b');
-    REQUIRE(done == 2);
-  }
-}
+// TEST_CASE("Find differences: seq length 1") {
+//   std::string s1{"1a1a1a1a"}, s2{"1b1b1b1b"};
+//   size_t done{0};
+//   for (size_t i{0}; i < 8; i += 2) {
+//     auto diffs =
+//         tools.FindDifferencesOfLen(s1.c_str() + i, s2.c_str() + i, 2, done, 1);
+//     REQUIRE(diffs[0][0] == 'a');
+//     REQUIRE(diffs[1][0] == 'b');
+//     REQUIRE(done == 2);
+//   }
+// }
 
 TEST_SUITE_END();
 

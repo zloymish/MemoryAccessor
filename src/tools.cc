@@ -27,7 +27,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include <array>
+// #include <array>
 #include <cstdio>
 #include <memory>
 #include <string>
@@ -177,53 +177,4 @@ uint8_t Tools::ProcessExists(const std::string &pname) const noexcept {
   if (std::fgetc(pipe) != EOF)
     return 0;
   return 1;
-}
-
-/*!
- \brief Find differences of given length comparing two arrays of char.
- \param [in] old_str First "old" array of char.
- \param [in] new_str Second "new" array of char.
- \param [in] str_len Length of both arrays.
- \param [in] len Length of different sequences.
- \param [out] done Amount of bytes processed.
- \return std::array of length of 2 containing "old" and
- "new" versions of a changed substring in unique_ptr containers.
-
- Find first pair of different substrings of given length on equal positions
- comparing 2 given arrays. Each char of the substrings must be different. If
- longer substrings differ, their shorter versions are not returned.
-*/
-std::array<std::unique_ptr<char[]>, 2>
-Tools::FindDifferencesOfLen(const char *old_str, const char *new_str,
-                            size_t str_len, size_t &done,
-                            const size_t &len) const noexcept {
-  if (!str_len || !len || str_len < len)
-    return {};
-
-  std::array<std::unique_ptr<char[]>, 2> result{{
-      {std::make_unique<char[]>(len)},
-      {std::make_unique<char[]>(len)},
-  }};
-  size_t found_len{0};
-
-  done = 0;
-
-  for (; str_len; str_len--, old_str++, new_str++, done++) {
-    if (*old_str != *new_str) {
-      if (found_len < len) {
-        result[0][found_len] = *old_str;
-        result[1][found_len] = *new_str;
-      }
-      found_len++;
-    } else {
-      if (found_len == len) {
-        return result;
-      }
-      found_len = 0;
-    }
-  }
-
-  if (found_len == len)
-    return result;
-  return {};
 }

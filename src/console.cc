@@ -939,6 +939,55 @@ uint8_t Console::WriteWrapper(char *src, size_t address, size_t amount,
 }
 
 /*!
+ \brief Find differences of given length comparing two arrays of char.
+ \param [in] old_str First "old" array of char.
+ \param [in] new_str Second "new" array of char.
+ \param [in] str_len Length of both arrays.
+ \param [in] len Length of different sequences.
+ \param [out] done Amount of bytes processed.
+ \return std::array of length of 2 containing "old" and
+ "new" versions of a changed substring in unique_ptr containers.
+
+ Find first pair of different substrings of given length on equal positions
+ comparing 2 given arrays. Each char of the substrings must be different. If
+ longer substrings differ, their shorter versions are not returned.
+*/
+std::array<std::unique_ptr<char[]>, 2>
+Console::FindDifferencesOfLen(const char *old_str, const char *new_str,
+                            size_t str_len, size_t &done,
+                            const size_t &len) const noexcept {
+  if (!str_len || !len || str_len < len)
+    return {};
+
+  std::array<std::unique_ptr<char[]>, 2> result{{
+      {std::make_unique<char[]>(len)},
+      {std::make_unique<char[]>(len)},
+  }};
+  size_t found_len{0};
+
+  done = 0;
+
+  for (; str_len; str_len--, old_str++, new_str++, done++) {
+    if (*old_str != *new_str) {
+      if (found_len < len) {
+        result[0][found_len] = *old_str;
+        result[1][found_len] = *new_str;
+      }
+      found_len++;
+    } else {
+      if (found_len == len) {
+        return result;
+      }
+      found_len = 0;
+    }
+  }
+
+  if (found_len == len)
+    return result;
+  return {};
+}
+
+/*!
  \brief Dump segment to unique_ptr (related to diff).
  \param [out] mem_dump Destination in which dump will be created.
  \param [in] num Number of the segment.
@@ -994,7 +1043,7 @@ void Console::DiffCompare(const char *old_dump, const char *new_dump,
 
     while (amount) {
       found =
-          tools_->FindDifferencesOfLen(old_dump, new_dump, amount, done, length);
+          FindDifferencesOfLen(old_dump, new_dump, amount, done, length);
       old_dump += done;
       new_dump += done;
       amount -= done;

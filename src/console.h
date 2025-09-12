@@ -260,6 +260,9 @@ private:
   uint8_t WriteWrapper(char *src, size_t address, size_t amount,
                        size_t &done_amount) const noexcept;
 
+  std::array<std::unique_ptr<char[]>, 2>
+  FindDifferencesOfLen(const char *old_str, const char *new_str, size_t str_len,
+                       size_t &done, const size_t &len) const noexcept;
   uint8_t DiffReadSeg(std::unique_ptr<char[]> &mem_dump,
                       const size_t &num) noexcept;
   void DiffCompare(const char *old_dump, const char *new_dump,
