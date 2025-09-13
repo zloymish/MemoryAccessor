@@ -28,13 +28,14 @@
 #include <array>
 #include <cstdint>
 #include <exception>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "hexviewer.h"
 #include "memoryaccessor.h"
+#include "processapi.h"
 #include "segmentinfo.h"
-#include "tools.h"
 
 class Console;
 
@@ -71,7 +72,7 @@ public:
       9}; //!< Number of the commands available.
 
   explicit Console(MemoryAccessor *memory_accessor, HexViewer *hex_viewer,
-                   Tools *tools) noexcept(false);
+                   ProcessApi *process_api) noexcept(false);
 
   /*!
    \brief Copy constructor (deleted).
@@ -132,7 +133,7 @@ public:
   MemoryAccessor
       *memory_accessor_{nullptr};  //!< A pointer to a MemoryAccessor class instance.
   HexViewer *hex_viewer_{nullptr}; //!< A pointer to a HexViewer class instance.
-  Tools *tools_{nullptr};          //!< A pointer to a Tools class instance.
+  ProcessApi *process_api_{nullptr};          //!< A pointer to a ProcessApi class instance.
 
   const Command kCommands[kCommandsNumber]{
       {"help", &Console::CommandHelp, {{"help", "Show help"}}},

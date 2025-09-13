@@ -29,7 +29,7 @@
 #include "console.h"
 #include "hexviewer.h"
 #include "memoryaccessor.h"
-#include "tools.h"
+#include "processapi.h"
 
 /*!
  \brief Main function.
@@ -43,11 +43,11 @@
 int main(int argc, char **argv) {
   constexpr size_t kBufferSize{0x1000};
 
-  Tools tools;
-  tools.SetBufferSize(kBufferSize);
-  MemoryAccessor memory_accessor(&tools);
+  ProcessApi process_api;
+  process_api.SetBufferSize(kBufferSize);
+  MemoryAccessor memory_accessor(&process_api);
   HexViewer hex_viewer;
-  Console console(&memory_accessor, &hex_viewer, &tools);
+  Console console(&memory_accessor, &hex_viewer, &process_api);
   console.SetBufferSize(kBufferSize);
 
   ArgvParser argv_parser(&console);

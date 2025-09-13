@@ -35,8 +35,8 @@
 #include <unordered_set>
 #include <vector>
 
+#include "processapi.h"
 #include "segmentinfo.h"
-#include "tools.h"
 
 /*!
  \brief A class to perform the main operations with memory
@@ -276,7 +276,7 @@ public:
     }
   };
 
-  explicit MemoryAccessor(Tools *tools) noexcept(false);
+  explicit MemoryAccessor(ProcessApi *process_api) noexcept(false);
 
   /*!
    \brief Copy constructor (deleted).
@@ -330,7 +330,7 @@ public:
   void Write(const char *src, size_t address, size_t amount,
              size_t &done_amount) noexcept(false);
 
-  Tools *tools_{nullptr}; //!< A pointer to a Tools class instance
+  ProcessApi *process_api_{nullptr}; //!< A pointer to a ProcessApi class instance
 
   std::map<std::string, SegmentInfo *>
       special_segment_found_; //!< "Special" segment infos found (segments,

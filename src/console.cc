@@ -50,8 +50,8 @@
 
 #include "hexviewer.h"
 #include "memoryaccessor.h"
+#include "processapi.h"
 #include "segmentinfo.h"
-#include "tools.h"
 
 bool ctrl_c_pressed{
     false}; //!< Shows if Ctrl-C was pressed if the instance of class Console is
@@ -243,10 +243,10 @@ static char **completion(const char *text, int start, int end) noexcept {
   else {
     std::string s(rl_line_buffer);
     if (s.substr(0, 4) == "pid " || s.substr(0, 9) == "await -p ") {
-      completion_found_pids = current_console_p->tools_->GetAllPids();
+      completion_found_pids = current_console_p->process_api_->GetAllPids();
       matches = rl_completion_matches(text, CompletionPidGenerator);
     } else if (s.substr(0, 5) == "name " || s.substr(0, 6) == "await ") {
-      completion_found_names = current_console_p->tools_->GetAllProcessNames();
+      completion_found_names = current_console_p->process_api_->GetAllProcessNames();
       matches = rl_completion_matches(text, CompletionNameGenerator);
     } else if (s.substr(0, 5) == "view ") {
       completion_found_segment_names =
@@ -265,18 +265,18 @@ static char **completion(const char *text, int start, int end) noexcept {
  \brief Constructor.
  \param [in,out] memory_accessor A pointer to an instance of MemoryAccessor
  class. \param [in,out] hex_viewer A pointer to an instance of HexViewer
- class. \param [in,out] tools A pointer to an instance of Tools class. \throw
+ class. \param [in,out] process_api A pointer to an instance of ProcessApi class. \throw
  std::logic_error If an instance of the class have already been created and it
  is a second instance.
 
- Initializes MemoryAccessor class, HexViewer class and Tools class pointers
+ Initializes MemoryAccessor class, HexViewer class and ProcessApi class pointers
  by values got as parameters. Throws an exception if an instance of the class
  has already been created. Sets one_instance_created_ to true.
 */
 Console::Console(MemoryAccessor *memory_accessor, HexViewer *hex_viewer,
-                 Tools *tools) noexcept(false)
+                 ProcessApi *process_api) noexcept(false)
     : memory_accessor_(memory_accessor), hex_viewer_(hex_viewer),
-      tools_(tools) {
+      process_api_(process_api) {
   if (one_instance_created_)
     throw std::logic_error("Only one instance of Console can be created");
   one_instance_created_ = true;
@@ -1170,7 +1170,7 @@ void Console::CommandName(const Command &parent,
     if (StoiWrapper(args[1], pid_num, "pid number") != 0)
       return;
 
-  std::unordered_set<pid_t> pids{tools_->FindPidsByName(args[0])};
+  std::unordered_set<pid_t> pids{process_api_->FindPidsByName(args[0])};
   switch (pids.size()) {
   case 0:
     std::cerr << "No PID found by name: " + args[0] << std::endl;
@@ -1960,7 +1960,7 @@ void Console::CommandAwait(const Command &parent,
         break;
       }
 
-      switch (tools_->PidExists(pid)) {
+      switch (process_api_->PidExists(pid)) {
       case 0:
         std::cout << "PID was found: " << pid_str << std::endl;
         return;
@@ -1978,7 +1978,7 @@ void Console::CommandAwait(const Command &parent,
         break;
       }
 
-      switch (tools_->ProcessExists(name)) {
+      switch (process_api_->ProcessExists(name)) {
       case 0:
         std::cout << "Process was found: " << name << std::endl;
         return;

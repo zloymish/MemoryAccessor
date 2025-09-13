@@ -16,34 +16,21 @@
 
 /*!
  \file
- \brief Tools source
+ \brief ProcessApi source
 
-  A source that contains the realization of Tools class.
+  A source that contains the realization of ProcessApi class.
 */
 
-#include "tools.h"
+#include "processapi.h"
 
-//#include <signal.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
-// #include <array>
+#include <cstdint>
 #include <cstdio>
 #include <memory>
 #include <string>
 #include <unordered_set>
-
-/*!
- \brief Do a command in system shell.
- \param [in] command Command in type of std::string.
- \return FILE*, read-only pipe that is stdout of the done command.
-
- Do a command in a shell by calling function "popen" and return stdout pipe of
- the command.
-*/
-std::FILE *Tools::ShellCommand(const std::string &command) const noexcept {
-  return popen((command /* + " 2>&1"*/).c_str(), "r");
-}
 
 // pgrep shows first 15 characters of process name only, but it also accepts
 // such cut names when searching for pids, even with -x
@@ -54,7 +41,7 @@ std::FILE *Tools::ShellCommand(const std::string &command) const noexcept {
 
  Get all process IDs that can be found by running "pgrep .+" shell command.
 */
-std::unordered_set<pid_t> Tools::GetAllPids() const noexcept {
+std::unordered_set<pid_t> ProcessApi::GetAllPids() const noexcept {
   std::FILE *pipe{ShellCommand("pgrep .+")};
   std::unordered_set<pid_t> result;
   if (!pipe)
@@ -84,7 +71,7 @@ std::unordered_set<pid_t> Tools::GetAllPids() const noexcept {
  Get all names of processes that can be found by running "pgrep -l .+" shell
  command.
 */
-std::unordered_set<std::string> Tools::GetAllProcessNames() const noexcept {
+std::unordered_set<std::string> ProcessApi::GetAllProcessNames() const noexcept {
   std::FILE *pipe{ShellCommand("pgrep -l .+")};
   std::unordered_set<std::string> result;
   if (!pipe)
@@ -118,7 +105,7 @@ std::unordered_set<std::string> Tools::GetAllProcessNames() const noexcept {
  shell command.
 */
 std::unordered_set<pid_t>
-Tools::FindPidsByName(const std::string &name) const noexcept {
+ProcessApi::FindPidsByName(const std::string &name) const noexcept {
   std::FILE *pipe{ShellCommand("pgrep -x \"" + name + "\"")};
   std::unordered_set<pid_t> result;
   if (!pipe)
@@ -150,7 +137,7 @@ Tools::FindPidsByName(const std::string &name) const noexcept {
  Check if a process with the given process ID exists in the system by checking
  if /proc/PID directory exists.
 */
-uint8_t Tools::PidExists(const pid_t &pid) const noexcept {
+uint8_t ProcessApi::PidExists(const pid_t &pid) const noexcept {
   struct stat buffer;
   try {
     return static_cast<uint8_t>(
@@ -169,7 +156,7 @@ uint8_t Tools::PidExists(const pid_t &pid) const noexcept {
  Check if a process with the given process name exists in the system by running
  "pgrep -x "process_name"" shell command.
 */
-uint8_t Tools::ProcessExists(const std::string &pname) const noexcept {
+uint8_t ProcessApi::ProcessExists(const std::string &pname) const noexcept {
   std::FILE *pipe{ShellCommand("pgrep -x \"" + pname + "\"")};
   if (!pipe)
     return 2;
@@ -177,4 +164,16 @@ uint8_t Tools::ProcessExists(const std::string &pname) const noexcept {
   if (std::fgetc(pipe) != EOF)
     return 0;
   return 1;
+}
+
+/*!
+ \brief Do a command in system shell.
+ \param [in] command Command in type of std::string.
+ \return FILE*, read-only pipe that is stdout of the done command.
+
+ Do a command in a shell by calling function "popen" and return stdout pipe of
+ the command.
+*/
+std::FILE *ProcessApi::ShellCommand(const std::string &command) const noexcept {
+  return popen((command /* + " 2>&1"*/).c_str(), "r");
 }

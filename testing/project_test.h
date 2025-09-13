@@ -39,20 +39,20 @@
  \brief Fields used in tests.
 
   Functions and variables that are used in tests and are related to a specific
- component of project: console, tools, etc.
+ component of project: console, process_api, etc.
 */
 namespace memoryaccessor_testing {
 
 /*!
- \brief Fields used in testing tools.
+ \brief Fields used in testing process_api.
 
-  Functions and variables that are used in tests related to Tools class.
+  Functions and variables that are used in tests related to ProcessApi class.
 */
 
 namespace segmentinfo {
 } // namespace segmentinfo
 
-namespace tools {
+namespace process_api {
 
 // extern "C" {
 // void SIGINT_handler(int signum);
@@ -60,7 +60,7 @@ namespace tools {
 
 std::string get_self_name();
 
-} // namespace tools
+} // namespace process_api
 
 /*!
  \brief Fields used in testing memoryaccessor.

@@ -51,20 +51,20 @@
 #include "console.h"
 #include "hexviewer.h"
 #include "memoryaccessor.h"
+#include "processapi.h"
 #include "segmentinfo.h"
-#include "tools.h"
 
 int argc{0};          //!< Number of arguments sent with the program.
 char **argv{nullptr}; //!< Array of arguments sent with the program.
 
 constexpr size_t kBufferSize{0x1000}; //!< Size of buffers used.
 
-Tools tools; //!< Tools instance to perform testing on.
+ProcessApi process_api; //!< ProcessApi instance to perform testing on.
 MemoryAccessor
-    memory_accessor(&tools); //!< MemoryAccessor instance to perform testing on.
+    memory_accessor(&process_api); //!< MemoryAccessor instance to perform testing on.
 HexViewer hex_viewer;       //!< HexViewer instance to perform testing on.
 Console console(&memory_accessor, &hex_viewer,
-                &tools); //!< Console instance to perform testing on.
+                &process_api); //!< Console instance to perform testing on.
 ArgvParser
     argv_parser(&console); //!< ArgvParser instance to perform testing on.
 SegmentInfo segment_info; //!< SegmentInfo instance to perform testing on.
@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
   ::argc = argc;
   ::argv = argv;
 
-  tools.SetBufferSize(kBufferSize);
+  process_api.SetBufferSize(kBufferSize);
   console.SetBufferSize(kBufferSize);
 
   doctest::Context context;
@@ -177,9 +177,9 @@ TEST_CASE("Encode permissions: additional bits") {
 
 TEST_SUITE_END();
 
-TEST_SUITE_BEGIN("Tools");
+TEST_SUITE_BEGIN("ProcessApi");
 
-// namespace memoryaccessor_testing::tools {
+// namespace memoryaccessor_testing::process_api {
 
 // bool check_sigint{false}; //!< @cond Shows if SIGINT was sent. @endcond
 
@@ -195,55 +195,55 @@ to true.
 // void SIGINT_handler(int signum) { check_sigint = true; }
 // }
 
-// } // namespace memoryaccessor_testing::tools
+// } // namespace memoryaccessor_testing::process_api
 
 // TEST_CASE("Set SIGINT") {
-//   WARN(tools.SetSigint(memoryaccessor_testing::tools::SIGINT_handler) == 0);
+//   WARN(process_api.SetSigint(memoryaccessor_testing::process_api::SIGINT_handler) == 0);
 //   WARN(raise(SIGINT) == 0);
-//   CHECK(memoryaccessor_testing::tools::check_sigint == true);
-//   WARN(tools.SetSigint(SIG_DFL) == 0);
-//   memoryaccessor_testing::tools::check_sigint = false;
+//   CHECK(memoryaccessor_testing::process_api::check_sigint == true);
+//   WARN(process_api.SetSigint(SIG_DFL) == 0);
+//   memoryaccessor_testing::process_api::check_sigint = false;
 // }
 
 // TEST_CASE("Set SIGINT to default") {
-//   WARN(tools.SetSigint(SIG_DFL) == 0);
+//   WARN(process_api.SetSigint(SIG_DFL) == 0);
 //   struct sigaction sa;
 //   WARN(sigaction(SIGINT, NULL, &sa) == 0);
 //   CHECK(sa.sa_handler == SIG_DFL);
 // }
 
-TEST_CASE("Shell command: echo") {
-  FILE *pipe{tools.ShellCommand("echo abcd")};
-  auto buf{std::make_unique<char[]>(kBufferSize)};
-  WARN(std::fgets(buf.get(), kBufferSize, pipe) != 0);
-  REQUIRE(std::strncmp(buf.get(), "abcd", 4) == 0);
-  WARN(pclose(pipe) == 0);
-}
+// TEST_CASE("Shell command: echo") {
+//   FILE *pipe{process_api.ShellCommand("echo abcd")};
+//   auto buf{std::make_unique<char[]>(kBufferSize)};
+//   WARN(std::fgets(buf.get(), kBufferSize, pipe) != 0);
+//   REQUIRE(std::strncmp(buf.get(), "abcd", 4) == 0);
+//   WARN(pclose(pipe) == 0);
+// }
 
-TEST_CASE("Shell empty command") {
-  FILE *pipe{tools.ShellCommand("")};
-  REQUIRE(std::fgetc(pipe) == EOF);
-  WARN(pclose(pipe) == 0);
-}
+// TEST_CASE("Shell empty command") {
+//   FILE *pipe{process_api.ShellCommand("")};
+//   REQUIRE(std::fgetc(pipe) == EOF);
+//   WARN(pclose(pipe) == 0);
+// }
 
-TEST_CASE("Shell non-existent command") {
-  FILE *pipe{tools.ShellCommand("cfsvmpkmcsomcsfmvisf 2>/dev/null")};
-  REQUIRE(std::fgetc(pipe) == EOF);
-  WARN(pclose(pipe) != 0);
-}
+// TEST_CASE("Shell non-existent command") {
+//   FILE *pipe{process_api.ShellCommand("cfsvmpkmcsomcsfmvisf 2>/dev/null")};
+//   REQUIRE(std::fgetc(pipe) == EOF);
+//   WARN(pclose(pipe) != 0);
+// }
 
 TEST_CASE("Get all PIDs including self") {
-  auto all_pids = tools.GetAllPids();
+  auto all_pids = process_api.GetAllPids();
   pid_t self_pid{getpid()};
   CHECK(all_pids.contains(self_pid));
 }
 
 TEST_CASE("Get all PIDs (amount non-equal zero)") {
-  auto all_pids = tools.GetAllPids();
+  auto all_pids = process_api.GetAllPids();
   CHECK(all_pids.size() != 0);
 }
 
-namespace memoryaccessor_testing::tools {
+namespace memoryaccessor_testing::process_api {
 
 /*!
  \brief Get name of the current process.
@@ -264,52 +264,52 @@ std::string get_self_name() {
   return self_name;
 }
 
-} // namespace memoryaccessor_testing::tools
+} // namespace memoryaccessor_testing::process_api
 
 TEST_CASE("Get all process names including self") {
-  auto all_names = tools.GetAllProcessNames();
-  std::string self_name{memoryaccessor_testing::tools::get_self_name()};
+  auto all_names = process_api.GetAllProcessNames();
+  std::string self_name{memoryaccessor_testing::process_api::get_self_name()};
   CHECK(all_names.contains(self_name));
 }
 
 TEST_CASE("Get all process names (amount non-equal zero)") {
-  auto all_names = tools.GetAllProcessNames();
+  auto all_names = process_api.GetAllProcessNames();
   CHECK(all_names.size() != 0);
 }
 
 TEST_CASE("PID exists: self") {
   pid_t self_pid{getpid()};
-  REQUIRE(tools.PidExists(self_pid) == 0);
+  REQUIRE(process_api.PidExists(self_pid) == 0);
 }
 
-namespace memoryaccessor_testing::tools {
+namespace memoryaccessor_testing::process_api {
 
 pid_t max_pid_t{(1 << (sizeof(pid_t) - 1)) -
                 1}; //!< Maximum positive value of pid_t.
 
-} // namespace memoryaccessor_testing::tools
+} // namespace memoryaccessor_testing::process_api
 
 TEST_CASE("PID does not exist") {
-  REQUIRE(tools.PidExists(memoryaccessor_testing::tools::max_pid_t) == 1);
+  REQUIRE(process_api.PidExists(memoryaccessor_testing::process_api::max_pid_t) == 1);
 }
 
 TEST_CASE("Process exists: self name") {
-  REQUIRE(tools.ProcessExists(memoryaccessor_testing::tools::get_self_name()) ==
+  REQUIRE(process_api.ProcessExists(memoryaccessor_testing::process_api::get_self_name()) ==
           0);
 }
 
 TEST_CASE("Process with name does not exist") {
-  REQUIRE(tools.ProcessExists(std::string(16, 'a')) ==
+  REQUIRE(process_api.ProcessExists(std::string(16, 'a')) ==
           1); // using pgrep limit to 15 chars
 }
 
 // TEST_CASE("Find differences: zeros") {
 //   size_t done{0};
-//   auto diffs = tools.FindDifferencesOfLen(nullptr, nullptr, 0, done, 1);
+//   auto diffs = process_api.FindDifferencesOfLen(nullptr, nullptr, 0, done, 1);
 //   REQUIRE(diffs[0] == nullptr);
 //   REQUIRE(diffs[1] == nullptr);
 //   REQUIRE(done == 0);
-//   diffs = tools.FindDifferencesOfLen(nullptr, nullptr, 1, done, 0);
+//   diffs = process_api.FindDifferencesOfLen(nullptr, nullptr, 1, done, 0);
 //   REQUIRE(diffs[0] == nullptr);
 //   REQUIRE(diffs[1] == nullptr);
 //   REQUIRE(done == 0);
@@ -317,7 +317,7 @@ TEST_CASE("Process with name does not exist") {
 
 // TEST_CASE("Find differences: size less than length") {
 //   size_t done{0};
-//   auto diffs = tools.FindDifferencesOfLen(nullptr, nullptr, 1, done, 2);
+//   auto diffs = process_api.FindDifferencesOfLen(nullptr, nullptr, 1, done, 2);
 //   REQUIRE(diffs[0] == nullptr);
 //   REQUIRE(diffs[1] == nullptr);
 //   REQUIRE(done == 0);
@@ -326,7 +326,7 @@ TEST_CASE("Process with name does not exist") {
 // TEST_CASE("Find differences: one") {
 //   std::string s1{"1241"}, s2{"1351"};
 //   size_t done{0};
-//   auto diffs = tools.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 4, done, 2);
+//   auto diffs = process_api.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 4, done, 2);
 //   REQUIRE(std::strncmp(diffs[0].get(), "24", 2) == 0);
 //   REQUIRE(done == 3);
 // }
@@ -334,10 +334,10 @@ TEST_CASE("Process with name does not exist") {
 // TEST_CASE("Find differences: two") {
 //   std::string s1{"1abc2def3"}, s2{"1fed2cba3"};
 //   size_t done{0};
-//   auto diffs = tools.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 9, done, 3);
+//   auto diffs = process_api.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 9, done, 3);
 //   REQUIRE(std::strncmp(diffs[1].get(), "fed", 3) == 0);
 //   REQUIRE(done == 4);
-//   diffs = tools.FindDifferencesOfLen(s1.c_str() + done, s2.c_str() + done,
+//   diffs = process_api.FindDifferencesOfLen(s1.c_str() + done, s2.c_str() + done,
 //                                      9 - done, done, 3);
 //   REQUIRE(std::strncmp(diffs[0].get(), "def", 3) == 0);
 //   REQUIRE(done == 4);
@@ -346,7 +346,7 @@ TEST_CASE("Process with name does not exist") {
 // TEST_CASE("Find differences: diff too long") {
 //   std::string s1{"abcdefg"}, s2{"hijklmn"};
 //   size_t done{0};
-//   auto diffs = tools.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 7, done, 6);
+//   auto diffs = process_api.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 7, done, 6);
 //   REQUIRE(diffs[0] == nullptr);
 //   REQUIRE(diffs[1] == nullptr);
 //   REQUIRE(done == 7);
@@ -355,7 +355,7 @@ TEST_CASE("Process with name does not exist") {
 // TEST_CASE("Find differences: full arr") {
 //   std::string s1{"abcdefg"}, s2{"hijklmn"};
 //   size_t done{0};
-//   auto diffs = tools.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 7, done, 7);
+//   auto diffs = process_api.FindDifferencesOfLen(s1.c_str(), s2.c_str(), 7, done, 7);
 //   REQUIRE(std::strncmp(diffs[0].get(), "abcdefg", 7) == 0);
 //   REQUIRE(std::strncmp(diffs[1].get(), "hijklmn", 7) == 0);
 //   REQUIRE(done == 7);
@@ -366,7 +366,7 @@ TEST_CASE("Process with name does not exist") {
 //   size_t done{0};
 //   for (size_t i{0}; i < 8; i += 2) {
 //     auto diffs =
-//         tools.FindDifferencesOfLen(s1.c_str() + i, s2.c_str() + i, 2, done, 1);
+//         process_api.FindDifferencesOfLen(s1.c_str() + i, s2.c_str() + i, 2, done, 1);
 //     REQUIRE(diffs[0][0] == 'a');
 //     REQUIRE(diffs[1][0] == 'b');
 //     REQUIRE(done == 2);
@@ -389,12 +389,12 @@ TEST_CASE("Set PID") {
 
 TEST_CASE("Set non-existent PID") {
   try {
-    memory_accessor.SetPid(memoryaccessor_testing::tools::max_pid_t);
+    memory_accessor.SetPid(memoryaccessor_testing::process_api::max_pid_t);
     REQUIRE(false);
   } catch (const MemoryAccessor::PidNotExistEx &ex) {
     try {
       REQUIRE(memory_accessor.GetPid() !=
-              memoryaccessor_testing::tools::max_pid_t);
+              memoryaccessor_testing::process_api::max_pid_t);
     } catch (const MemoryAccessor::PidNotSetEx &ex) {
       REQUIRE(false);
     }
@@ -1444,7 +1444,7 @@ TEST_CASE("Handle command: name") {
   memoryaccessor_testing::console::test_handle_command(
       oss, "name " + name, "No PID found by name: " + name);
   memoryaccessor_testing::console::test_handle_command(
-      oss, "name " + memoryaccessor_testing::tools::get_self_name(), "Found");
+      oss, "name " + memoryaccessor_testing::process_api::get_self_name(), "Found");
 
   std::cout.rdbuf(p_cout_streambuf);
   std::cerr.rdbuf(p_cerr_streambuf);
@@ -1458,7 +1458,7 @@ TEST_CASE("Handle command: pid") {
       memoryaccessor_testing::console::replace_streambuf(std::cerr, oss)};
 
   memoryaccessor_testing::console::test_handle_command(oss, "pid", "Usage:");
-  std::string pid_str{std::to_string(memoryaccessor_testing::tools::max_pid_t)};
+  std::string pid_str{std::to_string(memoryaccessor_testing::process_api::max_pid_t)};
   memoryaccessor_testing::console::test_handle_command(
       oss, "pid " + pid_str,
       "The process with PID " + pid_str + " does not exist.");
@@ -1593,10 +1593,10 @@ TEST_CASE("Handle command: await") {
   memoryaccessor_testing::console::test_handle_command(
       oss, "await -p 1", "Awaiting PID: 1\nPID was found: 1\n");
   memoryaccessor_testing::console::test_handle_command(
-      oss, "await " + memoryaccessor_testing::tools::get_self_name(),
-      "Awaiting process: " + memoryaccessor_testing::tools::get_self_name() +
+      oss, "await " + memoryaccessor_testing::process_api::get_self_name(),
+      "Awaiting process: " + memoryaccessor_testing::process_api::get_self_name() +
           "\nProcess was found: " +
-          memoryaccessor_testing::tools::get_self_name());
+          memoryaccessor_testing::process_api::get_self_name());
 
   std::cout.rdbuf(p_cout_streambuf);
 }

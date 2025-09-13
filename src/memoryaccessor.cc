@@ -33,22 +33,22 @@
 #include <unordered_set>
 #include <vector>
 
+#include "processapi.h"
 #include "segmentinfo.h"
-#include "tools.h"
 
 bool MemoryAccessor::one_instance_created_{false};
 
 /*!
  \brief Constructor.
- \param [in,out] tools A pointer to an instance of Tools struct.
+ \param [in,out] process_api A pointer to an instance of ProcessApi class.
  \throw std::logic_error If an instance of the class have already been created
  and it is a second instance.
 
- Initializes Tools class pointer by value got as an parameter. Throws an
+ Initializes ProcessApi class pointer by value got as an parameter. Throws an
  exception if an instance of the class have already been created. Sets
  one_instance_created_ to true.
 */
-MemoryAccessor::MemoryAccessor(Tools *tools) noexcept(false) : tools_(tools) {
+MemoryAccessor::MemoryAccessor(ProcessApi *process_api) noexcept(false) : process_api_(process_api) {
   if (one_instance_created_)
     throw std::logic_error(
         "Only one instance of MemoryAccessor can be created");
@@ -83,7 +83,7 @@ pid_t MemoryAccessor::GetPid() const noexcept(false) {
  Reset all objects of an instance that are related to PID and set new PID.
 */
 void MemoryAccessor::SetPid(const pid_t &pid) noexcept(false) {
-  switch (tools_->PidExists(pid)) {
+  switch (process_api_->PidExists(pid)) {
   case 0:
     break;
   case 1:

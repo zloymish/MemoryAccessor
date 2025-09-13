@@ -16,33 +16,29 @@
 
 /*!
  \file
- \brief Tools header
+ \brief ProcessApi header
 
- A header that contains the definition of Tools class.
+ A header that contains the definition of ProcessApi class.
 */
 
-#ifndef MEMORYACCESSOR_SRC_TOOLS_H_
-#define MEMORYACCESSOR_SRC_TOOLS_H_
+#ifndef MEMORYACCESSOR_SRC_PROCESSAPI_H_
+#define MEMORYACCESSOR_SRC_PROCESSAPI_H_
 
 #include <sys/types.h>
 
-#include <array>
+#include <cstdint>
 #include <cstdio>
-#include <memory>
 #include <string>
 #include <unordered_set>
 
 /*!
- \brief A class with various tools that are independent or depend on operating
- system.
+ \brief A class with functionality to work with system processes.
 
- This class provides a set of functions that are useful in some parts of the
- project, but cannot be attributed to any existing category. These functions do
- not depend on any parts of the program. The class includes such functionality
- as working with signals (SIGINT), getting terminal window size, making shell
- commands, comparing memory arrays and so on.
+ This class provides a set of functions that perform work with processes 
+ currently existing in system. It contains functions such as finding PIDs by 
+ name of the process, getting all PIDs/process names and so on.
 */
-class Tools {
+class ProcessApi {
 public:
   /*!
    \brief Set buffer size of an instance.
@@ -52,7 +48,6 @@ public:
   */
   void SetBufferSize(const size_t &buffer_size) { buffer_size_ = buffer_size; }
 
-  std::FILE *ShellCommand(const std::string &command) const noexcept;
   std::unordered_set<pid_t> GetAllPids() const noexcept;
   std::unordered_set<std::string> GetAllProcessNames() const noexcept;
   std::unordered_set<pid_t>
@@ -61,8 +56,10 @@ public:
   uint8_t ProcessExists(const std::string &pname) const noexcept;
 
 private:
+  std::FILE *ShellCommand(const std::string &command) const noexcept;
+
   size_t buffer_size_{
       0x1000}; //!< Size of buffers used (less than 128 may cause bugs).
 };
 
-#endif // MEMORYACCESSOR_SRC_TOOLS_H_
+#endif // MEMORYACCESSOR_SRC_PROCESSAPI_H_
