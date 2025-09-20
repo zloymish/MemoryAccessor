@@ -352,6 +352,8 @@ private:
                                      //!< one instance of class exists.
 
   std::fstream mem_; //!< File stream that represents /proc/PID/mem.
+  
+  // Be careful! Call mem_.close() before the associated process dies, otherwise it will hang the program.
 
   pid_t pid_{0}; //!< Current PID in use. Value doesn't matter if pid_set is
                  //!< false. It is not meant to write to this variable directly,

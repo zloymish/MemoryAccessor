@@ -249,7 +249,7 @@ void MemoryAccessor::Reset() noexcept {
 
 /*!
  \brief Read full memory segment or a part of it.
- \param [out] dst Destination to which data will be copied.
+ \param [out] dst Destination to which data will be copied. Needs to be a valid array of the specified amount.
  \param [in] num Number of the memory segment starting from 0.
  \param [in] start Offset relative to the start of the segment, default is 0.
  \param [in] amount Number of bytes to capture after the "start" parameter,
@@ -275,7 +275,7 @@ size_t MemoryAccessor::ReadSegment(char *dst, const size_t &num, size_t start,
 
 /*!
  \brief Write data to memory segment.
- \param [in] src Source from which data will be copied.
+ \param [in] src Source from which data will be copied. Needs to be a valid array of the specified amount.
  \param [in] num Number of the memory segment starting from 0.
  \param [in] start Offset relative to the start of the segment, default is 0.
  \param [in] amount Number of bytes to capture after the "start" parameter,
@@ -305,7 +305,7 @@ size_t MemoryAccessor::WriteSegment(const char *src, const size_t &num,
 
 /*!
  \brief Read data from /proc/PID/mem.
- \param [out] dst Destination to which data will be copied.
+ \param [out] dst Destination to which data will be copied. Needs to be a valid array of the specified amount.
  \param [in] address Address to start from.
  \param [in] amount Number of bytes to read.
  \param [out] done_amount How much data were read.
@@ -348,7 +348,7 @@ void MemoryAccessor::Read(char *dst, size_t address, size_t amount,
 
 /*!
  \brief Write data to /proc/PID/mem.
- \param [in] src Source from which data will be copied.
+ \param [in] src Source from which data will be copied. Needs to be a valid array of the specified amount.
  \param [in] address Address to start from.
  \param [in] amount Number of bytes to write.
  \param [out] done_amount How much data were written.

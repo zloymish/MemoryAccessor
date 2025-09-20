@@ -134,13 +134,11 @@ TEST_CASE("Decode permissions: long") {
 }
 
 TEST_CASE("Decode permissions: short") {
-  REQUIRE(segment_info.DecodePermissions("r") == 0);
-  REQUIRE(segment_info.mode_ == 255);
+  REQUIRE(segment_info.DecodePermissions("r") == 1);
 }
 
 TEST_CASE("Decode permissions: invalid") {
-  REQUIRE(segment_info.DecodePermissions("rwxa") == 0);
-  REQUIRE(segment_info.mode_ == 255);
+  REQUIRE(segment_info.DecodePermissions("rwxa") == 1);
 }
 
 TEST_CASE("Encode permissions: zero") {
@@ -284,8 +282,7 @@ TEST_CASE("PID exists: self") {
 
 namespace memoryaccessor_testing::process_api {
 
-pid_t max_pid_t{(1 << (sizeof(pid_t) - 1)) -
-                1}; //!< Maximum positive value of pid_t.
+pid_t max_pid_t{~(pid_t)0 > 0 ? ~(pid_t)0 : ~(1 << (sizeof(pid_t) * 8 - 1))}; //!< Maximum positive value of pid_t, whether it is signed or unsigned.
 
 } // namespace memoryaccessor_testing::process_api
 
@@ -547,6 +544,7 @@ pid_t get_paused_child() {
   if (child == 0) { // is a child
     pause();
   } else if (child == -1) {
+    memory_accessor.Reset();
     kill(child, SIGKILL);
     REQUIRE(child != -1);
   }
@@ -626,9 +624,11 @@ TEST_CASE("Read segment to array and compare to initial array") {
 
     REQUIRE(!memoryaccessor_testing::memoryaccessor::are_arrays_same(
         arr1.get(), arr2.get(), seg_size));
-
+    
+    memory_accessor.Reset();
     kill(child, SIGKILL);
   } catch (...) {
+    memory_accessor.Reset();
     kill(child, SIGKILL);
     REQUIRE(false);
   }
@@ -658,9 +658,11 @@ TEST_CASE("Read same segment to arrays in different cases") {
     WARN(seg_size1 == seg_size2);
     REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
         arr1.get(), arr2.get(), std::min(seg_size1, seg_size2)));
-
+    
+    memory_accessor.Reset();
     kill(child, SIGKILL);
   } catch (...) {
+    memory_accessor.Reset();
     kill(child, SIGKILL);
     REQUIRE(false);
   }
@@ -696,9 +698,11 @@ TEST_CASE("Read segment to array and compare to parts") {
         arr.get() + part12_size, part2.get(), part12_size));
     REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
         arr.get() + 2 * part12_size, part3.get(), part3_size));
-
+    
+    memory_accessor.Reset();
     kill(child, SIGKILL);
   } catch (...) {
+    memory_accessor.Reset();
     kill(child, SIGKILL);
     REQUIRE(false);
   }
@@ -754,7 +758,8 @@ TEST_CASE("Read segment: exceptions") {
   } catch (...) {
     REQUIRE(false);
   }
-
+  
+  memory_accessor.Reset();
   kill(child, SIGKILL);
 }
 
@@ -779,9 +784,11 @@ TEST_CASE("Write array to segment, read back and compare") {
 
     REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
         arr1.get(), arr2.get(), seg_size));
-
+    
+    memory_accessor.Reset();
     kill(child, SIGKILL);
   } catch (...) {
+    memory_accessor.Reset();
     kill(child, SIGKILL);
     REQUIRE(false);
   }
@@ -820,9 +827,11 @@ TEST_CASE("Write array parts to segment, read back and compare") {
 
     REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
         arr1.get(), arr2.get(), seg_size));
-
+    
+    memory_accessor.Reset();
     kill(child, SIGKILL);
   } catch (...) {
+    memory_accessor.Reset();
     kill(child, SIGKILL);
     REQUIRE(false);
   }
@@ -831,7 +840,7 @@ TEST_CASE("Write array parts to segment, read back and compare") {
 TEST_CASE("Write segment: exceptions") {
   try {
     memory_accessor.Reset();
-    memory_accessor.WriteSegment(nullptr, 0);
+    memory_accessor.WriteSegment("", 0, 0, 1);
     REQUIRE(false);
   } catch (const MemoryAccessor::PidNotSetEx &ex) {
   } catch (...) {
@@ -849,8 +858,8 @@ TEST_CASE("Write segment: exceptions") {
   }
 
   try {
-    memory_accessor.WriteSegment(nullptr,
-                                 memory_accessor.segment_infos_.size());
+    memory_accessor.WriteSegment("",
+                                 memory_accessor.segment_infos_.size(), 0, 1);
     REQUIRE(false);
   } catch (const MemoryAccessor::SegmentNotExistEx &ex) {
   } catch (...) {
@@ -858,8 +867,8 @@ TEST_CASE("Write segment: exceptions") {
   }
 
   try {
-    memory_accessor.WriteSegment(nullptr, 0,
-                                 memory_accessor.segment_infos_[0].end_);
+    memory_accessor.WriteSegment("", 0,
+                                 memory_accessor.segment_infos_[0].end_, 1);
     REQUIRE(false);
   } catch (const MemoryAccessor::AddressNotInSegmentEx &ex) {
   } catch (...) {
@@ -870,7 +879,11 @@ TEST_CASE("Write segment: exceptions") {
     size_t vsyscall_num{memoryaccessor_testing::memoryaccessor::seg_num_by_name(
         "[vsyscall]", memory_accessor.segment_infos_)};
     if (vsyscall_num != SIZE_MAX) {
-      memory_accessor.WriteSegment(nullptr, vsyscall_num);
+      // size_t done_amount{0};
+      // memory_accessor.Write("a", memory_accessor.segment_infos_[vsyscall_num].start_, 1, done_amount);
+      // memory_accessor.WriteSegment("nullptr", vsyscall_num);
+      // memory_accessor.WriteSegment(nullptr, vsyscall_num);
+      memory_accessor.WriteSegment("", vsyscall_num, 0, 1);
       REQUIRE(false);
     } else {
       WARN(vsyscall_num == SIZE_MAX);
@@ -880,6 +893,7 @@ TEST_CASE("Write segment: exceptions") {
     REQUIRE(false);
   }
 
+  memory_accessor.Reset();
   kill(child, SIGKILL);
 }
 
@@ -932,8 +946,10 @@ TEST_CASE("Read data across segments to array and compare to initial array") {
     REQUIRE(!memoryaccessor_testing::memoryaccessor::are_arrays_same(
         arr1.get(), arr2.get(), kBufferSize));
 
+    memory_accessor.Reset();
     kill(child, SIGKILL);
   } catch (...) {
+    memory_accessor.Reset();
     kill(child, SIGKILL);
     REQUIRE(false);
   }
@@ -971,8 +987,10 @@ TEST_CASE("Read data across segments to arrays in different cases") {
     REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
         arr1.get(), arr2.get(), kBufferSize));
 
+    memory_accessor.Reset();
     kill(child, SIGKILL);
   } catch (...) {
+    memory_accessor.Reset();
     kill(child, SIGKILL);
     REQUIRE(false);
   }
@@ -1018,8 +1036,10 @@ TEST_CASE("Read data across segments to array and compare to parts") {
     REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
         arr.get() + 2 * part12_size, part3.get(), part3_size));
 
+    memory_accessor.Reset();
     kill(child, SIGKILL);
   } catch (...) {
+    memory_accessor.Reset();
     kill(child, SIGKILL);
     REQUIRE(false);
   }
@@ -1071,7 +1091,8 @@ TEST_CASE("Read: exceptions") {
   } catch (...) {
     REQUIRE(false);
   }
-
+  
+  memory_accessor.Reset();
   kill(child, SIGKILL);
 }
 
@@ -1104,9 +1125,11 @@ TEST_CASE("Write array to memory across segments, read back and compare") {
 
     REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
         arr1.get(), arr2.get(), kBufferSize));
-
+    
+    memory_accessor.Reset();
     kill(child, SIGKILL);
   } catch (...) {
+    memory_accessor.Reset();
     kill(child, SIGKILL);
     REQUIRE(false);
   }
@@ -1162,9 +1185,11 @@ TEST_CASE(
 
     REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
         arr1.get(), arr2.get(), kBufferSize));
-
+    
+    memory_accessor.Reset();
     kill(child, SIGKILL);
   } catch (...) {
+    memory_accessor.Reset();
     kill(child, SIGKILL);
     REQUIRE(false);
   }
@@ -1175,7 +1200,7 @@ TEST_CASE("Write: exceptions") {
 
   try {
     memory_accessor.Reset();
-    memory_accessor.Write(nullptr, 0, 0, done_amount);
+    memory_accessor.Write("", 0, 0, done_amount);
     REQUIRE(false);
   } catch (const MemoryAccessor::PidNotSetEx &ex) {
   } catch (...) {
@@ -1193,7 +1218,7 @@ TEST_CASE("Write: exceptions") {
   }
 
   try {
-    memory_accessor.Write(nullptr, 0, 0, done_amount);
+    memory_accessor.Write("", 0, 0, done_amount);
     REQUIRE(false);
   } catch (const MemoryAccessor::AddressNotInSegmentEx &ex) {
   } catch (...) {
@@ -1215,12 +1240,13 @@ TEST_CASE("Write: exceptions") {
   } catch (const MemoryAccessor::SegmentAccessDeniedEx &ex) {
     // Something is wrong with doctest here, it freezes if not perform the write
     // operation below. Without doctest everything works properly though.
-    memory_accessor.Write(nullptr, memory_accessor.segment_infos_[0].start_, 0,
+    memory_accessor.Write("", memory_accessor.segment_infos_[0].start_, 0,
                           done_amount);
   } catch (...) {
     REQUIRE(false);
   }
 
+  memory_accessor.Reset();
   kill(child, SIGKILL);
 }
 

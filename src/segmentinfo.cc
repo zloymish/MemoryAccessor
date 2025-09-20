@@ -38,7 +38,7 @@
 uint8_t
 SegmentInfo::DecodePermissions(const std::string &permissions) noexcept {
   if (kModesLength > permissions.length())
-    return -1;
+    return 1;
 
   uint8_t mode{0}, i{0};
 
