@@ -42,7 +42,7 @@
  Get all process IDs that can be found by running "pgrep .+" shell command.
 */
 std::unordered_set<pid_t> ProcessApi::GetAllPids() const noexcept {
-  std::FILE *pipe{ShellCommand("pgrep .+")};
+  std::FILE *pipe{ShellCommand("pgrep .+ 2>/dev/null")};
   std::unordered_set<pid_t> result;
   if (!pipe)
     return result;
@@ -72,7 +72,7 @@ std::unordered_set<pid_t> ProcessApi::GetAllPids() const noexcept {
  command.
 */
 std::unordered_set<std::string> ProcessApi::GetAllProcessNames() const noexcept {
-  std::FILE *pipe{ShellCommand("pgrep -l .+")};
+  std::FILE *pipe{ShellCommand("pgrep -l .+ 2>/dev/null")};
   std::unordered_set<std::string> result;
   if (!pipe)
     return result;
@@ -106,7 +106,7 @@ std::unordered_set<std::string> ProcessApi::GetAllProcessNames() const noexcept 
 */
 std::unordered_set<pid_t>
 ProcessApi::FindPidsByName(const std::string &name) const noexcept {
-  std::FILE *pipe{ShellCommand("pgrep -x \"" + name + "\"")};
+  std::FILE *pipe{ShellCommand("pgrep -x \"" + name + "\" 2>/dev/null")};
   std::unordered_set<pid_t> result;
   if (!pipe)
     return result;
@@ -157,7 +157,7 @@ uint8_t ProcessApi::PidExists(const pid_t &pid) const noexcept {
  "pgrep -x "process_name"" shell command.
 */
 uint8_t ProcessApi::ProcessExists(const std::string &pname) const noexcept {
-  std::FILE *pipe{ShellCommand("pgrep -x \"" + pname + "\"")};
+  std::FILE *pipe{ShellCommand("pgrep -x \"" + pname + "\" 2>/dev/null")};
   if (!pipe)
     return 2;
 
