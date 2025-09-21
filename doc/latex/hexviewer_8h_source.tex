@@ -17,21 +17,23 @@
 \DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License}}
 \DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ along\ with\ this\ program.\ \ If\ not,\ see\ <https://www.gnu.org/licenses/>.}}
 \DoxyCodeLine{00016\ }
+\DoxyCodeLine{00023\ }
 \DoxyCodeLine{00024\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_SRC\_HEXVIEWER\_H\_}}
 \DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_SRC\_HEXVIEWER\_H\_}}
 \DoxyCodeLine{00026\ }
-\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <ostream>}}
-\DoxyCodeLine{00028\ }
-\DoxyCodeLine{00036\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classHexViewer}{HexViewer}}\ \{}
-\DoxyCodeLine{00037\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classHexViewer_a3b09b075e31f6c6a02ef9f9948e7f83e}{PrintHex}}(std::ostream\ *stream\_p,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s,\ \textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keywordtype}{size\_t}\ addr,}
-\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ show\_hex\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00040\ }
-\DoxyCodeLine{00041\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00042\ \ \ uint32\_t\ base\_width\_\{}
-\DoxyCodeLine{00043\ \ \ \ \ \ \ 8\};\ }
-\DoxyCodeLine{00045\ \};}
-\DoxyCodeLine{00046\ }
-\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_SRC\_HEXVIEWER\_H\_}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <ostream>}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classHexViewer}{HexViewer}}\ \{}
+\DoxyCodeLine{00038\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classHexViewer_a3b09b075e31f6c6a02ef9f9948e7f83e}{PrintHex}}(std::ostream\ *stream\_p,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s,\ \textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keywordtype}{size\_t}\ addr,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ show\_hex\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00043\ \ \ uint32\_t\ base\_width\_\{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ 8\};\ }
+\DoxyCodeLine{00046\ \};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_SRC\_HEXVIEWER\_H\_}}
 
 \end{DoxyCode}

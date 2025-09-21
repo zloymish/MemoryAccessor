@@ -17,6 +17,7 @@
 \DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License}}
 \DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ along\ with\ this\ program.\ \ If\ not,\ see\ <https://www.gnu.org/licenses/>.}}
 \DoxyCodeLine{00016\ }
+\DoxyCodeLine{00023\ }
 \DoxyCodeLine{00024\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_SRC\_ARGVPARSER\_H\_}}
 \DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_SRC\_ARGVPARSER\_H\_}}
 \DoxyCodeLine{00026\ }
@@ -27,9 +28,9 @@
 \DoxyCodeLine{00031\ }
 \DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{console_8h}{console.h}}"{}}}
 \DoxyCodeLine{00033\ }
-\DoxyCodeLine{00040\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classArgvParser}{ArgvParser}}\ \{}
+\DoxyCodeLine{00040\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classArgvParser_aab0e82f6013e1932df8efc91ed7c1bd6}{ArgvParser}}\ \{}
 \DoxyCodeLine{00041\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classArgvParser_aaf3d8998163a50bf90cfbf7f27c278ef}{ArgvParser}}(\mbox{\hyperlink{classConsole}{Console}}\ \&console)\ noexcept\ :\ console\_(console)\ \{\}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classArgvParser_aab0e82f6013e1932df8efc91ed7c1bd6}{ArgvParser}}(\mbox{\hyperlink{classConsole}{Console}}\ *console)\ noexcept\ :\ console\_(console)\ \{\}}
 \DoxyCodeLine{00049\ }
 \DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classArgvParser_a837c299aff0a06ffcfd1e4e140ea11e2}{ParseArgv}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&argc,\ \textcolor{keywordtype}{char}\ **argv)\ \textcolor{keyword}{noexcept};}
 \DoxyCodeLine{00051\ }
@@ -49,8 +50,8 @@
 \DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{void}\ KeyCommand(const\ \textcolor{keywordtype}{int}\ \&argc,\ \textcolor{keywordtype}{char}\ **argv)\ noexcept;}
 \DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{void}\ KeyFile(const\ \textcolor{keywordtype}{int}\ \&argc,\ \textcolor{keywordtype}{char}\ **argv)\ noexcept;}
 \DoxyCodeLine{00067\ }
-\DoxyCodeLine{00068\ \ \ \mbox{\hyperlink{classConsole}{Console}}\ \&console\_;\ }
-\DoxyCodeLine{00069\ \ \ const\ std::vector<std::array<std::\textcolor{keywordtype}{string},\ 2>>\ kKeyManuals\{}
+\DoxyCodeLine{00068\ \ \ \mbox{\hyperlink{classConsole}{Console}}\ *console\_\{\textcolor{keyword}{nullptr}\};\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{const}\ std::vector<std::array<std::string,\ 2>>\ kKeyManuals\{}
 \DoxyCodeLine{00070\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/-\/help"{}},\ \textcolor{stringliteral}{"{}show\ help"{}}\},}
 \DoxyCodeLine{00071\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/-\/command\ COMMAND"{}},\ \textcolor{stringliteral}{"{}do\ command"{}}\},}
 \DoxyCodeLine{00072\ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}-\/-\/file\ FILE"{}},\ \textcolor{stringliteral}{"{}do\ commands\ from\ file"{}}\},}

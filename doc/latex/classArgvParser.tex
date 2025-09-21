@@ -12,7 +12,7 @@ A class to parse arguments from the command line.
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classArgvParser_aaf3d8998163a50bf90cfbf7f27c278ef}{Argv\+Parser}} (\mbox{\hyperlink{classConsole}{Console}} \&console) noexcept
+\mbox{\hyperlink{classArgvParser_aab0e82f6013e1932df8efc91ed7c1bd6}{Argv\+Parser}} (\mbox{\hyperlink{classConsole}{Console}} \texorpdfstring{$\ast$}{*}console) noexcept
 \begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classArgvParser_a837c299aff0a06ffcfd1e4e140ea11e2}{Parse\+Argv}} (const int \&argc, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv) noexcept
 \begin{DoxyCompactList}\small\item\em Parse program arguments. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -23,12 +23,14 @@ A class to parse arguments from the command line.
 
 This class is used to parse arguments given from the command line. It uses argc and argv variables that should be got as the arguments from the function main. 
 
+\label{doc-constructors}
+\Hypertarget{classArgvParser_doc-constructors}
 \doxysubsection{Constructor \& Destructor Documentation}
-\Hypertarget{classArgvParser_aaf3d8998163a50bf90cfbf7f27c278ef}\index{ArgvParser@{ArgvParser}!ArgvParser@{ArgvParser}}
+\Hypertarget{classArgvParser_aab0e82f6013e1932df8efc91ed7c1bd6}\index{ArgvParser@{ArgvParser}!ArgvParser@{ArgvParser}}
 \index{ArgvParser@{ArgvParser}!ArgvParser@{ArgvParser}}
 \doxysubsubsection{\texorpdfstring{ArgvParser()}{ArgvParser()}}
-{\footnotesize\ttfamily \label{classArgvParser_aaf3d8998163a50bf90cfbf7f27c278ef} 
-Argv\+Parser\+::\+Argv\+Parser (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classConsole}{Console}} \&}]{console}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}, {\ttfamily [noexcept]}}
+{\footnotesize\ttfamily \label{classArgvParser_aab0e82f6013e1932df8efc91ed7c1bd6} 
+Argv\+Parser\+::\+Argv\+Parser (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classConsole}{Console}} \texorpdfstring{$\ast$}{*}}]{console}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}, {\ttfamily [noexcept]}}
 
 
 
@@ -36,11 +38,13 @@ Constructor.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in,out}}  & {\em console} & An reference to an instance of \doxylink{classConsole}{Console} class.\\
+\mbox{\texttt{in,out}}  & {\em console} & An pointer to an instance of \doxylink{classConsole}{Console} class.\\
 \hline
 \end{DoxyParams}
-Initializes \doxylink{classConsole}{Console} class reference by value got as a parameter. 
+Initializes \doxylink{classConsole}{Console} class pointer by value got as a parameter. 
 
+\label{doc-func-members}
+\Hypertarget{classArgvParser_doc-func-members}
 \doxysubsection{Member Function Documentation}
 \Hypertarget{classArgvParser_a837c299aff0a06ffcfd1e4e140ea11e2}\index{ArgvParser@{ArgvParser}!ParseArgv@{ParseArgv}}
 \index{ParseArgv@{ParseArgv}!ArgvParser@{ArgvParser}}
@@ -54,9 +58,9 @@ Parse program arguments.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em argc} & Arguments count given to the program. \\
+\mbox{\texttt{in}}  & {\em argc} & Arguments count given to the program. \\
 \hline
-\mbox{\texttt{ in}}  & {\em argv} & Array of C strings representing arguments given to the program.\\
+\mbox{\texttt{in}}  & {\em argv} & Array of C strings representing arguments given to the program.\\
 \hline
 \end{DoxyParams}
 Return if there were 1 argument (program executable), call a key function if a key is recognized and handle error otherwise. 

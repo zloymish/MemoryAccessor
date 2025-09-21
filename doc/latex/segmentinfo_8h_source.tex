@@ -17,28 +17,45 @@
 \DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License}}
 \DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ along\ with\ this\ program.\ \ If\ not,\ see\ <https://www.gnu.org/licenses/>.}}
 \DoxyCodeLine{00016\ }
+\DoxyCodeLine{00023\ }
 \DoxyCodeLine{00024\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
 \DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
 \DoxyCodeLine{00026\ }
 \DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <cstdint>}}
 \DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <string>}}
 \DoxyCodeLine{00029\ }
-\DoxyCodeLine{00037\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structSegmentInfo}{SegmentInfo}}\ \{}
-\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structSegmentInfo_af588bc52c02be4dc3e65766b6d95cca2}{start}};\ }
-\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{size\_t}}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \mbox{\hyperlink{structSegmentInfo_a1714d1f616d39a23a64fc4ca67c633ea}{end}};\ }
-\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structSegmentInfo_ac0132b8aea8466bd99d637e7d026bc64}{offset}};\ }
-\DoxyCodeLine{00043\ }
-\DoxyCodeLine{00044\ \ \ uint8\_t\ \mbox{\hyperlink{structSegmentInfo_a17e292dbd8fd13d78a213cddefa2ce45}{mode}}\{0\};\ }
-\DoxyCodeLine{00046\ }
-\DoxyCodeLine{00047\ \ \ uint32\_t\ \mbox{\hyperlink{structSegmentInfo_af5dfea101d2e1fe705b45aa46d84fa69}{major\_id}};\ }
-\DoxyCodeLine{00048\ \ \ uint32\_t\ \mbox{\hyperlink{structSegmentInfo_a948a2f330b409b099db480faff8489ed}{minor\_id}};\ }
-\DoxyCodeLine{00049\ }
-\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structSegmentInfo_ab9b3f5c8ee2e0688d983c5aed557ca80}{inode\_id}};\ }
-\DoxyCodeLine{00052\ }
-\DoxyCodeLine{00053\ \ \ std::string\ \mbox{\hyperlink{structSegmentInfo_a887e77f1b7fee76ed6f63b62925d6df4}{path}};\ }
-\DoxyCodeLine{00054\ \};}
-\DoxyCodeLine{00055\ }
-\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
+\DoxyCodeLine{00037\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classSegmentInfo}{SegmentInfo}}\ \{}
+\DoxyCodeLine{00038\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00039\ \ \ \textcolor{comment}{//\ SegmentInfo()\ =\ default;}}
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//\ SegmentInfo(const\ SegmentInfo\ \&)\ =\ default;}}
+\DoxyCodeLine{00041\ \ \ \textcolor{comment}{//\ SegmentInfo(SegmentInfo\ \&\&)\ =\ default;}}
+\DoxyCodeLine{00042\ \ \ \textcolor{comment}{//\ SegmentInfo\ \&operator=(const\ SegmentInfo\ \&)\ =\ default;}}
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//\ SegmentInfo\ \&operator=(SegmentInfo\ \&\&)\ =\ default;}}
+\DoxyCodeLine{00044\ \ \ \textcolor{comment}{//\ \string~SegmentInfo()\ =\ default;}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ uint8\_t\ \mbox{\hyperlink{classSegmentInfo_ac54ad9955242ada2fecee07ba62d821c}{DecodePermissions}}(\textcolor{keyword}{const}\ std::string\ \&permissions)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00047\ \ \ std::string\ \mbox{\hyperlink{classSegmentInfo_ae9ad58f06d9c3f86b84ebe4442670abc}{EncodePermissions}}()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classSegmentInfo_a8d14df59d8c7495c682b924ed0721036}{start\_}}\{0\};\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{size\_t}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \mbox{\hyperlink{classSegmentInfo_a35f04e511a313578d79733bb3f805652}{end\_}}\{0\};\ }
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classSegmentInfo_a8d585c62c18ef7630e6a37cf03381746}{offset\_}}\{0\};\ }
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ uint8\_t\ \mbox{\hyperlink{classSegmentInfo_a2a7d6b4881fb9ecdedc16d484bba9b3d}{mode\_}}\{0\};\ }
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ uint32\_t\ \mbox{\hyperlink{classSegmentInfo_ac685c92d23eafa38bb653d112b7208a9}{major\_id\_}}\{0\};\ }
+\DoxyCodeLine{00059\ \ \ uint32\_t\ \mbox{\hyperlink{classSegmentInfo_af7d7eca277f5020e5b7ecdfbc7fca4cf}{minor\_id\_}}\{0\};\ }
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classSegmentInfo_a506e8ff5f1c5a73f0eac3a41d0d7ea2e}{inode\_id\_}}\{0\};\ }
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ std::string\ \mbox{\hyperlink{classSegmentInfo_a181d14c5728f6aa547938bef468cf8d1}{path\_}};\ }
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ std::string\ kModes\{\textcolor{stringliteral}{"{}rwxs"{}}\};\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uint8\_t\ kModesLength\{\textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ kModes.length())\};\ }
+\DoxyCodeLine{00071\ \};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
 
 \end{DoxyCode}

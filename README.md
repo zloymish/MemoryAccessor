@@ -85,8 +85,7 @@ Doxygen is used for documentation. To generate docs, run:
     cd src
     doxygen Doxyfile
     cd ../testing
-    rm -rf doc
-    doxygen Doxyfile
+    doxygen Doxyfile-testing
 
 ## License
 

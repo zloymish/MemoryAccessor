@@ -41,7 +41,7 @@ class \mbox{\hyperlink{classMemoryAccessor_1_1SegmentNotExistEx}{Segment\+Not\+E
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classMemoryAccessor_a98d7e11cb5b6167e90f7b78be770e52b}{Memory\+Accessor}} (\mbox{\hyperlink{classTools}{Tools}} \&tools) noexcept(false)
+\mbox{\hyperlink{classMemoryAccessor_a4e06303180e9511a86e389f9e955d83f}{Memory\+Accessor}} (\mbox{\hyperlink{classProcessApi}{Process\+Api}} \texorpdfstring{$\ast$}{*}process\+\_\+api) noexcept(false)
 \begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{classMemoryAccessor_a37ba4145084a47f6043e3925e600fd42}{Memory\+Accessor}} (const \mbox{\hyperlink{classMemoryAccessor}{Memory\+Accessor}} \&origin)=delete
 \begin{DoxyCompactList}\small\item\em Copy constructor (deleted). \end{DoxyCompactList}\item 
@@ -82,12 +82,12 @@ void \mbox{\hyperlink{classMemoryAccessor_acd5f5e2174c81d2fdf64156f7581275f}{Wri
 \doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{classMemoryAccessor_aaf5633bd62fa47ce24090699728860ea}\label{classMemoryAccessor_aaf5633bd62fa47ce24090699728860ea} 
-\mbox{\hyperlink{classTools}{Tools}} \& {\bfseries tools\+\_\+}
-\begin{DoxyCompactList}\small\item\em A reference to a \doxylink{classTools}{Tools} class instance. \end{DoxyCompactList}\item 
-std\+::map$<$ std\+::string, \mbox{\hyperlink{structSegmentInfo}{Segment\+Info}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classMemoryAccessor_a94df70445998de56390955432fd0c4e6}{special\+\_\+segment\+\_\+found\+\_\+}}
+\Hypertarget{classMemoryAccessor_a9a440d330021393d4f9ed0d389a921dd}\label{classMemoryAccessor_a9a440d330021393d4f9ed0d389a921dd} 
+\mbox{\hyperlink{classProcessApi}{Process\+Api}} \texorpdfstring{$\ast$}{*} {\bfseries process\+\_\+api\+\_\+} \{nullptr\}
+\begin{DoxyCompactList}\small\item\em A pointer to a \doxylink{classProcessApi}{Process\+Api} class instance. \end{DoxyCompactList}\item 
+std\+::map$<$ std\+::string, \mbox{\hyperlink{classSegmentInfo}{Segment\+Info}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classMemoryAccessor_a94df70445998de56390955432fd0c4e6}{special\+\_\+segment\+\_\+found\+\_\+}}
 \item 
-std\+::vector$<$ \mbox{\hyperlink{structSegmentInfo}{Segment\+Info}} $>$ \mbox{\hyperlink{classMemoryAccessor_a10b2c21dfe7fd767d43914c5545e0443}{segment\+\_\+infos\+\_\+}}
+std\+::vector$<$ \mbox{\hyperlink{classSegmentInfo}{Segment\+Info}} $>$ \mbox{\hyperlink{classMemoryAccessor_a10b2c21dfe7fd767d43914c5545e0443}{segment\+\_\+infos\+\_\+}}
 \end{DoxyCompactItemize}
 
 
@@ -96,12 +96,14 @@ A class to perform the main operations with memory.
 
 This class is dedicated to make all the work of reading and writing from/to /proc/\+PID/mem. Firstly, PID needs to be set. Then the instance parses /proc/\+PID/maps to get information about memory segments. If everything is correct, on the found segments r/w operations can be performed. Moving, copying and creating more than 1 instance of this class is prohibited. 
 
+\label{doc-constructors}
+\Hypertarget{classMemoryAccessor_doc-constructors}
 \doxysubsection{Constructor \& Destructor Documentation}
-\Hypertarget{classMemoryAccessor_a98d7e11cb5b6167e90f7b78be770e52b}\index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
+\Hypertarget{classMemoryAccessor_a4e06303180e9511a86e389f9e955d83f}\index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
 \index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
 \doxysubsubsection{\texorpdfstring{MemoryAccessor()}{MemoryAccessor()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
-{\footnotesize\ttfamily \label{classMemoryAccessor_a98d7e11cb5b6167e90f7b78be770e52b} 
-Memory\+Accessor\+::\+Memory\+Accessor (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTools}{Tools}} \&}]{tools}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+{\footnotesize\ttfamily \label{classMemoryAccessor_a4e06303180e9511a86e389f9e955d83f} 
+Memory\+Accessor\+::\+Memory\+Accessor (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classProcessApi}{Process\+Api}} \texorpdfstring{$\ast$}{*}}]{process\+\_\+api}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
 
 
 
@@ -109,7 +111,7 @@ Constructor.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in,out}}  & {\em tools} & A reference to an instance of \doxylink{classTools}{Tools} struct. \\
+\mbox{\texttt{in,out}}  & {\em process\+\_\+api} & A pointer to an instance of \doxylink{classProcessApi}{Process\+Api} class. \\
 \hline
 \end{DoxyParams}
 
@@ -117,7 +119,7 @@ Constructor.
 {\em std\+::logic\+\_\+error} & If an instance of the class have already been created and it is a second instance.\\
 \hline
 \end{DoxyExceptions}
-Initializes \doxylink{classTools}{Tools} struct reference by value got as an parameter. Throws an exception if an instance of the class have already been created. Sets one\+\_\+instance\+\_\+created\+\_\+ to true. \Hypertarget{classMemoryAccessor_a37ba4145084a47f6043e3925e600fd42}\index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
+Initializes \doxylink{classProcessApi}{Process\+Api} class pointer by value got as an parameter. Throws an exception if an instance of the class have already been created. Sets one\+\_\+instance\+\_\+created\+\_\+ to true. \Hypertarget{classMemoryAccessor_a37ba4145084a47f6043e3925e600fd42}\index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
 \index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
 \doxysubsubsection{\texorpdfstring{MemoryAccessor()}{MemoryAccessor()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
 {\footnotesize\ttfamily \label{classMemoryAccessor_a37ba4145084a47f6043e3925e600fd42} 
@@ -129,7 +131,7 @@ Copy constructor (deleted).
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em origin} & \doxylink{classMemoryAccessor}{Memory\+Accessor} instance to copy from.\\
+\mbox{\texttt{in}}  & {\em origin} & \doxylink{classMemoryAccessor}{Memory\+Accessor} instance to copy from.\\
 \hline
 \end{DoxyParams}
 Create a new object by copying an old one. Prohibited. \Hypertarget{classMemoryAccessor_a48cdc585a7eff1e82524262b4989ac20}\index{MemoryAccessor@{MemoryAccessor}!MemoryAccessor@{MemoryAccessor}}
@@ -144,7 +146,7 @@ Move constructor (deleted).
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em origin} & Moved \doxylink{classMemoryAccessor}{Memory\+Accessor} object.\\
+\mbox{\texttt{in}}  & {\em origin} & Moved \doxylink{classMemoryAccessor}{Memory\+Accessor} object.\\
 \hline
 \end{DoxyParams}
 Create a new object by moving an old one. Prohibited. \Hypertarget{classMemoryAccessor_ac0f6cece54fcae1a6ab081b2c56afff2}\index{MemoryAccessor@{MemoryAccessor}!````~MemoryAccessor@{\texorpdfstring{$\sim$}{\string~}MemoryAccessor}}
@@ -159,6 +161,8 @@ Destructor.
 
 Sets one\+\_\+instance\+\_\+created\+\_\+ to false. 
 
+\label{doc-func-members}
+\Hypertarget{classMemoryAccessor_doc-func-members}
 \doxysubsection{Member Function Documentation}
 \Hypertarget{classMemoryAccessor_a1f8a87d5cbb4ef038016f58dc3e1a49e}\index{MemoryAccessor@{MemoryAccessor}!AddressInSegment@{AddressInSegment}}
 \index{AddressInSegment@{AddressInSegment}!MemoryAccessor@{MemoryAccessor}}
@@ -172,7 +176,7 @@ Find out which segment an address belongs to.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em address} & Address to process. \\
+\mbox{\texttt{in}}  & {\em address} & Address to process. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -210,7 +214,7 @@ Check if a segment with the given number exists.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em num} & Number of the memory segment starting from 0. \\
+\mbox{\texttt{in}}  & {\em num} & Number of the memory segment starting from 0. \\
 \hline
 \end{DoxyParams}
 
@@ -263,7 +267,7 @@ Copy-\/assignment operator (deleted).
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em origin} & \doxylink{classMemoryAccessor}{Memory\+Accessor} instance to copy from.\\
+\mbox{\texttt{in}}  & {\em origin} & \doxylink{classMemoryAccessor}{Memory\+Accessor} instance to copy from.\\
 \hline
 \end{DoxyParams}
 Assign an object by copying other object. Prohibited. \Hypertarget{classMemoryAccessor_aedbaac42228b1f939cbbd0066cd3b3cb}\index{MemoryAccessor@{MemoryAccessor}!operator=@{operator=}}
@@ -278,7 +282,7 @@ Move-\/assignment operator (deleted).
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em origin} & Moved \doxylink{classMemoryAccessor}{Memory\+Accessor} object.\\
+\mbox{\texttt{in}}  & {\em origin} & Moved \doxylink{classMemoryAccessor}{Memory\+Accessor} object.\\
 \hline
 \end{DoxyParams}
 Assign an object by moving other object. Prohibited. \Hypertarget{classMemoryAccessor_a7049e54df54dc688a13a53e9fbe3f0fd}\index{MemoryAccessor@{MemoryAccessor}!ParseMaps@{ParseMaps}}
@@ -312,13 +316,13 @@ Read data from /proc/\+PID/mem.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ out}}  & {\em dst} & Destination to which data will be copied. \\
+\mbox{\texttt{out}}  & {\em dst} & Destination to which data will be copied. Needs to be a valid array of the specified amount. \\
 \hline
-\mbox{\texttt{ in}}  & {\em address} & Address to start from. \\
+\mbox{\texttt{in}}  & {\em address} & Address to start from. \\
 \hline
-\mbox{\texttt{ in}}  & {\em amount} & Number of bytes to read. \\
+\mbox{\texttt{in}}  & {\em amount} & Number of bytes to read. \\
 \hline
-\mbox{\texttt{ out}}  & {\em done\+\_\+amount} & How much data were read. \\
+\mbox{\texttt{out}}  & {\em done\+\_\+amount} & How much data were read. \\
 \hline
 \end{DoxyParams}
 
@@ -346,13 +350,13 @@ Read full memory segment or a part of it.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ out}}  & {\em dst} & Destination to which data will be copied. \\
+\mbox{\texttt{out}}  & {\em dst} & Destination to which data will be copied. Needs to be a valid array of the specified amount. \\
 \hline
-\mbox{\texttt{ in}}  & {\em num} & Number of the memory segment starting from 0. \\
+\mbox{\texttt{in}}  & {\em num} & Number of the memory segment starting from 0. \\
 \hline
-\mbox{\texttt{ in}}  & {\em start} & Offset relative to the start of the segment, default is 0. \\
+\mbox{\texttt{in}}  & {\em start} & Offset relative to the start of the segment, default is 0. \\
 \hline
-\mbox{\texttt{ in}}  & {\em amount} & Number of bytes to capture after the "{}start"{} parameter, default is SIZE\+\_\+\+MAX. If a value is too big, it is set to a maximum appropriate value. \\
+\mbox{\texttt{in}}  & {\em amount} & Number of bytes to capture after the "{}start"{} parameter, default is SIZE\+\_\+\+MAX. If a value is too big, it is set to a maximum appropriate value. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -403,7 +407,7 @@ Set PID.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em pid} & PID value to set. \\
+\mbox{\texttt{in}}  & {\em pid} & PID value to set. \\
 \hline
 \end{DoxyParams}
 
@@ -425,13 +429,13 @@ Write data to /proc/\+PID/mem.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em src} & Source from which data will be copied. \\
+\mbox{\texttt{in}}  & {\em src} & Source from which data will be copied. Needs to be a valid array of the specified amount. \\
 \hline
-\mbox{\texttt{ in}}  & {\em address} & Address to start from. \\
+\mbox{\texttt{in}}  & {\em address} & Address to start from. \\
 \hline
-\mbox{\texttt{ in}}  & {\em amount} & Number of bytes to write. \\
+\mbox{\texttt{in}}  & {\em amount} & Number of bytes to write. \\
 \hline
-\mbox{\texttt{ out}}  & {\em done\+\_\+amount} & How much data were written. \\
+\mbox{\texttt{out}}  & {\em done\+\_\+amount} & How much data were written. \\
 \hline
 \end{DoxyParams}
 
@@ -459,13 +463,13 @@ Write data to memory segment.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em src} & Source from which data will be copied. \\
+\mbox{\texttt{in}}  & {\em src} & Source from which data will be copied. Needs to be a valid array of the specified amount. \\
 \hline
-\mbox{\texttt{ in}}  & {\em num} & Number of the memory segment starting from 0. \\
+\mbox{\texttt{in}}  & {\em num} & Number of the memory segment starting from 0. \\
 \hline
-\mbox{\texttt{ in}}  & {\em start} & Offset relative to the start of the segment, default is 0. \\
+\mbox{\texttt{in}}  & {\em start} & Offset relative to the start of the segment, default is 0. \\
 \hline
-\mbox{\texttt{ in}}  & {\em amount} & Number of bytes to capture after the "{}start"{} parameter, default is SIZE\+\_\+\+MAX. If a value is too big, it is set to a maximum appropriate value. \\
+\mbox{\texttt{in}}  & {\em amount} & Number of bytes to capture after the "{}start"{} parameter, default is SIZE\+\_\+\+MAX. If a value is too big, it is set to a maximum appropriate value. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -486,20 +490,22 @@ Amount of bytes written.
 \end{DoxyExceptions}
 Write data to memory segment from a source "{}src"{} and return how many bytes were written. 
 
+\label{doc-variable-members}
+\Hypertarget{classMemoryAccessor_doc-variable-members}
 \doxysubsection{Member Data Documentation}
 \Hypertarget{classMemoryAccessor_a10b2c21dfe7fd767d43914c5545e0443}\index{MemoryAccessor@{MemoryAccessor}!segment\_infos\_@{segment\_infos\_}}
 \index{segment\_infos\_@{segment\_infos\_}!MemoryAccessor@{MemoryAccessor}}
 \doxysubsubsection{\texorpdfstring{segment\_infos\_}{segment\_infos\_}}
 {\footnotesize\ttfamily \label{classMemoryAccessor_a10b2c21dfe7fd767d43914c5545e0443} 
-std\+::vector$<$\mbox{\hyperlink{structSegmentInfo}{Segment\+Info}}$>$ Memory\+Accessor\+::segment\+\_\+infos\+\_\+}
+std\+::vector$<$\mbox{\hyperlink{classSegmentInfo}{Segment\+Info}}$>$ Memory\+Accessor\+::segment\+\_\+infos\+\_\+}
 
-\doxylink{structSegmentInfo}{Segment\+Info} objects got as a result of parsing /proc/\+PID/maps. \Hypertarget{classMemoryAccessor_a94df70445998de56390955432fd0c4e6}\index{MemoryAccessor@{MemoryAccessor}!special\_segment\_found\_@{special\_segment\_found\_}}
+\doxylink{classSegmentInfo}{Segment\+Info} objects got as a result of parsing /proc/\+PID/maps. \Hypertarget{classMemoryAccessor_a94df70445998de56390955432fd0c4e6}\index{MemoryAccessor@{MemoryAccessor}!special\_segment\_found\_@{special\_segment\_found\_}}
 \index{special\_segment\_found\_@{special\_segment\_found\_}!MemoryAccessor@{MemoryAccessor}}
 \doxysubsubsection{\texorpdfstring{special\_segment\_found\_}{special\_segment\_found\_}}
 {\footnotesize\ttfamily \label{classMemoryAccessor_a94df70445998de56390955432fd0c4e6} 
-std\+::map$<$std\+::string, \mbox{\hyperlink{structSegmentInfo}{Segment\+Info}} \texorpdfstring{$\ast$}{*}$>$ Memory\+Accessor\+::special\+\_\+segment\+\_\+found\+\_\+}
+std\+::map$<$std\+::string, \mbox{\hyperlink{classSegmentInfo}{Segment\+Info}} \texorpdfstring{$\ast$}{*}$>$ Memory\+Accessor\+::special\+\_\+segment\+\_\+found\+\_\+}
 
-"{}\+Special"{} segment infos found (segments, which name starts with \textquotesingle{}\mbox{[}\textquotesingle{}). Contains pairs that consist of a segment name and a pointer to \doxylink{structSegmentInfo}{Segment\+Info}. 
+"{}\+Special"{} segment infos found (segments, which name starts with \textquotesingle{}\mbox{[}\textquotesingle{}). Contains pairs that consist of a segment name and a pointer to \doxylink{classSegmentInfo}{Segment\+Info}. 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 

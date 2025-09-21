@@ -11,6 +11,7 @@
 {\ttfamily \#include $<$signal.\+h$>$}\newline
 {\ttfamily \#include $<$sys/ioctl.\+h$>$}\newline
 {\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
 {\ttfamily \#include $<$array$>$}\newline
 {\ttfamily \#include $<$cmath$>$}\newline
 {\ttfamily \#include $<$cstdint$>$}\newline
@@ -28,8 +29,8 @@
 {\ttfamily \#include $<$vector$>$}\newline
 {\ttfamily \#include "{}hexviewer.\+h"{}}\newline
 {\ttfamily \#include "{}memoryaccessor.\+h"{}}\newline
+{\ttfamily \#include "{}processapi.\+h"{}}\newline
 {\ttfamily \#include "{}segmentinfo.\+h"{}}\newline
-{\ttfamily \#include "{}tools.\+h"{}}\newline
 \doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -47,6 +48,8 @@ bool \mbox{\hyperlink{console_8cc_a67f70007bffa41404159792bf32bf927}{ctrl\+\_\+c
 
 A source that contains the realization of \doxylink{classConsole}{Console} class and the integration of GNU Read\+Line library. Also, this file defines ctrl\+\_\+c\+\_\+pressed variable, which is used to detect if Ctrl-\/C was pressed when \doxylink{classConsole}{Console} class is used. 
 
+\label{doc-var-members}
+\Hypertarget{console_8cc_doc-var-members}
 \doxysubsection{Variable Documentation}
 \Hypertarget{console_8cc_a67f70007bffa41404159792bf32bf927}\index{console.cc@{console.cc}!ctrl\_c\_pressed@{ctrl\_c\_pressed}}
 \index{ctrl\_c\_pressed@{ctrl\_c\_pressed}!console.cc@{console.cc}}
