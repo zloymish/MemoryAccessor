@@ -1,0 +1,89 @@
+\doxysection{Segment\+Info Class Reference}
+\hypertarget{classSegmentInfo}{}\label{classSegmentInfo}\index{SegmentInfo@{SegmentInfo}}
+
+
+A class to store the information of a memory segment.  
+
+
+
+
+{\ttfamily \#include $<$segmentinfo.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classSegmentInfo_ac54ad9955242ada2fecee07ba62d821c}\label{classSegmentInfo_ac54ad9955242ada2fecee07ba62d821c} 
+uint8\+\_\+t {\bfseries Decode\+Permissions} (const std\+::string \&permissions) noexcept
+\item 
+\Hypertarget{classSegmentInfo_ae9ad58f06d9c3f86b84ebe4442670abc}\label{classSegmentInfo_ae9ad58f06d9c3f86b84ebe4442670abc} 
+std\+::string {\bfseries Encode\+Permissions} () const noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classSegmentInfo_a8d14df59d8c7495c682b924ed0721036}\label{classSegmentInfo_a8d14df59d8c7495c682b924ed0721036} 
+size\+\_\+t {\bfseries start\+\_\+} \{0\}
+\begin{DoxyCompactList}\small\item\em Start address. \end{DoxyCompactList}\item 
+\Hypertarget{classSegmentInfo_a35f04e511a313578d79733bb3f805652}\label{classSegmentInfo_a35f04e511a313578d79733bb3f805652} 
+size\+\_\+t {\bfseries end\+\_\+} \{0\}
+\begin{DoxyCompactList}\small\item\em End address (first address that does not belong to the segment) \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classSegmentInfo_a8d585c62c18ef7630e6a37cf03381746}{offset\+\_\+}} \{0\}
+\begin{DoxyCompactList}\small\item\em (e.\+g., executable from ROM) \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classSegmentInfo_a2a7d6b4881fb9ecdedc16d484bba9b3d}{mode\+\_\+}} \{0\}
+\begin{DoxyCompactList}\small\item\em is 1 (private -\/ shared) \end{DoxyCompactList}\item 
+\Hypertarget{classSegmentInfo_ac685c92d23eafa38bb653d112b7208a9}\label{classSegmentInfo_ac685c92d23eafa38bb653d112b7208a9} 
+uint32\+\_\+t {\bfseries major\+\_\+id\+\_\+} \{0\}
+\begin{DoxyCompactList}\small\item\em Major ID. \end{DoxyCompactList}\item 
+\Hypertarget{classSegmentInfo_af7d7eca277f5020e5b7ecdfbc7fca4cf}\label{classSegmentInfo_af7d7eca277f5020e5b7ecdfbc7fca4cf} 
+uint32\+\_\+t {\bfseries minor\+\_\+id\+\_\+} \{0\}
+\begin{DoxyCompactList}\small\item\em Minor ID. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classSegmentInfo_a506e8ff5f1c5a73f0eac3a41d0d7ea2e}{inode\+\_\+id\+\_\+}} \{0\}
+\begin{DoxyCompactList}\small\item\em ROM) \end{DoxyCompactList}\item 
+\Hypertarget{classSegmentInfo_a181d14c5728f6aa547938bef468cf8d1}\label{classSegmentInfo_a181d14c5728f6aa547938bef468cf8d1} 
+std\+::string {\bfseries path\+\_\+}
+\begin{DoxyCompactList}\small\item\em Path or name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class to store the information of a memory segment. 
+
+This class stores the information of one memory segment in a way it is given in /proc/\+PID/maps file. It uses its own style of storing the permissions though. 
+
+\label{doc-variable-members}
+\Hypertarget{classSegmentInfo_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classSegmentInfo_a506e8ff5f1c5a73f0eac3a41d0d7ea2e}\index{SegmentInfo@{SegmentInfo}!inode\_id\_@{inode\_id\_}}
+\index{inode\_id\_@{inode\_id\_}!SegmentInfo@{SegmentInfo}}
+\doxysubsubsection{\texorpdfstring{inode\_id\_}{inode\_id\_}}
+{\footnotesize\ttfamily \label{classSegmentInfo_a506e8ff5f1c5a73f0eac3a41d0d7ea2e} 
+size\+\_\+t Segment\+Info\+::inode\+\_\+id\+\_\+ \{0\}}
+
+
+
+ROM) 
+
+Inode ID if it is a file mapping (e.\+g., executable from \Hypertarget{classSegmentInfo_a2a7d6b4881fb9ecdedc16d484bba9b3d}\index{SegmentInfo@{SegmentInfo}!mode\_@{mode\_}}
+\index{mode\_@{mode\_}!SegmentInfo@{SegmentInfo}}
+\doxysubsubsection{\texorpdfstring{mode\_}{mode\_}}
+{\footnotesize\ttfamily \label{classSegmentInfo_a2a7d6b4881fb9ecdedc16d484bba9b3d} 
+uint8\+\_\+t Segment\+Info\+::mode\+\_\+ \{0\}}
+
+
+
+is 1 (private -\/ shared) 
+
+Permissions, are stored as 0000rwx(p/s), where p is 0, s \Hypertarget{classSegmentInfo_a8d585c62c18ef7630e6a37cf03381746}\index{SegmentInfo@{SegmentInfo}!offset\_@{offset\_}}
+\index{offset\_@{offset\_}!SegmentInfo@{SegmentInfo}}
+\doxysubsubsection{\texorpdfstring{offset\_}{offset\_}}
+{\footnotesize\ttfamily \label{classSegmentInfo_a8d585c62c18ef7630e6a37cf03381746} 
+size\+\_\+t Segment\+Info\+::offset\+\_\+ \{0\}}
+
+
+
+(e.\+g., executable from ROM) 
+
+Offset from the start of the file if it is a file mapping 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/m/prog/\+Memory\+Accessor/src/\mbox{\hyperlink{segmentinfo_8h}{segmentinfo.\+h}}\end{DoxyCompactItemize}

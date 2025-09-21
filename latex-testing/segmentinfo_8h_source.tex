@@ -1,0 +1,62 @@
+\doxysection{segmentinfo.\+h}
+\hypertarget{segmentinfo_8h_source}{}\label{segmentinfo_8h_source}\index{/home/m/prog/MemoryAccessor/src/segmentinfo.h@{/home/m/prog/MemoryAccessor/src/segmentinfo.h}}
+\mbox{\hyperlink{segmentinfo_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ \ \ \ MemoryAccessor\ -\/\ A\ tool\ for\ accessing\ /proc/PID/mem}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ \ \ \ Copyright\ (C)\ 2024\ \ zloymish}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ \ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ \ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ \ \ \ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the\ License,\ or}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ \ \ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ \ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ \ \ \ GNU\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ along\ with\ this\ program.\ \ If\ not,\ see\ <https://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#ifndef\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classSegmentInfo}{SegmentInfo}}\ \{}
+\DoxyCodeLine{00038\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00039\ \ \ \textcolor{comment}{//\ SegmentInfo()\ =\ default;}}
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//\ SegmentInfo(const\ SegmentInfo\ \&)\ =\ default;}}
+\DoxyCodeLine{00041\ \ \ \textcolor{comment}{//\ SegmentInfo(SegmentInfo\ \&\&)\ =\ default;}}
+\DoxyCodeLine{00042\ \ \ \textcolor{comment}{//\ SegmentInfo\ \&operator=(const\ SegmentInfo\ \&)\ =\ default;}}
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//\ SegmentInfo\ \&operator=(SegmentInfo\ \&\&)\ =\ default;}}
+\DoxyCodeLine{00044\ \ \ \textcolor{comment}{//\ \string~SegmentInfo()\ =\ default;}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ uint8\_t\ DecodePermissions(\textcolor{keyword}{const}\ std::string\ \&permissions)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00047\ \ \ std::string\ EncodePermissions()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classSegmentInfo_a8d14df59d8c7495c682b924ed0721036}{start\_}}\{0\};\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{size\_t}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \mbox{\hyperlink{classSegmentInfo_a35f04e511a313578d79733bb3f805652}{end\_}}\{0\};\ }
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classSegmentInfo_a8d585c62c18ef7630e6a37cf03381746}{offset\_}}\{0\};\ }
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ uint8\_t\ \mbox{\hyperlink{classSegmentInfo_a2a7d6b4881fb9ecdedc16d484bba9b3d}{mode\_}}\{0\};\ }
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ uint32\_t\ \mbox{\hyperlink{classSegmentInfo_ac685c92d23eafa38bb653d112b7208a9}{major\_id\_}}\{0\};\ }
+\DoxyCodeLine{00059\ \ \ uint32\_t\ \mbox{\hyperlink{classSegmentInfo_af7d7eca277f5020e5b7ecdfbc7fca4cf}{minor\_id\_}}\{0\};\ }
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classSegmentInfo_a506e8ff5f1c5a73f0eac3a41d0d7ea2e}{inode\_id\_}}\{0\};\ }
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ std::string\ \mbox{\hyperlink{classSegmentInfo_a181d14c5728f6aa547938bef468cf8d1}{path\_}};\ }
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ std::string\ kModes\{\textcolor{stringliteral}{"{}rwxs"{}}\};\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uint8\_t\ kModesLength\{\textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ kModes.length())\};\ }
+\DoxyCodeLine{00071\ \};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ MEMORYACCESSOR\_SRC\_SEGMENTINFO\_H\_}}
+
+\end{DoxyCode}
