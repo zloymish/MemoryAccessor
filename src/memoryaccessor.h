@@ -28,7 +28,6 @@
 #include <sys/types.h>
 
 #include <cstdint>
-#include <exception>
 #include <fstream>
 #include <map>
 #include <string>
@@ -50,232 +49,23 @@
 class MemoryAccessor {
 public:
   /*!
-   \brief Ex: Base exception
+   \brief Error code enumeration used in methods.
 
-   All other exceptions are inherited from this.
+   Enumeration that describes possible error codes that methods of MemoryAccessor can return.
   */
-  class BaseException : public std::exception {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "Base exception";
-    }
+  enum class ErrorCode {
+    kNoError = 0, //!< Finished successfully
+    kErrCheckingPid, //!< An error occurred while checking if PID exists
+    kPidNotExistErr, //!< PID does not exist
+    kPidNotSetErr, //!< PID is not set
+    kMemFileErr, //!< Error in opening current /proc/PID/mem
+    kMapsFileErr, //!< Error in opening current /proc/PID/maps
+    kBadMapsErr, //!< Error in parsing /proc/PID/maps
+    kSegmentNotExistErr, //!< The segment of memory does not exist
+    kSegmentAccessDeniedErr, //!< Access to the segment of memory is denied
+    kAddressNotInSegmentErr, //!< Address does not belong to any segment
   };
-
-  /*!
-   \brief Ex: Exception related to PID
-
-   All exceptions related to PID are inherited from this.
-  */
-  class PidEx : public BaseException {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "PID exception";
-    }
-  };
-
-  /*!
-   \brief Ex: Could not check if PID exists
-
-   This exception is thrown when checking of PID has failed (e.g., because of
-   permissions).
-  */
-  class ErrCheckingPidEx : public PidEx {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "An error occurred while checking if PID exists";
-    }
-  };
-
-  /*!
-   \brief Ex: PID does not exist
-
-   This exception is thrown when it is discovered that the preferrable PID does
-   not exist.
-  */
-  class PidNotExistEx : public PidEx {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "PID not exist";
-    }
-  };
-
-  /*!
-   \brief Ex: PID is not set
-
-   This exception is thrown when PID is not set and there is an attempt to
-   perform some operation that requires PID use.
-  */
-  class PidNotSetEx : public PidEx {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override { return "PID not set"; }
-  };
-
-  /*!
-   \brief Ex: Exception related to files
-
-   All exceptions related to operations with files are inherited from this.
-  */
-  class FileEx : public BaseException {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "Error in opening file";
-    }
-  };
-
-  /*!
-   \brief Ex: Operation with /proc/PID/mem failed
-
-   This exception is thrown when there is an error in opening or reopening
-   /proc/PID/mem.
-  */
-  class MemFileEx : public FileEx {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "Error in opening current /proc/PID/mem";
-    }
-  };
-
-  /*!
-   \brief Ex: Opening /proc/PID/maps failed
-
-   This exception is thrown when there is an error in opening /proc/PID/maps.
-  */
-  class MapsFileEx : public FileEx {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "Error in opening current /proc/PID/maps";
-    }
-  };
-
-  /*!
-   \brief Ex: Parsing /proc/PID/maps failed
-
-   This exception is thrown when there is an error in parsing /proc/PID/maps.
-  */
-  class BadMapsEx : public BaseException {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "Error in parsing /proc/PID/maps";
-    }
-  };
-
-  /*!
-   \brief Ex: Exception related to memory segments
-
-   All exceptions related to operations with memory segments are inherited from
-   this.
-  */
-  class SegmentEx : public BaseException {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "Segment exception";
-    }
-  };
-
-  /*!
-   \brief Ex: Segment of memory does not exist
-
-   This exception is thrown when a memory segment is requested which does not
-   exist (e.g., a number of segment requested that is too big).
-  */
-  class SegmentNotExistEx : public SegmentEx {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "The segment of memory does not exist";
-    }
-  };
-
-  /*!
-   \brief Ex: Access to the segment of memory denied
-
-   This exception is thrown when the OS denied the access to a desirable
-   segment.
-  */
-  class SegmentAccessDeniedEx : public SegmentEx {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "Access to the segment of memory denied";
-    }
-  };
-
-  /*!
-   \brief Ex: Address does not belong to any segment
-
-   This exception is thrown when there is an attempt to use an address that is
-   not located in any segment of memory.
-  */
-  class AddressNotInSegmentEx : public SegmentEx {
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "Address does not belong to any segment";
-    }
-  };
-
+  
   explicit MemoryAccessor(ProcessApi *process_api) noexcept(false);
 
   /*!
@@ -312,23 +102,23 @@ public:
 
   ~MemoryAccessor() noexcept;
 
-  pid_t GetPid() const noexcept(false);
-  void SetPid(const pid_t &pid) noexcept(false);
-  void CheckPid() const noexcept(false);
-  void ParseMaps() noexcept(false);
+  ErrorCode GetPid(pid_t& pid) const noexcept;
+  ErrorCode SetPid(const pid_t &pid) noexcept;
+  ErrorCode CheckPid() const noexcept;
+  ErrorCode ParseMaps() noexcept;
   std::unordered_set<std::string> GetAllSegmentNames() const noexcept;
-  size_t AddressInSegment(const size_t &address) const noexcept(false);
-  void CheckSegNum(const size_t &num) const noexcept(false);
+  ErrorCode AddressInSegment(const size_t &address, size_t &num) const noexcept;
+  ErrorCode CheckSegNum(const size_t &num) const noexcept;
   void ResetSegments() noexcept;
   void Reset() noexcept;
-  size_t ReadSegment(char *dst, const size_t &num, size_t start = 0,
-                     size_t amount = SIZE_MAX) noexcept(false);
-  size_t WriteSegment(const char *src, const size_t &num, size_t start = 0,
-                      size_t amount = SIZE_MAX) noexcept(false);
-  void Read(char *dst, size_t address, size_t amount,
-            size_t &done_amount) noexcept(false);
-  void Write(const char *src, size_t address, size_t amount,
-             size_t &done_amount) noexcept(false);
+  ErrorCode ReadSegment(char *dst, const size_t &num, size_t &done_amount, size_t start = 0,
+                     size_t amount = SIZE_MAX) noexcept;
+  ErrorCode WriteSegment(const char *src, const size_t &num, size_t &done_amount, size_t start = 0,
+                      size_t amount = SIZE_MAX) noexcept;
+  ErrorCode Read(char *dst, size_t address, size_t amount,
+            size_t &done_amount) noexcept;
+  ErrorCode Write(const char *src, size_t address, size_t amount,
+             size_t &done_amount) noexcept;
 
   ProcessApi *process_api_{nullptr}; //!< A pointer to a ProcessApi class instance
 
@@ -341,12 +131,12 @@ public:
       segment_infos_; //!< SegmentInfo objects got as a result of parsing
                       //!< /proc/PID/maps.
 private:
-  void OpenMem() noexcept(false);
-  void CheckMem() noexcept(false);
-  void CheckSegBoundaries(const size_t &num, const size_t &start,
-                          size_t &amount) const noexcept(false);
-  void PrepareMemSegment(const size_t &num, const size_t &start,
-                         size_t &amount) noexcept(false);
+  ErrorCode OpenMem() noexcept;
+  ErrorCode CheckMem() noexcept;
+  ErrorCode CheckSegBoundaries(const size_t &num, const size_t &start,
+                          size_t &amount) const noexcept;
+  ErrorCode PrepareMemSegment(const size_t &num, const size_t &start,
+                         size_t &amount) noexcept;
 
   static bool one_instance_created_; //!< A static variable that is true when
                                      //!< one instance of class exists.

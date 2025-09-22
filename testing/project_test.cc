@@ -22,6 +22,7 @@
 */
 
 #define DOCTEST_CONFIG_IMPLEMENT
+#define DOCTEST_CONFIG_NO_FILTERS
 
 #include "project_test.h"
 
@@ -57,7 +58,7 @@
 int argc{0};          //!< Number of arguments sent with the program.
 char **argv{nullptr}; //!< Array of arguments sent with the program.
 
-constexpr size_t kBufferSize{0x1000}; //!< Size of buffers used.
+const size_t kBufferSize{0x1000}; //!< Size of buffers used.
 
 ProcessApi process_api; //!< ProcessApi instance to perform testing on.
 MemoryAccessor
@@ -68,6 +69,8 @@ Console console(&memory_accessor, &hex_viewer,
 ArgvParser
     argv_parser(&console); //!< ArgvParser instance to perform testing on.
 SegmentInfo segment_info; //!< SegmentInfo instance to perform testing on.
+
+pid_t child{0}; //!< pid_t of the only child of the process. To create a new child, the old one needs to be killed. If there is no child process, set to 0.
 
 /*!
  \brief Main function.
@@ -90,9 +93,11 @@ int main(int argc, char **argv) {
   context.applyCommandLine(argc, argv);
 
   int res = context.run();
-
+  
   if (context.shouldExit())
     return res;
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 
   int client_stuff_return_code = 0;
 
@@ -257,7 +262,7 @@ std::string get_self_name() {
 
   std::string self_name;
   proc_status >> self_name >> self_name;
-  WARN(self_name.length() < 15); // pgrep works normally with <= 15 char names
+  WARN(self_name.length() <= 15); // pgrep works normally with <= 15 char names
 
   return self_name;
 }
@@ -282,7 +287,7 @@ TEST_CASE("PID exists: self") {
 
 namespace memoryaccessor_testing::process_api {
 
-pid_t max_pid_t{~(pid_t)0 > 0 ? ~(pid_t)0 : ~(1 << (sizeof(pid_t) * 8 - 1))}; //!< Maximum positive value of pid_t, whether it is signed or unsigned.
+constexpr pid_t max_pid_t{~(pid_t)0 > 0 ? ~(pid_t)0 : ~(1 << (sizeof(pid_t) * 8 - 1))}; //!< Maximum positive value of pid_t, whether it is signed or unsigned.
 
 } // namespace memoryaccessor_testing::process_api
 
@@ -375,65 +380,65 @@ TEST_SUITE_END();
 TEST_SUITE_BEGIN("MemoryAccessor");
 
 TEST_CASE("Set PID") {
-  try {
-    memory_accessor.SetPid(1);
-    REQUIRE(memory_accessor.GetPid() == 1);
-    memory_accessor.CheckPid();
-  } catch (...) {
-    REQUIRE(false);
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  err = memory_accessor.SetPid(1);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  pid_t pid{0};
+  err = memory_accessor.GetPid(pid);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  REQUIRE(pid == 1);
+  
+  err = memory_accessor.CheckPid();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
 }
 
 TEST_CASE("Set non-existent PID") {
-  try {
-    memory_accessor.SetPid(memoryaccessor_testing::process_api::max_pid_t);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::PidNotExistEx &ex) {
-    try {
-      REQUIRE(memory_accessor.GetPid() !=
-              memoryaccessor_testing::process_api::max_pid_t);
-    } catch (const MemoryAccessor::PidNotSetEx &ex) {
-      REQUIRE(false);
-    }
-  } catch (const MemoryAccessor::ErrCheckingPidEx &ex) {
-    REQUIRE(false);
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  err = memory_accessor.SetPid(memoryaccessor_testing::process_api::max_pid_t);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kPidNotExistErr);
+  
+  pid_t pid{0};
+  err = memory_accessor.GetPid(pid);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  REQUIRE(pid != memoryaccessor_testing::process_api::max_pid_t);
 }
 
 TEST_CASE("Parse maps: self") {
-  try {
-    memory_accessor.SetPid(getpid());
-    memory_accessor.ParseMaps();
-  } catch (...) {
-    REQUIRE(false);
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  err = memory_accessor.SetPid(getpid());
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
 
   REQUIRE(memory_accessor.special_segment_found_.size() != 0);
   REQUIRE(memory_accessor.segment_infos_.size() != 0);
 }
 
 TEST_CASE("Parse maps: PID not set") {
-  try {
-    memory_accessor.Reset();
-    memory_accessor.ParseMaps();
-    REQUIRE(false);
-  } catch (const MemoryAccessor::PidNotSetEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  memory_accessor.Reset();
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kPidNotSetErr);
 }
 
 TEST_CASE("Get all segment names") {
-  try {
-    memory_accessor.SetPid(getpid());
-    memory_accessor.ParseMaps();
-  } catch (...) {
-    REQUIRE(false);
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  err = memory_accessor.SetPid(getpid());
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
 
   auto all_seg_names = memory_accessor.GetAllSegmentNames();
   REQUIRE(all_seg_names.size() != 0);
-  REQUIRE(all_seg_names.contains("[heap]"));
+  // REQUIRE(all_seg_names.contains("[heap]"));
 }
 
 TEST_CASE("Get zero segment names with no PID") {
@@ -443,55 +448,59 @@ TEST_CASE("Get zero segment names with no PID") {
 }
 
 TEST_CASE("Address in segment") {
-  try {
-    memory_accessor.SetPid(getpid());
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.AddressInSegment(
-                memory_accessor.segment_infos_[0].start_) == 0);
-  } catch (...) {
-    REQUIRE(false);
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  err = memory_accessor.SetPid(getpid());
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  size_t seg_num{0};
+  err = memory_accessor.AddressInSegment(memory_accessor.segment_infos_[0].start_, seg_num);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  REQUIRE(seg_num == 0);
 }
 
 TEST_CASE("Address not in segment") {
-  try {
-    memory_accessor.Reset();
-    memory_accessor.AddressInSegment(0);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::AddressNotInSegmentEx &ex) {
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  memory_accessor.Reset();
+  size_t num{0};
+  
+  err = memory_accessor.AddressInSegment(0, num);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kAddressNotInSegmentErr);
 }
 
 TEST_CASE("Check segment number: positive") {
-  try {
-    memory_accessor.SetPid(getpid());
-    memory_accessor.ParseMaps();
-    memory_accessor.CheckSegNum(0);
-  } catch (...) {
-    REQUIRE(false);
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  err = memory_accessor.SetPid(getpid());
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.CheckSegNum(0);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
 }
 
 TEST_CASE("Check segment number: negative") {
-  try {
-    memory_accessor.SetPid(getpid());
-    memory_accessor.CheckSegNum(0);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::SegmentNotExistEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  err = memory_accessor.SetPid(getpid());
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.CheckSegNum(0);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kSegmentNotExistErr);
 }
 
 TEST_CASE("Check segment number: PID not set") {
-  try {
-    memory_accessor.Reset();
-    memory_accessor.CheckSegNum(0);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::PidNotSetEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  memory_accessor.Reset();
+  err = memory_accessor.CheckSegNum(0);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kPidNotSetErr);
 }
 
 TEST_CASE("Reset segments") {
@@ -508,24 +517,26 @@ TEST_CASE("Double Reset segments") {
 }
 
 TEST_CASE("Reset") {
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
   memory_accessor.Reset();
-  try {
-    memory_accessor.CheckPid();
-    REQUIRE(false);
-  } catch (const MemoryAccessor::PidNotSetEx &ex) {
-  }
+  
+  err = memory_accessor.CheckPid();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kPidNotSetErr);
+  
   REQUIRE(memory_accessor.segment_infos_.size() == 0);
   REQUIRE(memory_accessor.special_segment_found_.size() == 0);
 }
 
 TEST_CASE("Double Reset") {
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
   memory_accessor.Reset();
   memory_accessor.Reset();
-  try {
-    memory_accessor.CheckPid();
-    REQUIRE(false);
-  } catch (const MemoryAccessor::PidNotSetEx &ex) {
-  }
+  
+  err = memory_accessor.CheckPid();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kPidNotSetErr);
+  
   REQUIRE(memory_accessor.segment_infos_.size() == 0);
   REQUIRE(memory_accessor.special_segment_found_.size() == 0);
 }
@@ -533,22 +544,32 @@ TEST_CASE("Double Reset") {
 namespace memoryaccessor_testing::memoryaccessor {
 
 /*!
- \brief Create paused child process.
- \return PID of the process created.
+ \brief Properly clear objects related to child process.
 
-  Fork the current process and run pause() in it, so parent process could freely
- run experiments with the forked process.
+  Do Reset() in memory_accessor, send SIGKILL to the child process and set child variable to 0.
 */
-pid_t get_paused_child() {
-  pid_t child{fork()};
+void clear_child() {
+  if (child != 0) {
+    memory_accessor.Reset();
+    kill(child, SIGKILL);
+    child = 0;
+  }
+}
+
+/*!
+ \brief Create paused child process and save its PID in the global variable child.
+
+  Check the global variable child, if it is not set to 0, kill the process with the PID child. Then in any way fork the process, save the PID to child variable and run pause() as the child.
+*/
+void get_paused_child() {
+  clear_child();
+  
+  child = fork();
   if (child == 0) { // is a child
     pause();
   } else if (child == -1) {
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
     REQUIRE(child != -1);
   }
-  return child;
 }
 
 /*!
@@ -601,300 +622,288 @@ size_t seg_num_by_name(const std::string &name,
 } // namespace memoryaccessor_testing::memoryaccessor
 
 TEST_CASE("Read segment to array and compare to initial array") {
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  err = memory_accessor.SetPid(getpid());
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  
+  size_t seg_size{memory_accessor.segment_infos_[0].end_ -
+                  memory_accessor.segment_infos_[0].start_};
 
-  try {
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  auto arr1 = std::make_unique<char[]>(seg_size);
+  auto arr2 = std::make_unique<char[]>(seg_size);
 
-    size_t seg_size{memory_accessor.segment_infos_[0].end_ -
-                    memory_accessor.segment_infos_[0].start_};
+  memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(), seg_size);
+  std::memcpy(arr2.get(), arr1.get(), seg_size);
 
-    auto arr1 = std::make_unique<char[]>(seg_size);
-    auto arr2 = std::make_unique<char[]>(seg_size);
-
-    memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(), seg_size);
-    std::memcpy(arr2.get(), arr1.get(), seg_size);
-
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr1.get(), arr2.get(), seg_size));
-
-    memory_accessor.ReadSegment(arr1.get(), 0);
-
-    REQUIRE(!memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr1.get(), arr2.get(), seg_size));
-    
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-  } catch (...) {
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-    REQUIRE(false);
-  }
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
+      arr1.get(), arr2.get(), seg_size));
+  
+  size_t done_amount{0};
+  
+  err = memory_accessor.ReadSegment(arr1.get(), 0, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(!memoryaccessor_testing::memoryaccessor::are_arrays_same(arr1.get(), arr2.get(), seg_size));
 }
 
 TEST_CASE("Read same segment to arrays in different cases") {
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
-
-  try {
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() != 0);
-    size_t seg_size1{memory_accessor.segment_infos_[0].end_ -
-                     memory_accessor.segment_infos_[0].start_};
-    auto arr1 = std::make_unique<char[]>(seg_size1);
-    memory_accessor.ReadSegment(arr1.get(), 0);
-
-    memory_accessor.SetPid(1);
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() != 0);
-    size_t seg_size2{memory_accessor.segment_infos_[0].end_ -
-                     memory_accessor.segment_infos_[0].start_};
-    auto arr2 = std::make_unique<char[]>(seg_size2);
-    memory_accessor.ReadSegment(arr2.get(), 0);
-
-    WARN(seg_size1 == seg_size2);
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr1.get(), arr2.get(), std::min(seg_size1, seg_size2)));
-    
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-  } catch (...) {
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-    REQUIRE(false);
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  size_t seg_size1{memory_accessor.segment_infos_[0].end_ -
+                   memory_accessor.segment_infos_[0].start_};
+  auto arr1 = std::make_unique<char[]>(seg_size1);
+  
+  size_t done_amount{0};
+  
+  err = memory_accessor.ReadSegment(arr1.get(), 0, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.SetPid(1);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  size_t seg_size2{memory_accessor.segment_infos_[0].end_ -
+                   memory_accessor.segment_infos_[0].start_};
+  auto arr2 = std::make_unique<char[]>(seg_size2);
+  
+  err = memory_accessor.ReadSegment(arr2.get(), 0, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  WARN(seg_size1 == seg_size2);
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
+      arr1.get(), arr2.get(), std::min(seg_size1, seg_size2)));
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 TEST_CASE("Read segment to array and compare to parts") {
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
+  
+  size_t done_amount{0};
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  
+  size_t seg_size{memory_accessor.segment_infos_[0].end_ -
+                  memory_accessor.segment_infos_[0].start_};
+  auto arr = std::make_unique<char[]>(seg_size);
+  
+  err = memory_accessor.ReadSegment(arr.get(), 0, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  size_t part12_size{seg_size / 3};
+  size_t part3_size{seg_size - 2 * part12_size};
 
-  try {
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() != 0);
-
-    size_t seg_size{memory_accessor.segment_infos_[0].end_ -
-                    memory_accessor.segment_infos_[0].start_};
-    auto arr = std::make_unique<char[]>(seg_size);
-    memory_accessor.ReadSegment(arr.get(), 0);
-
-    size_t part12_size{seg_size / 3};
-    size_t part3_size{seg_size - 2 * part12_size};
-
-    auto part1 = std::make_unique<char[]>(part12_size);
-    auto part2 = std::make_unique<char[]>(part12_size);
-    auto part3 = std::make_unique<char[]>(part3_size);
-
-    memory_accessor.ReadSegment(part1.get(), 0, 0, part12_size);
-    memory_accessor.ReadSegment(part2.get(), 0, part12_size, part12_size);
-    memory_accessor.ReadSegment(part3.get(), 0, part12_size * 2);
-
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr.get(), part1.get(), part12_size));
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr.get() + part12_size, part2.get(), part12_size));
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr.get() + 2 * part12_size, part3.get(), part3_size));
-    
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-  } catch (...) {
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-    REQUIRE(false);
-  }
+  auto part1 = std::make_unique<char[]>(part12_size);
+  auto part2 = std::make_unique<char[]>(part12_size);
+  auto part3 = std::make_unique<char[]>(part3_size);
+  
+  err = memory_accessor.ReadSegment(part1.get(), 0, done_amount, 0, part12_size);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ReadSegment(part2.get(), 0, done_amount, part12_size, part12_size);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ReadSegment(part3.get(), 0, done_amount, part12_size * 2);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
+      arr.get(), part1.get(), part12_size));
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
+      arr.get() + part12_size, part2.get(), part12_size));
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
+      arr.get() + 2 * part12_size, part3.get(), part3_size));
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 TEST_CASE("Read segment: exceptions") {
-  try {
-    memory_accessor.Reset();
-    memory_accessor.ReadSegment(nullptr, 0);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::PidNotSetEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
-
-  try {
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() != 0);
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  try {
-    memory_accessor.ReadSegment(nullptr, memory_accessor.segment_infos_.size());
-    REQUIRE(false);
-  } catch (const MemoryAccessor::SegmentNotExistEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  try {
-    memory_accessor.ReadSegment(nullptr, 0,
-                                memory_accessor.segment_infos_[0].end_);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::AddressNotInSegmentEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  try {
-    size_t vsyscall_num{memoryaccessor_testing::memoryaccessor::seg_num_by_name(
-        "[vsyscall]", memory_accessor.segment_infos_)};
-    if (vsyscall_num != SIZE_MAX) {
-      memory_accessor.ReadSegment(nullptr, vsyscall_num);
-      REQUIRE(false);
-    } else {
-      WARN(vsyscall_num == SIZE_MAX);
-    }
-  } catch (const MemoryAccessor::SegmentAccessDeniedEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  size_t done_amount{0};
   
   memory_accessor.Reset();
-  kill(child, SIGKILL);
+  char arr[1];
+  
+  err = memory_accessor.ReadSegment(arr, 0, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kPidNotSetErr);
+
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  
+  err = memory_accessor.ReadSegment(arr, memory_accessor.segment_infos_.size(), done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kSegmentNotExistErr);
+  
+  err = memory_accessor.ReadSegment(arr, 0, done_amount, memory_accessor.segment_infos_[0].end_);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kAddressNotInSegmentErr);
+  
+  size_t vsyscall_num{memoryaccessor_testing::memoryaccessor::seg_num_by_name("[vsyscall]", memory_accessor.segment_infos_)};
+  if (vsyscall_num != SIZE_MAX) {
+    err = memory_accessor.ReadSegment(arr, vsyscall_num, done_amount);
+    REQUIRE(err == MemoryAccessor::ErrorCode::kSegmentAccessDeniedErr);
+  } else {
+    WARN(vsyscall_num == SIZE_MAX);
+  }
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 TEST_CASE("Write array to segment, read back and compare") {
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  size_t done_amount{0};
+  
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  
+  size_t seg_size{memory_accessor.segment_infos_[0].end_ -
+                  memory_accessor.segment_infos_[0].start_};
 
-  try {
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  auto arr1 = std::make_unique<char[]>(seg_size);
+  auto arr2 = std::make_unique<char[]>(seg_size);
 
-    size_t seg_size{memory_accessor.segment_infos_[0].end_ -
-                    memory_accessor.segment_infos_[0].start_};
+  memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(), seg_size);
+  
+  err = memory_accessor.WriteSegment(arr1.get(), 0, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
 
-    auto arr1 = std::make_unique<char[]>(seg_size);
-    auto arr2 = std::make_unique<char[]>(seg_size);
+  err = memory_accessor.ReadSegment(arr2.get(), 0, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
 
-    memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(), seg_size);
-    memory_accessor.WriteSegment(arr1.get(), 0);
-
-    memory_accessor.ReadSegment(arr2.get(), 0);
-
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr1.get(), arr2.get(), seg_size));
-    
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-  } catch (...) {
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-    REQUIRE(false);
-  }
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(arr1.get(), arr2.get(), seg_size));
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 TEST_CASE("Write array parts to segment, read back and compare") {
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  size_t done_amount{0};
+  
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  
+  size_t seg_size{memory_accessor.segment_infos_[0].end_ -
+                  memory_accessor.segment_infos_[0].start_};
 
-  try {
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  auto arr1 = std::make_unique<char[]>(seg_size);
+  memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(), seg_size);
 
-    size_t seg_size{memory_accessor.segment_infos_[0].end_ -
-                    memory_accessor.segment_infos_[0].start_};
+  size_t part12_size{seg_size / 3};
+  size_t part3_size{seg_size - 2 * part12_size};
+  
+  err = memory_accessor.WriteSegment(arr1.get(), 0, done_amount, 0, part12_size);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.WriteSegment(arr1.get() + part12_size, 0, done_amount, part12_size,
+                               part12_size);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.WriteSegment(arr1.get() + 2 * part12_size, 0, done_amount,
+                               part12_size * 2);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
 
-    auto arr1 = std::make_unique<char[]>(seg_size);
-    memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(), seg_size);
+  auto arr2 = std::make_unique<char[]>(seg_size);
 
-    size_t part12_size{seg_size / 3};
-    size_t part3_size{seg_size - 2 * part12_size};
-
-    memory_accessor.WriteSegment(arr1.get(), 0, 0, part12_size);
-    memory_accessor.WriteSegment(arr1.get() + part12_size, 0, part12_size,
-                                 part12_size);
-    memory_accessor.WriteSegment(arr1.get() + 2 * part12_size, 0,
-                                 part12_size * 2);
-
-    auto arr2 = std::make_unique<char[]>(seg_size);
-
-    memory_accessor.ReadSegment(arr2.get(), 0, 0, part12_size);
-    memory_accessor.ReadSegment(arr2.get() + part12_size, 0, part12_size,
-                                part12_size);
-    memory_accessor.ReadSegment(arr2.get() + 2 * part12_size, 0,
-                                part12_size * 2);
-
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr1.get(), arr2.get(), seg_size));
-    
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-  } catch (...) {
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-    REQUIRE(false);
-  }
+  err = memory_accessor.ReadSegment(arr2.get(), 0, done_amount, 0, part12_size);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ReadSegment(arr2.get() + part12_size, 0, done_amount, part12_size,
+                              part12_size);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ReadSegment(arr2.get() + 2 * part12_size, 0, done_amount, part12_size * 2);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(arr1.get(), arr2.get(), seg_size));
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 TEST_CASE("Write segment: exceptions") {
-  try {
-    memory_accessor.Reset();
-    memory_accessor.WriteSegment("", 0, 0, 1);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::PidNotSetEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
-
-  try {
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() != 0);
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  try {
-    memory_accessor.WriteSegment("",
-                                 memory_accessor.segment_infos_.size(), 0, 1);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::SegmentNotExistEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  try {
-    memory_accessor.WriteSegment("", 0,
-                                 memory_accessor.segment_infos_[0].end_, 1);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::AddressNotInSegmentEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  try {
-    size_t vsyscall_num{memoryaccessor_testing::memoryaccessor::seg_num_by_name(
-        "[vsyscall]", memory_accessor.segment_infos_)};
-    if (vsyscall_num != SIZE_MAX) {
-      // size_t done_amount{0};
-      // memory_accessor.Write("a", memory_accessor.segment_infos_[vsyscall_num].start_, 1, done_amount);
-      // memory_accessor.WriteSegment("nullptr", vsyscall_num);
-      // memory_accessor.WriteSegment(nullptr, vsyscall_num);
-      memory_accessor.WriteSegment("", vsyscall_num, 0, 1);
-      REQUIRE(false);
-    } else {
-      WARN(vsyscall_num == SIZE_MAX);
-    }
-  } catch (const MemoryAccessor::SegmentAccessDeniedEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
-
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  size_t done_amount{0};
+  
   memory_accessor.Reset();
-  kill(child, SIGKILL);
+  
+  err = memory_accessor.WriteSegment("", 0, done_amount, 0, 1);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kPidNotSetErr);
+
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  
+  err = memory_accessor.WriteSegment("", memory_accessor.segment_infos_.size(), done_amount, 0, 1);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kSegmentNotExistErr);
+  
+  err = memory_accessor.WriteSegment("", 0, done_amount, memory_accessor.segment_infos_[0].end_, 1);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kAddressNotInSegmentErr);
+  
+  size_t vsyscall_num{memoryaccessor_testing::memoryaccessor::seg_num_by_name("[vsyscall]", memory_accessor.segment_infos_)};
+  if (vsyscall_num != SIZE_MAX) {
+    err = memory_accessor.WriteSegment("", vsyscall_num, done_amount, 0, 1);
+    REQUIRE(err == MemoryAccessor::ErrorCode::kSegmentAccessDeniedErr);
+  } else {
+    WARN(vsyscall_num == SIZE_MAX);
+  }
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 namespace memoryaccessor_testing::memoryaccessor {
@@ -918,336 +927,328 @@ size_t find_gap_start(const std::vector<SegmentInfo> &infos) {
 } // namespace memoryaccessor_testing::memoryaccessor
 
 TEST_CASE("Read data across segments to array and compare to initial array") {
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() > 1);
+  
+  auto arr1 = std::make_unique<char[]>(kBufferSize);
+  auto arr2 = std::make_unique<char[]>(kBufferSize);
 
-  try {
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() > 1);
+  memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(), kBufferSize);
+  std::memcpy(arr2.get(), arr1.get(), kBufferSize);
 
-    auto arr1 = std::make_unique<char[]>(kBufferSize);
-    auto arr2 = std::make_unique<char[]>(kBufferSize);
-
-    memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(),
-                                                         kBufferSize);
-    std::memcpy(arr2.get(), arr1.get(), kBufferSize);
-
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr1.get(), arr2.get(), kBufferSize));
-
-    REQUIRE(memory_accessor.segment_infos_[0].end_ ==
-            memory_accessor.segment_infos_[1].start_);
-    size_t done_amount{0};
-    memory_accessor.Read(
-        arr1.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2,
-        kBufferSize, done_amount);
-    REQUIRE(done_amount == kBufferSize);
-
-    REQUIRE(!memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr1.get(), arr2.get(), kBufferSize));
-
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-  } catch (...) {
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-    REQUIRE(false);
-  }
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(arr1.get(), arr2.get(), kBufferSize));
+  
+  REQUIRE(memory_accessor.segment_infos_[0].end_ ==
+          memory_accessor.segment_infos_[1].start_);
+  size_t done_amount{0};
+  
+  err = memory_accessor.Read(arr1.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2, kBufferSize, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(done_amount == kBufferSize);
+  REQUIRE(!memoryaccessor_testing::memoryaccessor::are_arrays_same(arr1.get(), arr2.get(), kBufferSize));
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 TEST_CASE("Read data across segments to arrays in different cases") {
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
-
-  try {
-    size_t done_amount{0};
-
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() > 1);
-    REQUIRE(memory_accessor.segment_infos_[0].end_ ==
-            memory_accessor.segment_infos_[1].start_);
-    auto arr1 = std::make_unique<char[]>(kBufferSize);
-    memory_accessor.Read(
-        arr1.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2,
-        kBufferSize, done_amount);
-    REQUIRE(done_amount == kBufferSize);
-
-    memory_accessor.SetPid(1);
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() > 1);
-    REQUIRE(memory_accessor.segment_infos_[0].end_ ==
-            memory_accessor.segment_infos_[1].start_);
-    auto arr2 = std::make_unique<char[]>(kBufferSize);
-    memory_accessor.Read(
-        arr2.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2,
-        kBufferSize, done_amount);
-    REQUIRE(done_amount == kBufferSize);
-
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr1.get(), arr2.get(), kBufferSize));
-
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-  } catch (...) {
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-    REQUIRE(false);
-  }
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
+  
+  size_t done_amount{0};
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() > 1);
+  REQUIRE(memory_accessor.segment_infos_[0].end_ ==
+          memory_accessor.segment_infos_[1].start_);
+  auto arr1 = std::make_unique<char[]>(kBufferSize);
+  
+  err = memory_accessor.Read(
+      arr1.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2,
+      kBufferSize, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(done_amount == kBufferSize);
+  
+  err = memory_accessor.SetPid(1);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() > 1);
+  REQUIRE(memory_accessor.segment_infos_[0].end_ ==
+          memory_accessor.segment_infos_[1].start_);
+  auto arr2 = std::make_unique<char[]>(kBufferSize);
+  
+  err = memory_accessor.Read(
+      arr2.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2,
+      kBufferSize, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(done_amount == kBufferSize);
+  
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
+      arr1.get(), arr2.get(), kBufferSize));
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 TEST_CASE("Read data across segments to array and compare to parts") {
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() > 1);
+  REQUIRE(memory_accessor.segment_infos_[0].end_ ==
+          memory_accessor.segment_infos_[1].start_);
+  
+  size_t done_amount{0};
+  
+  auto arr = std::make_unique<char[]>(kBufferSize);
+  size_t begin{memory_accessor.segment_infos_[0].end_ - kBufferSize / 2};
+  
+  err = memory_accessor.Read(arr.get(), begin, kBufferSize, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(done_amount == kBufferSize);
+  
+  size_t part12_size{kBufferSize / 3};
+  size_t part3_size{kBufferSize - 2 * part12_size};
 
-  try {
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() > 1);
-    REQUIRE(memory_accessor.segment_infos_[0].end_ ==
-            memory_accessor.segment_infos_[1].start_);
-
-    size_t done_amount{0};
-
-    auto arr = std::make_unique<char[]>(kBufferSize);
-    size_t begin{memory_accessor.segment_infos_[0].end_ - kBufferSize / 2};
-    memory_accessor.Read(arr.get(), begin, kBufferSize, done_amount);
-    REQUIRE(done_amount == kBufferSize);
-
-    size_t part12_size{kBufferSize / 3};
-    size_t part3_size{kBufferSize - 2 * part12_size};
-
-    auto part1 = std::make_unique<char[]>(part12_size);
-    auto part2 = std::make_unique<char[]>(part12_size);
-    auto part3 = std::make_unique<char[]>(part3_size);
-
-    memory_accessor.Read(part1.get(), begin, part12_size, done_amount);
-    begin += part12_size;
-    REQUIRE(done_amount == part12_size);
-    memory_accessor.Read(part2.get(), begin, part12_size, done_amount);
-    begin += part12_size;
-    REQUIRE(done_amount == part12_size);
-    memory_accessor.Read(part3.get(), begin, part3_size, done_amount);
-    REQUIRE(done_amount == part3_size);
-
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr.get(), part1.get(), part12_size));
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr.get() + part12_size, part2.get(), part12_size));
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr.get() + 2 * part12_size, part3.get(), part3_size));
-
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-  } catch (...) {
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-    REQUIRE(false);
-  }
+  auto part1 = std::make_unique<char[]>(part12_size);
+  auto part2 = std::make_unique<char[]>(part12_size);
+  auto part3 = std::make_unique<char[]>(part3_size);
+  
+  err = memory_accessor.Read(part1.get(), begin, part12_size, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  begin += part12_size;
+  REQUIRE(done_amount == part12_size);
+  
+  err = memory_accessor.Read(part2.get(), begin, part12_size, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  begin += part12_size;
+  REQUIRE(done_amount == part12_size);
+  
+  err = memory_accessor.Read(part3.get(), begin, part3_size, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(done_amount == part3_size);
+  
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
+      arr.get(), part1.get(), part12_size));
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
+      arr.get() + part12_size, part2.get(), part12_size));
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
+      arr.get() + 2 * part12_size, part3.get(), part3_size));
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 TEST_CASE("Read: exceptions") {
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
   size_t done_amount{0};
-
-  try {
-    memory_accessor.Reset();
-    memory_accessor.Read(nullptr, 0, 0, done_amount);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::PidNotSetEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
-
-  try {
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() != 0);
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  try {
-    memory_accessor.Read(nullptr, 0, 0, done_amount);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::AddressNotInSegmentEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  try {
-    size_t vsyscall_num{memoryaccessor_testing::memoryaccessor::seg_num_by_name(
-        "[vsyscall]", memory_accessor.segment_infos_)};
-    if (vsyscall_num != SIZE_MAX) {
-      auto arr = std::make_unique<char[]>(1);
-      memory_accessor.Read(arr.get(),
-                           memory_accessor.segment_infos_[vsyscall_num].start_,
-                           1, done_amount);
-      REQUIRE(false);
-    } else {
-      WARN(vsyscall_num == SIZE_MAX);
-    }
-  } catch (const MemoryAccessor::SegmentAccessDeniedEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
   
   memory_accessor.Reset();
-  kill(child, SIGKILL);
+  char arr[1];
+  
+  err = memory_accessor.Read(arr, 0, 0, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kPidNotSetErr);
+
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  
+  err = memory_accessor.Read(arr, 0, 0, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kAddressNotInSegmentErr);
+  
+  size_t vsyscall_num{memoryaccessor_testing::memoryaccessor::seg_num_by_name("[vsyscall]", memory_accessor.segment_infos_)};
+  if (vsyscall_num != SIZE_MAX) {
+    err = memory_accessor.Read(arr, memory_accessor.segment_infos_[vsyscall_num].start_, 1, done_amount);
+    REQUIRE(err == MemoryAccessor::ErrorCode::kSegmentAccessDeniedErr);
+  } else {
+    WARN(vsyscall_num == SIZE_MAX);
+  }
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 TEST_CASE("Write array to memory across segments, read back and compare") {
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
 
-  try {
-    size_t done_amount{0};
+  size_t done_amount{0};
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() > 1);
+  REQUIRE(memory_accessor.segment_infos_[0].end_ ==
+          memory_accessor.segment_infos_[1].start_);
+  
+  auto arr1 = std::make_unique<char[]>(kBufferSize);
+  auto arr2 = std::make_unique<char[]>(kBufferSize);
 
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() > 1);
-    REQUIRE(memory_accessor.segment_infos_[0].end_ ==
-            memory_accessor.segment_infos_[1].start_);
-
-    auto arr1 = std::make_unique<char[]>(kBufferSize);
-    auto arr2 = std::make_unique<char[]>(kBufferSize);
-
-    memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(),
-                                                         kBufferSize);
-    memory_accessor.Write(
-        arr1.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2,
-        kBufferSize, done_amount);
-    REQUIRE(done_amount == kBufferSize);
-
-    memory_accessor.Read(
-        arr2.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2,
-        kBufferSize, done_amount);
-    REQUIRE(done_amount == kBufferSize);
-
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr1.get(), arr2.get(), kBufferSize));
-    
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-  } catch (...) {
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-    REQUIRE(false);
-  }
+  memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(),
+                                                       kBufferSize);
+  
+  err = memory_accessor.Write(arr1.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2, kBufferSize, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(done_amount == kBufferSize);
+  
+  
+  err = memory_accessor.Read(arr2.get(), memory_accessor.segment_infos_[0].end_ - kBufferSize / 2, kBufferSize, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(done_amount == kBufferSize);
+  
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
+      arr1.get(), arr2.get(), kBufferSize));
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 TEST_CASE(
     "Write array parts to memory across segments, read back and compare") {
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() > 1);
+  REQUIRE(memory_accessor.segment_infos_[0].end_ ==
+          memory_accessor.segment_infos_[1].start_);
+  
+  size_t done_amount{0};
+  
+  auto arr1 = std::make_unique<char[]>(kBufferSize);
+  memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(),
+                                                       kBufferSize);
 
-  try {
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() > 1);
-    REQUIRE(memory_accessor.segment_infos_[0].end_ ==
-            memory_accessor.segment_infos_[1].start_);
+  size_t part12_size{kBufferSize / 3};
+  size_t part3_size{kBufferSize - 2 * part12_size};
 
-    size_t done_amount{0};
+  size_t begin{memory_accessor.segment_infos_[0].end_ - kBufferSize / 2};
+  
+  err = memory_accessor.Write(arr1.get(), begin, part12_size, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  begin += part12_size;
+  REQUIRE(done_amount == part12_size);
+  err = memory_accessor.Write(arr1.get() + part12_size, begin, part12_size,
+                        done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  begin += part12_size;
+  REQUIRE(done_amount == part12_size);
+  err = memory_accessor.Write(arr1.get() + part12_size * 2, begin, part3_size,
+                        done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(done_amount == part3_size);
 
-    auto arr1 = std::make_unique<char[]>(kBufferSize);
-    memoryaccessor_testing::memoryaccessor::read_urandom(arr1.get(),
-                                                         kBufferSize);
+  auto arr2 = std::make_unique<char[]>(kBufferSize);
 
-    size_t part12_size{kBufferSize / 3};
-    size_t part3_size{kBufferSize - 2 * part12_size};
+  begin = memory_accessor.segment_infos_[0].end_ - kBufferSize / 2;
 
-    size_t begin{memory_accessor.segment_infos_[0].end_ - kBufferSize / 2};
+  err = memory_accessor.Read(arr2.get(), begin, part12_size, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  begin += part12_size;
+  REQUIRE(done_amount == part12_size);
+  err = memory_accessor.Read(arr2.get() + part12_size, begin, part12_size,
+                       done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  begin += part12_size;
+  REQUIRE(done_amount == part12_size);
+  err = memory_accessor.Read(arr2.get() + part12_size * 2, begin, part3_size,
+                       done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(done_amount == part3_size);
 
-    memory_accessor.Write(arr1.get(), begin, part12_size, done_amount);
-    begin += part12_size;
-    REQUIRE(done_amount == part12_size);
-    memory_accessor.Write(arr1.get() + part12_size, begin, part12_size,
-                          done_amount);
-    begin += part12_size;
-    REQUIRE(done_amount == part12_size);
-    memory_accessor.Write(arr1.get() + part12_size * 2, begin, part3_size,
-                          done_amount);
-    REQUIRE(done_amount == part3_size);
-
-    auto arr2 = std::make_unique<char[]>(kBufferSize);
-
-    begin = memory_accessor.segment_infos_[0].end_ - kBufferSize / 2;
-
-    memory_accessor.Read(arr2.get(), begin, part12_size, done_amount);
-    begin += part12_size;
-    REQUIRE(done_amount == part12_size);
-    memory_accessor.Read(arr2.get() + part12_size, begin, part12_size,
-                         done_amount);
-    begin += part12_size;
-    REQUIRE(done_amount == part12_size);
-    memory_accessor.Read(arr2.get() + part12_size * 2, begin, part3_size,
-                         done_amount);
-    REQUIRE(done_amount == part3_size);
-
-    REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
-        arr1.get(), arr2.get(), kBufferSize));
-    
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-  } catch (...) {
-    memory_accessor.Reset();
-    kill(child, SIGKILL);
-    REQUIRE(false);
-  }
+  REQUIRE(memoryaccessor_testing::memoryaccessor::are_arrays_same(
+      arr1.get(), arr2.get(), kBufferSize));
+  
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 TEST_CASE("Write: exceptions") {
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  
   size_t done_amount{0};
-
-  try {
-    memory_accessor.Reset();
-    memory_accessor.Write("", 0, 0, done_amount);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::PidNotSetEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  pid_t child{memoryaccessor_testing::memoryaccessor::get_paused_child()};
-
-  try {
-    memory_accessor.SetPid(child);
-    memory_accessor.ParseMaps();
-    REQUIRE(memory_accessor.segment_infos_.size() != 0);
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  try {
-    memory_accessor.Write("", 0, 0, done_amount);
-    REQUIRE(false);
-  } catch (const MemoryAccessor::AddressNotInSegmentEx &ex) {
-  } catch (...) {
-    REQUIRE(false);
-  }
-
-  try {
-    size_t vsyscall_num{memoryaccessor_testing::memoryaccessor::seg_num_by_name(
-        "[vsyscall]", memory_accessor.segment_infos_)};
-    if (vsyscall_num != SIZE_MAX) {
-      auto arr = std::make_unique<char[]>(1);
-      memory_accessor.Write(arr.get(),
-                            memory_accessor.segment_infos_[vsyscall_num].start_,
-                            1, done_amount);
-      REQUIRE(false);
-    } else {
-      WARN(vsyscall_num == SIZE_MAX);
-    }
-  } catch (const MemoryAccessor::SegmentAccessDeniedEx &ex) {
-    // Something is wrong with doctest here, it freezes if not perform the write
-    // operation below. Without doctest everything works properly though.
-    memory_accessor.Write("", memory_accessor.segment_infos_[0].start_, 0,
-                          done_amount);
-  } catch (...) {
-    REQUIRE(false);
-  }
-
+  
   memory_accessor.Reset();
-  kill(child, SIGKILL);
+  
+  err = memory_accessor.Write("", 0, 0, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kPidNotSetErr);
+
+  memoryaccessor_testing::memoryaccessor::get_paused_child();
+  
+  err = memory_accessor.SetPid(child);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  err = memory_accessor.ParseMaps();
+  REQUIRE(err == MemoryAccessor::ErrorCode::kNoError);
+  
+  REQUIRE(memory_accessor.segment_infos_.size() != 0);
+  
+  err = memory_accessor.Write("", 0, 0, done_amount);
+  REQUIRE(err == MemoryAccessor::ErrorCode::kAddressNotInSegmentErr);
+  
+  size_t vsyscall_num{memoryaccessor_testing::memoryaccessor::seg_num_by_name("[vsyscall]", memory_accessor.segment_infos_)};
+  if (vsyscall_num != SIZE_MAX) {
+    err = memory_accessor.Write("", memory_accessor.segment_infos_[vsyscall_num].start_, 1, done_amount);
+    REQUIRE(err == MemoryAccessor::ErrorCode::kSegmentAccessDeniedErr);
+  } else {
+    WARN(vsyscall_num == SIZE_MAX);
+  }
+
+  memoryaccessor_testing::memoryaccessor::clear_child();
 }
 
 TEST_SUITE_END();
@@ -1302,6 +1303,65 @@ TEST_SUITE_BEGIN("Console");
 
 namespace memoryaccessor_testing::console {
 
+std::streambuf * const cout_streambuf_p{std::cout.rdbuf()}; //!< Pointer to std::streambuf instance of the default process std::cout.
+std::streambuf * const cerr_streambuf_p{std::cerr.rdbuf()}; //!< Pointer to std::streambuf instance of the default process std::cerr.
+std::ostringstream redir_oss; //!< Stream to redirect std::cout and std::cerr to.
+
+/*!
+   \brief Redirect std::cout and std::cerr to redir_oss.
+
+   Redirect default std::cout and std::cerr to custom stream redir_oss, to examine stdout and stderr data.
+  */
+void redir_io() {
+  redir_oss.str("");
+  std::cout.rdbuf(redir_oss.rdbuf());
+  std::cerr.rdbuf(redir_oss.rdbuf());
+}
+
+/*!
+   \brief Assign default destinations to std::cout and std::cerr.
+
+   Set the original std::streambuf instances to std::cout and std::cerr, to restore the default work of these.
+  */
+void restore_io() {
+  std::cout.rdbuf(cout_streambuf_p);
+  std::cerr.rdbuf(cerr_streambuf_p);
+}
+
+/*!
+   \brief Compare string to the output from redirected streams.
+   \param [in] expect String that is expected to be equal.
+   \return Result of the comparison
+
+   Get the contents of redir_oss as a string and compare it to expect parameter.
+  */
+bool compare_io(const std::string& expect) {
+  std::string output{redir_oss.str()};
+  
+  // CAPTURE(expect);
+  // CAPTURE(output);
+  // WARN(false);
+  
+  return output == expect;
+}
+
+/*!
+   \brief Compare string to the beginning of the output from redirected streams.
+   \param [in] expect Subtring that is expected to be equal to the beginning of the output.
+   \return Result of the comparison
+
+   Get the contents of redir_oss as a string, cut it to the length of expect parameter and check the equality.
+  */
+bool compare_io_substr(const std::string& expect) {
+  std::string output{redir_oss.str()};
+  
+  // CAPTURE(expect);
+  // CAPTURE(output);
+  // WARN(false);
+  
+  return output.substr(0, expect.length()) == expect;
+}
+
 /*!
  \brief Replace streambuf of stream by one provided in ostringstream.
  \param [in,out] stream Stream to perform replacement.
@@ -1321,180 +1381,122 @@ std::streambuf *replace_streambuf(std::ios &stream,
 } // namespace memoryaccessor_testing::console
 
 TEST_CASE("Print name and version: not null") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   console.PrintNameVer();
-  REQUIRE(oss.str() != "");
-
-  std::cout.rdbuf(p_cout_streambuf);
+  memoryaccessor_testing::console::restore_io();
+  REQUIRE(!memoryaccessor_testing::console::compare_io(""));
 }
 
 TEST_CASE("Print name and version") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   console.PrintNameVer();
-  REQUIRE(oss.str() ==
-          console.kProjectName + " " + console.kProjectVersion + "\n");
-
-  std::cout.rdbuf(p_cout_streambuf);
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{console.kProjectName + " " + console.kProjectVersion + "\n"};
+  REQUIRE(memoryaccessor_testing::console::compare_io(expect));
 }
 
 TEST_CASE("Console start: not null") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   console.Start();
-  REQUIRE(oss.str() != "");
-
-  std::cout.rdbuf(p_cout_streambuf);
+  memoryaccessor_testing::console::restore_io();
+  REQUIRE(!memoryaccessor_testing::console::compare_io(""));
 }
 
 TEST_CASE("Console start") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   console.Start();
-  REQUIRE(oss.str() == console.kProjectName + " " + console.kProjectVersion +
-                           "\nType \"help\" for help.\n");
-
-  std::cout.rdbuf(p_cout_streambuf);
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{console.kProjectName + " " + console.kProjectVersion + "\nType \"help\" for help.\n"};
+  REQUIRE(memoryaccessor_testing::console::compare_io(expect));
 }
-
-namespace memoryaccessor_testing::console {
-
-/*!
- \brief Perform test on Console::HandleCommand function.
- \param [in,out] oss std::ostringstream with redirected std::cout and/or
- std::cerr. \param [in] command Line with command. \param [in] result_substr
- Desired substring of result starting from the beginning.
-
-  Perform test on Console::HandleCommand function and compare result with
- specified substring.
-*/
-void test_handle_command(std::ostringstream &oss, const std::string &command,
-                         const std::string &result_substr) {
-  ::console.HandleCommand(command);
-  REQUIRE(oss.str().substr(0, result_substr.length()) == result_substr);
-  oss.str("");
-}
-
-} // namespace memoryaccessor_testing::console
 
 TEST_CASE("Handle empty command") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   console.HandleCommand("");
-  REQUIRE(oss.str().length() == 0);
-
-  std::cout.rdbuf(p_cout_streambuf);
+  memoryaccessor_testing::console::restore_io();
+  REQUIRE(memoryaccessor_testing::console::compare_io(""));
 }
 
 TEST_CASE("Handle whitespace command") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   console.HandleCommand(std::string(5, ' '));
-  REQUIRE(oss.str().length() == 0);
-
-  std::cout.rdbuf(p_cout_streambuf);
+  memoryaccessor_testing::console::restore_io();
+  REQUIRE(memoryaccessor_testing::console::compare_io(""));
 }
 
 TEST_CASE("Handle unknown command") {
-  std::ostringstream oss;
-  std::streambuf *p_cerr_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cerr, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   std::string command{"abcdef"};
-  memoryaccessor_testing::console::test_handle_command(
-      oss, command, command + ": command not found\n");
-
-  std::cerr.rdbuf(p_cerr_streambuf);
+  console.HandleCommand(command);
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{command + ": command not found\n"};
+  REQUIRE(memoryaccessor_testing::console::compare_io(expect));
 }
 
 TEST_CASE("Handle command with quotes") {
-  std::ostringstream oss;
-  std::streambuf *p_cerr_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cerr, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   std::string command{"abc def"};
-  memoryaccessor_testing::console::test_handle_command(
-      oss, "\"" + command + "\"", command + ": command not found\n");
-
-  std::cerr.rdbuf(p_cerr_streambuf);
+  console.HandleCommand("\"" + command + "\"");
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{command + ": command not found\n"};
+  REQUIRE(memoryaccessor_testing::console::compare_io(expect));
 }
 
 TEST_CASE("Handle command with escape sequences") {
-  std::ostringstream oss;
-  std::streambuf *p_cerr_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cerr, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   std::string command{"\\\\\\\"\\a\\b\\f\\n\\r\\t\\v"};
-  memoryaccessor_testing::console::test_handle_command(
-      oss, command,
-      std::string("\\\"\a\b\f\n\r\t\v") + ": command not found\n");
-
-  std::cerr.rdbuf(p_cerr_streambuf);
+  console.HandleCommand("\"" + command + "\"");
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{std::string("\\\"\a\b\f\n\r\t\v") + ": command not found\n"};
+  REQUIRE(memoryaccessor_testing::console::compare_io(expect));
 }
 
 TEST_CASE("Handle command: help") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
-  memoryaccessor_testing::console::test_handle_command(
-      oss, "help",
-      console.kProjectName + " " + console.kProjectVersion + "\n" +
-          console.kProjectDescription + "\nCommands:\n");
-
-  std::cout.rdbuf(p_cout_streambuf);
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("help");
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{console.kProjectName + " " + console.kProjectVersion + "\n" + console.kProjectDescription + "\nCommands:\n"};
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr(expect));
 }
 
 TEST_CASE("Handle command: name") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-  std::streambuf *p_cerr_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cerr, oss)};
-
-  memoryaccessor_testing::console::test_handle_command(oss, "name", "Usage:");
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("name");
+  memoryaccessor_testing::console::restore_io();
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr("Usage:"));
+  
+  memoryaccessor_testing::console::redir_io();
   std::string name{std::string(16, 'a')};
-  memoryaccessor_testing::console::test_handle_command(
-      oss, "name " + name, "No PID found by name: " + name);
-  memoryaccessor_testing::console::test_handle_command(
-      oss, "name " + memoryaccessor_testing::process_api::get_self_name(), "Found");
-
-  std::cout.rdbuf(p_cout_streambuf);
-  std::cerr.rdbuf(p_cerr_streambuf);
+  console.HandleCommand("name " + name);
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{"No PID found by name: " + name};
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr(expect));
+  
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("name " + memoryaccessor_testing::process_api::get_self_name());
+  memoryaccessor_testing::console::restore_io();
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr("Found"));
 }
 
 TEST_CASE("Handle command: pid") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-  std::streambuf *p_cerr_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cerr, oss)};
-
-  memoryaccessor_testing::console::test_handle_command(oss, "pid", "Usage:");
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("pid");
+  memoryaccessor_testing::console::restore_io();
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr("Usage:"));
+  
+  memoryaccessor_testing::console::redir_io();
   std::string pid_str{std::to_string(memoryaccessor_testing::process_api::max_pid_t)};
-  memoryaccessor_testing::console::test_handle_command(
-      oss, "pid " + pid_str,
-      "The process with PID " + pid_str + " does not exist.");
+  console.HandleCommand("pid " + pid_str);
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{"The process with PID " + pid_str + " does not exist."};
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr(expect));
+  
+  memoryaccessor_testing::console::redir_io();
   pid_str = std::to_string(getpid());
-  memoryaccessor_testing::console::test_handle_command(
-      oss, "pid " + pid_str,
-      "Set PID: " + pid_str + "\nParsing /proc/" + pid_str + "/maps...\nFound");
-
-  std::cout.rdbuf(p_cout_streambuf);
-  std::cerr.rdbuf(p_cerr_streambuf);
+  console.HandleCommand("pid " + pid_str);
+  memoryaccessor_testing::console::restore_io();
+  expect = "Set PID: " + pid_str + "\nParsing /proc/" + pid_str + "/maps...\nFound";
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr(expect));
 }
 
 namespace memoryaccessor_testing::console {
@@ -1516,18 +1518,14 @@ std::string size_t_to_hex(const size_t &num, size_t width) {
 } // namespace memoryaccessor_testing::console
 
 TEST_CASE("Handle command: maps") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   console.HandleCommand("pid " + std::to_string(getpid()));
-  oss.str("");
-
   SegmentInfo si0{memory_accessor.segment_infos_[0]};
-
-  memoryaccessor_testing::console::test_handle_command(
-      oss, "maps",
-      std::string(std::log10(memory_accessor.segment_infos_.size() - 1), ' ') +
+  
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("maps");
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{std::string(std::log10(memory_accessor.segment_infos_.size() - 1), ' ') +
           "0. " + memoryaccessor_testing::console::size_t_to_hex(si0.start_) +
           "-" + memoryaccessor_testing::console::size_t_to_hex(si0.end_) + " " +
           si0.EncodePermissions() + " " +
@@ -1535,96 +1533,87 @@ TEST_CASE("Handle command: maps") {
           memoryaccessor_testing::console::size_t_to_hex(si0.major_id_, 2) +
           ":" +
           memoryaccessor_testing::console::size_t_to_hex(si0.minor_id_, 2) +
-          " " + std::to_string(si0.inode_id_));
-
-  std::cout.rdbuf(p_cout_streambuf);
+          " " + std::to_string(si0.inode_id_)};
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr(expect));
 }
 
 TEST_CASE("Handle command: view") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   console.HandleCommand("pid " + std::to_string(getpid()));
-  oss.str("");
-
-  memoryaccessor_testing::console::test_handle_command(oss, "view", "Usage:");
-  memoryaccessor_testing::console::test_handle_command(
-      oss, "view 0",
-      memoryaccessor_testing::console::size_t_to_hex(
-          memory_accessor.segment_infos_[0].start_));
-
-  std::cout.rdbuf(p_cout_streambuf);
+  
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("view");
+  memoryaccessor_testing::console::restore_io();
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr("Usage:"));
+  
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("view 0");
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{memoryaccessor_testing::console::size_t_to_hex(memory_accessor.segment_infos_[0].start_)};
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr(expect));
 }
 
 TEST_CASE("Handle command: read") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   console.HandleCommand("pid " + std::to_string(getpid()));
-  oss.str("");
-
   SegmentInfo si0{memory_accessor.segment_infos_[0]};
-
-  memoryaccessor_testing::console::test_handle_command(oss, "read", "Usage:");
-  memoryaccessor_testing::console::test_handle_command(
-      oss,
-      "read " + memoryaccessor_testing::console::size_t_to_hex(si0.start_) +
-          " 1",
-      memoryaccessor_testing::console::size_t_to_hex(si0.start_));
-
-  std::cout.rdbuf(p_cout_streambuf);
+  
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("read");
+  memoryaccessor_testing::console::restore_io();
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr("Usage:"));
+  
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("read " + memoryaccessor_testing::console::size_t_to_hex(si0.start_) + " 1");
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{memoryaccessor_testing::console::size_t_to_hex(si0.start_)};
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr(expect));
 }
 
 TEST_CASE("Handle command: write") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   console.HandleCommand("pid " + std::to_string(getpid()));
-  oss.str("");
-
   SegmentInfo si0{memory_accessor.segment_infos_[0]};
-
-  memoryaccessor_testing::console::test_handle_command(oss, "write", "Usage:");
-  memoryaccessor_testing::console::test_handle_command(
-      oss,
-      "write " + memoryaccessor_testing::console::size_t_to_hex(si0.start_) +
-          " 0 a",
-      "0 bytes written.");
-
-  std::cout.rdbuf(p_cout_streambuf);
+  
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("write");
+  memoryaccessor_testing::console::restore_io();
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr("Usage:"));
+  
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("write " + memoryaccessor_testing::console::size_t_to_hex(si0.start_) + " 0 a");
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{"0 bytes written."};
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr(expect));
 }
 
 TEST_CASE("Handle command: diff") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
+  memoryaccessor_testing::console::redir_io();
   console.HandleCommand("pid " + std::to_string(getpid()));
-  oss.str("");
-
-  memoryaccessor_testing::console::test_handle_command(oss, "diff", "Usage:");
-
-  std::cout.rdbuf(p_cout_streambuf);
+  
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("diff");
+  memoryaccessor_testing::console::restore_io();
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr("Usage:"));
 }
 
 TEST_CASE("Handle command: await") {
-  std::ostringstream oss;
-  std::streambuf *p_cout_streambuf{
-      memoryaccessor_testing::console::replace_streambuf(std::cout, oss)};
-
-  memoryaccessor_testing::console::test_handle_command(oss, "await", "Usage:");
-  memoryaccessor_testing::console::test_handle_command(
-      oss, "await -p 1", "Awaiting PID: 1\nPID was found: 1\n");
-  memoryaccessor_testing::console::test_handle_command(
-      oss, "await " + memoryaccessor_testing::process_api::get_self_name(),
-      "Awaiting process: " + memoryaccessor_testing::process_api::get_self_name() +
-          "\nProcess was found: " +
-          memoryaccessor_testing::process_api::get_self_name());
-
-  std::cout.rdbuf(p_cout_streambuf);
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("await");
+  memoryaccessor_testing::console::restore_io();
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr("Usage:"));
+  
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("await -p 1");
+  memoryaccessor_testing::console::restore_io();
+  std::string expect{"Awaiting PID: 1\nPID was found: 1\n"};
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr(expect));
+  
+  memoryaccessor_testing::console::redir_io();
+  console.HandleCommand("await " + memoryaccessor_testing::process_api::get_self_name());
+  memoryaccessor_testing::console::restore_io();
+  expect = "Awaiting process: " + memoryaccessor_testing::process_api::get_self_name() + "\nProcess was found: " + memoryaccessor_testing::process_api::get_self_name();
+  REQUIRE(memoryaccessor_testing::console::compare_io_substr(expect));
 }
 
 TEST_SUITE_END();

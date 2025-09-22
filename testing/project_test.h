@@ -70,7 +70,8 @@ std::string get_self_name();
 */
 namespace memoryaccessor {
 
-pid_t get_paused_child();
+void clear_child();
+void get_paused_child();
 void read_urandom(char *dst, size_t amount);
 bool are_arrays_same(const char *arr1, const char *arr2, const size_t &size);
 size_t seg_num_by_name(const std::string &name,
@@ -86,9 +87,13 @@ size_t find_gap_start(const std::vector<SegmentInfo> &infos);
 */
 namespace console {
 
+void redir_io();
+void restore_io();
+bool compare_io(const std::string& expect);
+bool compare_io_substr(const std::string& expect);
 std::streambuf *replace_streambuf(std::ios &stream,
                                   const std::ostringstream &oss);
-void test_handle_command(std::ostringstream &oss, const std::string &command,
+bool test_handle_command(std::ostringstream &oss, const std::string &command,
                          const std::string &result_substr);
 std::string size_t_to_hex(const size_t &num, size_t width = 0);
 

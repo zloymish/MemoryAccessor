@@ -64,69 +64,79 @@ MemoryAccessor::~MemoryAccessor() noexcept { one_instance_created_ = false; }
 
 /*!
  \brief Get PID.
- \return Current PID assigned to an instance.
- \throw PidNotSetEx If PID is not set.
+ \param [out] pid Current PID assigned to an instance if it is set.
+ \return MemoryAccessor::ErrorCode, kPidNotSetErr if pid_set_ is false, kNoError otherwise.
 
- Get PID if it is set and throw an exception otherwise.
+ Get PID if it is set and return the correspondong MemoryAccessor::ErrorCode.
 */
-pid_t MemoryAccessor::GetPid() const noexcept(false) {
-  CheckPid();
-  return pid_;
+MemoryAccessor::ErrorCode MemoryAccessor::GetPid(pid_t& pid) const noexcept {
+  ErrorCode err{ErrorCode::kNoError};
+  
+  err = CheckPid();
+  if (err == ErrorCode::kNoError)
+    pid = pid_;
+  return err;
 }
 
 /*!
  \brief Set PID.
  \param [in] pid PID value to set.
- \throw ErrCheckingPidEx If an error while checking if PID exists occured.
- \throw PidNotExistEx If PID provided is not exist.
+ \return MemoryAccessor::ErrorCode, kErrCheckingPid if an error while checking if PID exists occured, kPidNotExistErr if PID provided is not exist, kNoError otherwise.
 
- Reset all objects of an instance that are related to PID and set new PID.
+ Reset all objects of an instance that are related to PID and set a new PID.
 */
-void MemoryAccessor::SetPid(const pid_t &pid) noexcept(false) {
+MemoryAccessor::ErrorCode MemoryAccessor::SetPid(const pid_t &pid) noexcept {
   switch (process_api_->PidExists(pid)) {
   case 0:
     break;
   case 1:
-    throw PidNotExistEx();
+    return ErrorCode::kPidNotExistErr;
+    break;
   case 2:
   default:
-    throw ErrCheckingPidEx();
+    return ErrorCode::kErrCheckingPid;
+    break;
   }
 
   Reset();
   pid_ = pid;
   pid_set_ = true;
+  
+  return ErrorCode::kNoError;
 }
 
 /*!
  \brief Check if PID is set.
- \throw PidNotSetEx If pid_set_ is false.
+ \return MemoryAccessor::ErrorCode, kPidNotSetErr if pid_set_ is false, kNoError otherwise.
 
- Check if pid_set_ is true, and, if it is not, throws an exception.
+ Check if pid_set_ is true, and, if it is not, returns the correspondong MemoryAccessor::ErrorCode.
 */
-void MemoryAccessor::CheckPid() const noexcept(false) {
+MemoryAccessor::ErrorCode MemoryAccessor::CheckPid() const noexcept {
   if (!pid_set_)
-    throw PidNotSetEx();
+    return ErrorCode::kPidNotSetErr;
+  return ErrorCode::kNoError;
 }
 
 /*!
  \brief Parse maps file.
- \throw BadMapsEx If an error in parsing /proc/PID/maps file occured.
- \throw MapsFileEx If an error in opening /proc/PID/maps file occured.
- \throw PidNotSetEx If PID is not set.
+ \return MemoryAccessor::ErrorCode, kBadMapsErr if an error in parsing /proc/PID/maps file occured, kMapsFileErr if an error in opening /proc/PID/maps file occured, kPidNotSetErr if PID is not set, kNoError otherwise.
 
  Open and parse /proc/PID/maps file saving data in segment_infos_ and
  special_segment_found_.
 */
-void MemoryAccessor::ParseMaps() noexcept(false) {
-  CheckPid();
+MemoryAccessor::ErrorCode MemoryAccessor::ParseMaps() noexcept {
+  ErrorCode err{ErrorCode::kNoError};
+  
+  err = CheckPid();
+  if (err != ErrorCode::kNoError)
+    return err;
 
   std::ifstream maps;
   maps.open("/proc/" + std::to_string(pid_) + "/maps", std::ios::in);
 
   if (!maps.good()) {
     maps.close();
-    throw MapsFileEx();
+    return ErrorCode::kMapsFileErr;
   }
 
   ResetSegments();
@@ -147,7 +157,7 @@ void MemoryAccessor::ParseMaps() noexcept(false) {
 
     if (iss.fail() || iss.bad() || segmentInfo.mode_ == 255) {
       ResetSegments();
-      throw BadMapsEx();
+      return ErrorCode::kBadMapsErr;
     }
 
     segmentInfo.DecodePermissions(permissions);
@@ -167,6 +177,8 @@ void MemoryAccessor::ParseMaps() noexcept(false) {
       special_segment_found_[segmentInfo.path_] = &segment_infos_.back();
     }
   }
+  
+  return err;
 }
 
 /*!
@@ -190,38 +202,44 @@ MemoryAccessor::GetAllSegmentNames() const noexcept {
 /*!
  \brief Find out which segment an address belongs to.
  \param [in] address Address to process.
- \return Number of the segment.
- \throw AddressNotInSegmentEx If the given address does not belong to any
- segment.
+ \param [out] num Number of the segment.
+ \return MemoryAccessor::ErrorCode, kAddressNotInSegmentErr if the given address does not belong to any
+ segment, kNoError otherwise.
 
  Find out which memory segment an address belongs to and return the number of
  the segment.
 */
-size_t MemoryAccessor::AddressInSegment(const size_t &address) const
-    noexcept(false) {
+MemoryAccessor::ErrorCode MemoryAccessor::AddressInSegment(const size_t &address, size_t &num) const noexcept {
   size_t segment_infos_size{segment_infos_.size()};
 
   for (size_t i{0}; i < segment_infos_size; i++)
-    if (segment_infos_[i].end_ > address)
-      return i;
+    if (segment_infos_[i].end_ > address) {
+      num = i;
+      return ErrorCode::kNoError;
+    }
 
-  throw AddressNotInSegmentEx();
+  return ErrorCode::kAddressNotInSegmentErr;
 }
 
 /*!
  \brief Check if a segment with the given number exists.
  \param [in] num Number of the memory segment starting from 0.
- \throw PidNotSetEx If PID is not set.
- \throw SegmentNotExistEx If the segment does not exist.
+ \return MemoryAccessor::ErrorCode, kPidNotSetErr if PID is not set, kSegmentNotExistErr if the segment does not exist, kNoError otherwise.
 
- Check if a memory segment with the given number exists. The function also
+ Check if a memory segment with the given number exists. This function also
  checks if PID is set.
 */
-void MemoryAccessor::CheckSegNum(const size_t &num) const noexcept(false) {
-  CheckPid();
-
+MemoryAccessor::ErrorCode MemoryAccessor::CheckSegNum(const size_t &num) const noexcept {
+  ErrorCode err{ErrorCode::kNoError};
+  
+  err = CheckPid();
+  if (err != ErrorCode::kNoError)
+    return err;
+  
   if (num >= segment_infos_.size())
-    throw SegmentNotExistEx();
+    err = ErrorCode::kSegmentNotExistErr;
+  
+  return err;
 }
 
 /*!
@@ -251,56 +269,63 @@ void MemoryAccessor::Reset() noexcept {
  \brief Read full memory segment or a part of it.
  \param [out] dst Destination to which data will be copied. Needs to be a valid array of the specified amount.
  \param [in] num Number of the memory segment starting from 0.
+ \param [out] done_amount How much data were read.
  \param [in] start Offset relative to the start of the segment, default is 0.
  \param [in] amount Number of bytes to capture after the "start" parameter,
  default is SIZE_MAX. If a value is too big, it is set to a maximum appropriate
- value. \return Amount of bytes read. \throw AddressNotInSegmentEx If the value
- of parameter "start" represents address on/after the end of the segment. \throw
- MemFileEx If an error in opening /proc/PID/mem file occured. \throw PidNotSetEx
- If PID is not set. \throw SegmentAccessDeniedEx If access to the segment is
- denied by an operating system. \throw SegmentNotExistEx If a segment with a
- number "num" does not exist.
+ value. 
+ \return MemoryAccessor::ErrorCode, kPidNotSetErr if PID is not set, kSegmentNotExistErr if segment with number "num" does not exist, kAddressNotInSegmentErr if the value of parameter "start" represents address on/after the end of the segment, kSegmentAccessDeniedErr if access to the segment is denied by an operating system, kMemFileErr If an error in opening /proc/PID/mem file occured, kNoError otherwise.
 
- Read full memory segment or a part of it to a destination "dst" and return how
- many bytes were read.
+ Read full memory segment or a part of it to a destination "dst" if it is possible.
 */
-size_t MemoryAccessor::ReadSegment(char *dst, const size_t &num, size_t start,
-                                   size_t amount) noexcept(false) {
-  PrepareMemSegment(num, start, amount);
+MemoryAccessor::ErrorCode MemoryAccessor::ReadSegment(char *dst, const size_t &num, size_t &done_amount, size_t start, size_t amount) noexcept {
+  ErrorCode err{ErrorCode::kNoError};
+  
+  err = PrepareMemSegment(num, start, amount);
+  if (err != ErrorCode::kNoError)
+    return err;
+  
   mem_.read(dst, amount);
   if (!mem_.good())
-    throw SegmentAccessDeniedEx();
-  return amount;
+    return ErrorCode::kSegmentAccessDeniedErr;
+  
+  done_amount += amount;
+  
+  return err;
 }
 
 /*!
  \brief Write data to memory segment.
  \param [in] src Source from which data will be copied. Needs to be a valid array of the specified amount.
  \param [in] num Number of the memory segment starting from 0.
+ \param [out] done_amount How much data were read.
  \param [in] start Offset relative to the start of the segment, default is 0.
  \param [in] amount Number of bytes to capture after the "start" parameter,
  default is SIZE_MAX. If a value is too big, it is set to a maximum appropriate
- value. \return Amount of bytes written. \throw AddressNotInSegmentEx If the
- value of parameter "start" represents address on/after the end of the segment.
- \throw MemFileEx If an error in opening /proc/PID/mem file occured.
- \throw PidNotSetEx If PID is not set.
- \throw SegmentAccessDeniedEx If access to the segment is denied by an operating
- system. \throw SegmentNotExistEx If a segment with a number "num" does not
- exist.
+ value. 
+ \return MemoryAccessor::ErrorCode, kPidNotSetErr if PID is not set, kSegmentNotExistErr if segment with number "num" does not exist, kAddressNotInSegmentErr if the value of parameter "start" represents address on/after the end of the segment, kSegmentAccessDeniedErr if access to the segment is
+ denied by an operating system, kMemFileErr If an error in opening
+ /proc/PID/mem file occured, kNoError otherwise.
 
- Write data to memory segment from a source "src" and return how many bytes were
- written.
+ Write data to memory segment from a source "src" if it is possible.
 */
-size_t MemoryAccessor::WriteSegment(const char *src, const size_t &num,
-                                    size_t start,
-                                    size_t amount) noexcept(false) {
-  PrepareMemSegment(num, start, amount);
+MemoryAccessor::ErrorCode MemoryAccessor::WriteSegment(const char *src, const size_t &num, size_t &done_amount, size_t start, size_t amount) noexcept {
+  ErrorCode err{ErrorCode::kNoError};
+  
+  err = PrepareMemSegment(num, start, amount);
+  if (err != ErrorCode::kNoError)
+    return err;
+  
   mem_.write(src, amount);
   mem_.seekg(0); // if the access is denied, it doesn't block at first, but
                  // blocks after the next seekg operation.
+  
   if (!mem_.good())
-    throw SegmentAccessDeniedEx();
-  return amount;
+    return ErrorCode::kSegmentAccessDeniedErr;
+  
+  done_amount += amount;
+  
+  return err;
 }
 
 /*!
@@ -309,41 +334,52 @@ size_t MemoryAccessor::WriteSegment(const char *src, const size_t &num,
  \param [in] address Address to start from.
  \param [in] amount Number of bytes to read.
  \param [out] done_amount How much data were read.
- \throw AddressNotInSegmentEx If an address reached that does not belong to any
- segment. \throw MemFileEx If an error in opening /proc/PID/mem file occured.
- \throw PidNotSetEx If PID is not set.
- \throw SegmentAccessDeniedEx If a segment is reached, access to which is denied
- by an operating system. \throw SegmentNotExistEx Must not be thrown normally,
- but appears in called methods.
-
+ \return MemoryAccessor::ErrorCode, kPidNotSetErr if PID is not set, kAddressNotInSegmentErr if an address reached that does not belong to any segment, kSegmentAccessDeniedErr if access to the segment is denied by an operating system, kMemFileErr If an error in opening /proc/PID/mem file occured, kNoError otherwise.
+ 
  Read data from /proc/PID/mem to a destination "dst", modifying done_amount by
  how many bytes were read.
 */
-void MemoryAccessor::Read(char *dst, size_t address, size_t amount,
-                          size_t &done_amount) noexcept(false) {
-  CheckPid();
+MemoryAccessor::ErrorCode MemoryAccessor::Read(char *dst, size_t address, size_t amount,
+                          size_t &done_amount) noexcept {
+  ErrorCode err{ErrorCode::kNoError};
+  
+  err = CheckPid();
+  if (err != ErrorCode::kNoError)
+    return err;
 
-  size_t cur_segment_num{AddressInSegment(address)},
-      segment_infos_size{segment_infos_.size()}, ret_size{0};
+  size_t cur_segment_num{0}, segment_infos_size{segment_infos_.size()}, ret_size{0};
+  err = AddressInSegment(address, cur_segment_num);
+  if (err != ErrorCode::kNoError)
+    return err;
+  
   done_amount = 0;
 
   address -= segment_infos_[cur_segment_num].start_;
 
-  ret_size = ReadSegment(dst, cur_segment_num, address, amount);
+  err = ReadSegment(dst, cur_segment_num, ret_size, address, amount);
+  if (err != ErrorCode::kNoError)
+    return err;
+  
   amount -= ret_size;
   done_amount += ret_size;
-
+  
   cur_segment_num++;
   for (; amount; cur_segment_num++) {
-    //		if (cur_segment_num == segment_infos_size)
-    //			throw AddressNotInSegmentEx();
+    ret_size = 0;
+    
     if (segment_infos_[cur_segment_num - 1].end_ !=
         segment_infos_[cur_segment_num].start_)
-      throw AddressNotInSegmentEx();
-    ret_size = ReadSegment(dst + done_amount, cur_segment_num, 0, amount);
+      return ErrorCode::kAddressNotInSegmentErr;
+    
+    err = ReadSegment(dst + done_amount, cur_segment_num, ret_size, 0, amount);
+    if (err != ErrorCode::kNoError)
+      return err;
+    
     amount -= ret_size;
     done_amount += ret_size;
   }
+  
+  return err;
 }
 
 /*!
@@ -352,6 +388,8 @@ void MemoryAccessor::Read(char *dst, size_t address, size_t amount,
  \param [in] address Address to start from.
  \param [in] amount Number of bytes to write.
  \param [out] done_amount How much data were written.
+ \return MemoryAccessor::ErrorCode, kPidNotSetErr if PID is not set, kAddressNotInSegmentErr if an address reached that does not belong to any segment, kSegmentAccessDeniedErr if access to the segment is denied by an operating system, kMemFileErr If an error in opening /proc/PID/mem file occured, kNoError otherwise.
+ 
  \throw AddressNotInSegmentEx If an address reached that does not belong to any
  segment. \throw MemFileEx If an error in opening /proc/PID/mem file occured.
  \throw PidNotSetEx If PID is not set.
@@ -362,65 +400,87 @@ void MemoryAccessor::Read(char *dst, size_t address, size_t amount,
  Write data to /proc/PID/mem from a source "src", modifying done_amount by how
  many bytes were written.
 */
-void MemoryAccessor::Write(const char *src, size_t address, size_t amount,
-                           size_t &done_amount) noexcept(false) {
-  CheckPid();
+MemoryAccessor::ErrorCode MemoryAccessor::Write(const char *src, size_t address, size_t amount,
+                           size_t &done_amount) noexcept {
+  ErrorCode err{ErrorCode::kNoError};
+  
+  err = CheckPid();
+  if (err != ErrorCode::kNoError)
+    return err;
 
-  size_t cur_segment_num{AddressInSegment(address)},
-      segment_infos_size{segment_infos_.size()}, ret_size{0};
+  size_t cur_segment_num{0}, segment_infos_size{segment_infos_.size()}, ret_size{0};
+  err = AddressInSegment(address, cur_segment_num);
+  if (err != ErrorCode::kNoError)
+    return err;
+  
   done_amount = 0;
 
   address -= segment_infos_[cur_segment_num].start_;
-
-  ret_size = WriteSegment(src, cur_segment_num, address, amount);
+  
+  err = WriteSegment(src, cur_segment_num, ret_size, address, amount);
+  if (err != ErrorCode::kNoError)
+    return err;
+  
   amount -= ret_size;
   done_amount += ret_size;
 
   cur_segment_num++;
   for (; amount; cur_segment_num++) {
-    //		if (cur_segment_num == segment_infos_size)
-    //			throw AddressNotInSegmentEx();
+    ret_size = 0;
+    
     if (segment_infos_[cur_segment_num - 1].end_ !=
         segment_infos_[cur_segment_num].start_)
-      throw AddressNotInSegmentEx();
-    ret_size = WriteSegment(src + done_amount, cur_segment_num, 0, amount);
+      return ErrorCode::kAddressNotInSegmentErr;
+    
+    err = WriteSegment(src + done_amount, cur_segment_num, ret_size, 0, amount);
+    if (err != ErrorCode::kNoError)
+      return err;
+    
     amount -= ret_size;
     done_amount += ret_size;
   }
+  
+  return err;
 }
 
 /*!
  \brief Open /proc/PID/mem file.
- \throw MemFileEx If an error in opening file occured.
- \throw PidNotSetEx If PID is not set.
+ \return MemoryAccessor::ErrorCode, kPidNotSetErr if PID is not set, kMemFileErr if an error in opening file occured, kNoError otherwise.
 
  Open or re-open /proc/PID/mem file as std::fstream. After opening, there is a
  check if the std::fstream object is good.
 */
-void MemoryAccessor::OpenMem() noexcept(false) {
-  CheckPid();
-
+MemoryAccessor::ErrorCode MemoryAccessor::OpenMem() noexcept {
+  ErrorCode err{ErrorCode::kNoError};
+  
+  err = CheckPid();
+  if (err != ErrorCode::kNoError)
+    return err;
+  
   mem_.close();
   //	mem_.clear();
   mem_.open("/proc/" + std::to_string(pid_) + "/mem",
             std::ios::in | std::ios::out | std::ios::binary);
 
   if (!mem_.good())
-    throw MemFileEx();
+    return ErrorCode::kMemFileErr;
+  
+  return err;
 }
 
 /*!
  \brief Make sure that /proc/PID/mem is opened.
- \throw MemFileEx If an error in opening file occured.
- \throw PidNotSetEx If PID is not set.
+ \return MemoryAccessor::ErrorCode, kPidNotSetErr if PID is not set, kMemFileErr if an error in opening file occured, kNoError otherwise.
 
- Check if the std::fstream object representing /proc/PID/mem is open and good,
+ Check if the std::fstream object representing /proc/PID/mem is open() and good(),
  and open /proc/PID/mem otherwise.
 */
-void MemoryAccessor::CheckMem() noexcept(false) {
+MemoryAccessor::ErrorCode MemoryAccessor::CheckMem() noexcept {
   if (!mem_.is_open() || !mem_.good()) {
-    OpenMem();
+    return OpenMem();
   }
+  
+  return ErrorCode::kNoError;
 }
 
 /*!
@@ -428,25 +488,29 @@ void MemoryAccessor::CheckMem() noexcept(false) {
  \param [in] num Number of the memory segment starting from 0.
  \param [in] start Offset relative to the start of the segment.
  \param [in,out] amount Number of bytes to capture after the "start" parameter.
- If a value is too big, it is set to a maximum appropriate value. \throw
- AddressNotInSegmentEx If the value of parameter "start" represents address
- on/after the end of the segment. \throw SegmentNotExistEx If segment with
- number "num" does not exist.
+ If a value is too big, it is set to a maximum appropriate value. 
+ \return MemoryAccessor::ErrorCode, kPidNotSetErr if PID is not set, kSegmentNotExistErr if the segment with number "num" does not exist, kAddressNotInSegmentErr if the value of parameter "start" represents address on/after the end of the segment, kNoError otherwise.
 
  Check if the given boundaries are located inside the memory segment with the
  given number.
 */
-void MemoryAccessor::CheckSegBoundaries(const size_t &num, const size_t &start,
-                                        size_t &amount) const noexcept(false) {
-  CheckSegNum(num);
-
+MemoryAccessor::ErrorCode MemoryAccessor::CheckSegBoundaries(const size_t &num, const size_t &start,
+                                        size_t &amount) const noexcept {
+  ErrorCode err{ErrorCode::kNoError};
+  
+  err = CheckSegNum(num);
+  if (err != ErrorCode::kNoError)
+    return err;
+  
   size_t seg_size{segment_infos_[num].end_ - segment_infos_[num].start_};
 
   if (start >= seg_size)
-    throw AddressNotInSegmentEx();
-
+    return ErrorCode::kAddressNotInSegmentErr;
+  
   if (amount > seg_size || start + amount > seg_size)
     amount = seg_size - start;
+  
+  return err;
 }
 
 /*!
@@ -454,19 +518,30 @@ void MemoryAccessor::CheckSegBoundaries(const size_t &num, const size_t &start,
  \param [in] num Number of the memory segment starting from 0.
  \param [in] start Offset relative to the start of the segment.
  \param [in,out] amount Number of bytes to capture after the "start" parameter.
- If a value is too big, it is set to a maximum appropriate value. \throw
- AddressNotInSegmentEx If the value of parameter "start" represents address
- on/after the end of the segment. \throw MemFileEx If an error in opening
- /proc/PID/mem file occured. \throw PidNotSetEx If PID is not set. \throw
- SegmentNotExistEx If segment with number "num" does not exist.
+ If a value is too big, it is set to a maximum appropriate value. 
+ \return MemoryAccessor::ErrorCode, kPidNotSetErr if PID is not set, kSegmentNotExistErr if segment with number "num" does not exist, kAddressNotInSegmentErr if the value of parameter "start" represents address on/after the end of the segment, kMemFileErr If an error in opening
+ /proc/PID/mem file occured, kNoError otherwise.
 
  Prepare: check the /proc/PID/mem std::fstream, given segment number and
  boundaries, seek to the needed position in /proc/PID/mem std::fstream.
 */
-void MemoryAccessor::PrepareMemSegment(const size_t &num, const size_t &start,
-                                       size_t &amount) noexcept(false) {
-  CheckPid();
-  CheckMem();
-  CheckSegBoundaries(num, start, amount);
+MemoryAccessor::ErrorCode MemoryAccessor::PrepareMemSegment(const size_t &num, const size_t &start,
+                                       size_t &amount) noexcept {
+  ErrorCode err{ErrorCode::kNoError};
+  
+  err = CheckPid();
+  if (err != ErrorCode::kNoError)
+    return err;
+  
+  err = CheckMem();
+  if (err != ErrorCode::kNoError)
+    return err;
+  
+  err = CheckSegBoundaries(num, start, amount);
+  if (err != ErrorCode::kNoError)
+    return err;
+  
   mem_.seekg(segment_infos_[num].start_ + start);
+  
+  return err;
 }

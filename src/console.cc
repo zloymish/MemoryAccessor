@@ -729,25 +729,32 @@ uint8_t Console::StoullWrapper(const std::string &s, uint64_t &result,
  error occured, call a function Reset of memory_accessor_.
 */
 uint8_t Console::ParseMapsWrapper() const noexcept {
-  try {
-    try {
-      memory_accessor_->ParseMaps();
-    } catch (const MemoryAccessor::MapsFileEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintErrOpenMaps);
-      throw WrapperException(1);
-    } catch (const MemoryAccessor::BadMapsEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintErrParseMaps);
-      throw WrapperException(1);
-    } catch (const MemoryAccessor::PidNotSetEx &ex) {
-      PrintError0Arg(Error0Arg::kPidNotSetUnexpectably);
-      throw WrapperException(1);
-    }
-  } catch (const WrapperException &ex) {
-    memory_accessor_->Reset();
-    return ex.return_code;
+  MemoryAccessor::ErrorCode ma_err{MemoryAccessor::ErrorCode::kNoError};
+  
+  ma_err = memory_accessor_->ParseMaps();
+  switch (ma_err) {
+    case MemoryAccessor::ErrorCode::kNoError:
+    return 0;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kMapsFileErr:
+    PrintError0Arg(Error0Arg::kPrintErrOpenMaps);
+    break;
+    
+    case MemoryAccessor::ErrorCode::kBadMapsErr:
+    PrintError0Arg(Error0Arg::kPrintErrParseMaps);
+    break;
+    
+    case MemoryAccessor::ErrorCode::kPidNotSetErr:
+    PrintError0Arg(Error0Arg::kPidNotSetUnexpectably);
+    break;
+    
+    default:
+    break;
   }
-
-  return 0;
+  
+  memory_accessor_->Reset();
+  return 1;
 }
 
 /*!
@@ -757,11 +764,21 @@ uint8_t Console::ParseMapsWrapper() const noexcept {
  Check if PID is set and print messages to stderr if it is not.
 */
 uint8_t Console::CheckPidWrapper() const noexcept {
-  try {
-    memory_accessor_->CheckPid();
-  } catch (const MemoryAccessor::PidNotSetEx &ex) {
+  MemoryAccessor::ErrorCode ma_err{MemoryAccessor::ErrorCode::kNoError};
+  
+  ma_err = memory_accessor_->CheckPid();
+  switch (ma_err) {
+    case MemoryAccessor::ErrorCode::kNoError:
+    break;
+    
+    case MemoryAccessor::ErrorCode::kPidNotSetErr:
     PrintError0Arg(Error0Arg::kPidNotSet);
     return 1;
+    break;
+    
+    default:
+    return 1;
+    break;
   }
 
   return 0;
@@ -775,18 +792,26 @@ uint8_t Console::CheckPidWrapper() const noexcept {
  Check segment number and print messages to stderr in case of errors.
 */
 uint8_t Console::CheckSegNumWrapper(const size_t &num) const noexcept {
-  try {
-    try {
-      memory_accessor_->CheckSegNum(num);
-    } catch (const MemoryAccessor::PidNotSetEx &ex) {
-      PrintError0Arg(Error0Arg::kPidNotSet);
-      throw WrapperException(1);
-    } catch (const MemoryAccessor::SegmentEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintSegNotExist);
-      throw WrapperException(1);
-    }
-  } catch (const WrapperException &ex) {
-    return ex.return_code;
+  MemoryAccessor::ErrorCode ma_err{MemoryAccessor::ErrorCode::kNoError};
+  
+  ma_err = memory_accessor_->CheckSegNum(num);
+  switch (ma_err) {
+    case MemoryAccessor::ErrorCode::kNoError:
+    break;
+    
+    case MemoryAccessor::ErrorCode::kPidNotSetErr:
+    PrintError0Arg(Error0Arg::kPidNotSet);
+    return 1;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kSegmentNotExistErr:
+    PrintError0Arg(Error0Arg::kPrintSegNotExist);
+    return 1;
+    break;
+    
+    default:
+    return 1;
+    break;
   }
 
   return 0;
@@ -806,24 +831,37 @@ uint8_t Console::CheckSegNumWrapper(const size_t &num) const noexcept {
 */
 uint8_t Console::ReadSegWrapper(char *dst, const size_t &num, size_t start,
                                 size_t amount) const noexcept {
-  try {
-    try {
-      memory_accessor_->ReadSegment(dst, num, start, amount);
-    } catch (const MemoryAccessor::PidNotSetEx &ex) {
-      PrintError0Arg(Error0Arg::kPidNotSet);
-      throw WrapperException(1);
-    } catch (const MemoryAccessor::MemFileEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintErrOpenMem);
-      throw WrapperException(1);
-    } catch (const MemoryAccessor::SegmentAccessDeniedEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintSegNoAccess);
-      throw WrapperException(2);
-    } catch (const MemoryAccessor::SegmentEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintSegNotExist);
-      throw WrapperException(2);
-    }
-  } catch (const WrapperException &ex) {
-    return ex.return_code;
+  MemoryAccessor::ErrorCode ma_err{MemoryAccessor::ErrorCode::kNoError};
+  
+  size_t done_amount{0};
+  ma_err = memory_accessor_->ReadSegment(dst, num, done_amount, start, amount);
+  switch (ma_err) {
+    case MemoryAccessor::ErrorCode::kNoError:
+    break;
+    
+    case MemoryAccessor::ErrorCode::kPidNotSetErr:
+    PrintError0Arg(Error0Arg::kPidNotSet);
+    return 1;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kMemFileErr:
+    PrintError0Arg(Error0Arg::kPrintErrOpenMem);
+    return 1;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kSegmentAccessDeniedErr:
+    PrintError0Arg(Error0Arg::kPrintSegNoAccess);
+    return 2;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kSegmentNotExistErr:
+    PrintError0Arg(Error0Arg::kPrintSegNotExist);
+    return 2;
+    break;
+    
+    default:
+    return 1;
+    break;
   }
 
   return 0;
@@ -843,24 +881,37 @@ uint8_t Console::ReadSegWrapper(char *dst, const size_t &num, size_t start,
 */
 uint8_t Console::WriteSegWrapper(char *src, const size_t &num, size_t start,
                                  size_t amount) const noexcept {
-  try {
-    try {
-      memory_accessor_->WriteSegment(src, num, start, amount);
-    } catch (const MemoryAccessor::PidNotSetEx &ex) {
-      PrintError0Arg(Error0Arg::kPidNotSet);
-      throw WrapperException(1);
-    } catch (const MemoryAccessor::MemFileEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintErrOpenMem);
-      throw WrapperException(1);
-    } catch (const MemoryAccessor::SegmentAccessDeniedEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintSegNoAccess);
-      throw WrapperException(2);
-    } catch (const MemoryAccessor::SegmentEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintSegNotExist);
-      throw WrapperException(2);
-    }
-  } catch (const WrapperException &ex) {
-    return ex.return_code;
+  MemoryAccessor::ErrorCode ma_err{MemoryAccessor::ErrorCode::kNoError};
+  
+  size_t done_amount{0};
+  ma_err = memory_accessor_->WriteSegment(src, num, done_amount, start, amount);
+  switch (ma_err) {
+    case MemoryAccessor::ErrorCode::kNoError:
+    break;
+    
+    case MemoryAccessor::ErrorCode::kPidNotSetErr:
+    PrintError0Arg(Error0Arg::kPidNotSet);
+    return 1;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kMemFileErr:
+    PrintError0Arg(Error0Arg::kPrintErrOpenMem);
+    return 1;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kSegmentAccessDeniedErr:
+    PrintError0Arg(Error0Arg::kPrintSegNoAccess);
+    return 2;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kSegmentNotExistErr:
+    PrintError0Arg(Error0Arg::kPrintSegNotExist);
+    return 2;
+    break;
+    
+    default:
+    return 1;
+    break;
   }
 
   return 0;
@@ -879,24 +930,36 @@ uint8_t Console::WriteSegWrapper(char *src, const size_t &num, size_t start,
 */
 uint8_t Console::ReadWrapper(char *dst, size_t address, size_t amount,
                              size_t &done_amount) const noexcept {
-  try {
-    try {
-      memory_accessor_->Read(dst, address, amount, done_amount);
-    } catch (const MemoryAccessor::PidNotSetEx &ex) {
-      PrintError0Arg(Error0Arg::kPidNotSet);
-      throw WrapperException(1);
-    } catch (const MemoryAccessor::MemFileEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintErrOpenMem);
-      throw WrapperException(1);
-    } catch (const MemoryAccessor::SegmentAccessDeniedEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintSegNoAccess);
-      throw WrapperException(2);
-    } catch (const MemoryAccessor::SegmentEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintSegNotExist);
-      throw WrapperException(2);
-    }
-  } catch (const WrapperException &ex) {
-    return ex.return_code;
+  MemoryAccessor::ErrorCode ma_err{MemoryAccessor::ErrorCode::kNoError};
+  
+  ma_err = memory_accessor_->Read(dst, address, amount, done_amount);
+  switch (ma_err) {
+    case MemoryAccessor::ErrorCode::kNoError:
+    break;
+    
+    case MemoryAccessor::ErrorCode::kPidNotSetErr:
+    PrintError0Arg(Error0Arg::kPidNotSet);
+    return 1;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kMemFileErr:
+    PrintError0Arg(Error0Arg::kPrintErrOpenMem);
+    return 1;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kSegmentAccessDeniedErr:
+    PrintError0Arg(Error0Arg::kPrintSegNoAccess);
+    return 2;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kSegmentNotExistErr:
+    PrintError0Arg(Error0Arg::kPrintSegNotExist);
+    return 2;
+    break;
+    
+    default:
+    return 1;
+    break;
   }
 
   return 0;
@@ -915,24 +978,36 @@ uint8_t Console::ReadWrapper(char *dst, size_t address, size_t amount,
 */
 uint8_t Console::WriteWrapper(char *src, size_t address, size_t amount,
                               size_t &done_amount) const noexcept {
-  try {
-    try {
-      memory_accessor_->Write(src, address, amount, done_amount);
-    } catch (const MemoryAccessor::PidNotSetEx &ex) {
-      PrintError0Arg(Error0Arg::kPidNotSet);
-      throw WrapperException(1);
-    } catch (const MemoryAccessor::MemFileEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintErrOpenMem);
-      throw WrapperException(1);
-    } catch (const MemoryAccessor::SegmentAccessDeniedEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintSegNoAccess);
-      throw WrapperException(2);
-    } catch (const MemoryAccessor::SegmentEx &ex) {
-      PrintError0Arg(Error0Arg::kPrintSegNotExist);
-      throw WrapperException(2);
-    }
-  } catch (const WrapperException &ex) {
-    return ex.return_code;
+  MemoryAccessor::ErrorCode ma_err{MemoryAccessor::ErrorCode::kNoError};
+  
+  ma_err = memory_accessor_->Write(src, address, amount, done_amount);
+  switch (ma_err) {
+    case MemoryAccessor::ErrorCode::kNoError:
+    break;
+    
+    case MemoryAccessor::ErrorCode::kPidNotSetErr:
+    PrintError0Arg(Error0Arg::kPidNotSet);
+    return 1;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kMemFileErr:
+    PrintError0Arg(Error0Arg::kPrintErrOpenMem);
+    return 1;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kSegmentAccessDeniedErr:
+    PrintError0Arg(Error0Arg::kPrintSegNoAccess);
+    return 2;
+    break;
+    
+    case MemoryAccessor::ErrorCode::kSegmentNotExistErr:
+    PrintError0Arg(Error0Arg::kPrintSegNotExist);
+    return 2;
+    break;
+    
+    default:
+    return 1;
+    break;
   }
 
   return 0;
@@ -1219,17 +1294,24 @@ void Console::CommandPid(const Command &parent,
   pid_t pid{0};
   if (StoiWrapper(args[0], pid, "PID") != 0)
     return;
-
-  try {
-    memory_accessor_->SetPid(pid);
+  
+  MemoryAccessor::ErrorCode err{MemoryAccessor::ErrorCode::kNoError};
+  err = memory_accessor_->SetPid(pid);
+  switch (err) {
+    case MemoryAccessor::ErrorCode::kNoError:
     std::cout << "Set PID: " << args[0] << std::endl;
-  } catch (const MemoryAccessor::ErrCheckingPidEx &ex) {
-    PrintError0Arg(Error0Arg::kErrCheckingPid);
-    return;
-  } catch (const MemoryAccessor::PidNotExistEx &ex) {
+    break;
+    
+    case MemoryAccessor::ErrorCode::kPidNotExistErr:
     std::cerr << "The process with PID " << args[0] << " does not exist."
               << std::endl;
     return;
+    break;
+    
+    default:
+    PrintError0Arg(Error0Arg::kErrCheckingPid);
+    return;
+    break;
   }
 
   std::cout << "Parsing /proc/" << args[0] << "/maps..." << std::endl;
@@ -1266,12 +1348,10 @@ void Console::CommandPid(const Command &parent,
 */
 void Console::CommandMaps(const Command &parent,
                           const std::vector<std::string> &args) noexcept {
-  try {
-    memory_accessor_->CheckPid();
-    PrintSegments(memory_accessor_->segment_infos_);
-  } catch (const MemoryAccessor::PidNotSetEx &ex) {
-    PrintError0Arg(Error0Arg::kPidNotSet);
-  }
+  if (CheckPidWrapper() != 0)
+    return;
+  
+  PrintSegments(memory_accessor_->segment_infos_);
 }
 
 /*!
