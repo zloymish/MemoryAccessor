@@ -16,10 +16,9 @@
 
 /*!
  \file
- \brief Console and Command header
+ \brief Console and ConsoleCommand header
 
- A header that contains the definition of Console and Command classes, each is
- depending on another.
+ A header that contains the definition of Console class.
 */
 
 #ifndef MEMORYACCESSOR_SRC_CONSOLE_H_
@@ -32,31 +31,13 @@
 #include <string>
 #include <vector>
 
+#include "consolecommand.h"
 #include "hexviewer.h"
 #include "memoryaccessor.h"
 #include "processapi.h"
 #include "segmentinfo.h"
 
-class Console;
-
-/*!
- \brief A struct that represents command in Console.
-
- In this struct all the variables related to Console command are stored: name of
- the command, pointer to Console function that handles the command, and
- formattable description of the command.
-*/
-struct Command {
-  using CommandFuncP = void (Console::*)(
-      const Command &parent, const std::vector<std::string>
-                                 &); //!< Type of pointer to command function.
-
-  std::string name;           //!< Command name.
-  CommandFuncP func{nullptr}; //!< Pointer.
-  std::vector<std::array<std::string, 2>>
-      description; //!< Description of command: lines split by the left and
-                   //!< right sides for better formatting.
-};
+struct ConsoleCommand;
 
 /*!
  \brief A class to perform CLI.
@@ -135,7 +116,7 @@ public:
   HexViewer *hex_viewer_{nullptr}; //!< A pointer to a HexViewer class instance.
   ProcessApi *process_api_{nullptr};          //!< A pointer to a ProcessApi class instance.
 
-  const Command kCommands[kCommandsNumber]{
+  const ConsoleCommand kCommands[kCommandsNumber]{
       {"help", &Console::CommandHelp, {{"help", "Show help"}}},
       {"name",
        &Console::CommandName,
@@ -201,9 +182,9 @@ private:
 
   int SetSigint(void (*handler)(int)) const noexcept;
   
-  void PrintDescription(const Command &command, uint32_t left = 2,
+  void PrintDescription(const ConsoleCommand &command, uint32_t left = 2,
                         uint32_t middle = 0) const noexcept;
-  void ShowUsage(const Command &command) const noexcept;
+  void ShowUsage(const ConsoleCommand &command) const noexcept;
   void PrintError0Arg(const Error0Arg &error) const noexcept;
   void PrintFileNotOpened(const std::string &path) const noexcept;
   void PrintFileFail(const std::string &path) const noexcept;
@@ -248,23 +229,23 @@ private:
                       std::unique_ptr<char[]> &mem_dump,
                       std::vector<std::unique_ptr<char[]>> &full_dump) noexcept;
 
-  void CommandHelp(const Command &parent,
+  void CommandHelp(const ConsoleCommand &parent,
                    const std::vector<std::string> &args) noexcept;
-  void CommandName(const Command &parent,
+  void CommandName(const ConsoleCommand &parent,
                    const std::vector<std::string> &args) noexcept;
-  void CommandPid(const Command &parent,
+  void CommandPid(const ConsoleCommand &parent,
                   const std::vector<std::string> &args) noexcept;
-  void CommandMaps(const Command &parent,
+  void CommandMaps(const ConsoleCommand &parent,
                    const std::vector<std::string> &args) noexcept;
-  void CommandView(const Command &parent,
+  void CommandView(const ConsoleCommand &parent,
                    const std::vector<std::string> &args) noexcept;
-  void CommandRead(const Command &parent,
+  void CommandRead(const ConsoleCommand &parent,
                    const std::vector<std::string> &args) noexcept;
-  void CommandWrite(const Command &parent,
+  void CommandWrite(const ConsoleCommand &parent,
                     const std::vector<std::string> &args) noexcept;
-  void CommandDiff(const Command &parent,
+  void CommandDiff(const ConsoleCommand &parent,
                    const std::vector<std::string> &args) noexcept;
-  void CommandAwait(const Command &parent,
+  void CommandAwait(const ConsoleCommand &parent,
                     const std::vector<std::string> &args) noexcept;
 
   static bool one_instance_created_; //!< A static variable that is true when

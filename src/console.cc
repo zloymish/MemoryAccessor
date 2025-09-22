@@ -48,6 +48,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include "consolecommand.h"
 #include "hexviewer.h"
 #include "memoryaccessor.h"
 #include "processapi.h"
@@ -377,7 +378,7 @@ void Console::HandleCommand(const std::string &line) noexcept {
   args.erase(args.begin());
 
   auto command_p = std::find_if(std::begin(kCommands), std::end(kCommands),
-                                [command_name](const Command &command) {
+                                [command_name](const ConsoleCommand &command) {
                                   return command_name == command.name;
                                 });
   if (command_p != std::end(kCommands)) {
@@ -407,7 +408,7 @@ int Console::SetSigint(void (*handler)(int)) const noexcept {
 
 /*!
  \brief Print description of a command.
- \param [in] command Command object to print description of which.
+ \param [in] command ConsoleCommand object to print description of which.
  \param [in] left How many characters to skip from the start of the terminal
  line. Default is 2. \param [in] middle How many characters is taken to print
  the left side of the description line. If the left side is shorter, whitespaces
@@ -418,7 +419,7 @@ int Console::SetSigint(void (*handler)(int)) const noexcept {
  the line can be made ("left" parameter), also a minimum length of the left side
  can be set ("middle" parameter).
 */
-void Console::PrintDescription(const Command &command, uint32_t left,
+void Console::PrintDescription(const ConsoleCommand &command, uint32_t left,
                                uint32_t middle) const noexcept {
   struct winsize ws;
   ioctl(0, TIOCGWINSZ, &ws);
@@ -440,11 +441,11 @@ void Console::PrintDescription(const Command &command, uint32_t left,
 
 /*!
  \brief Print usage message of a command.
- \param [in] command Command object to print description of which.
+ \param [in] command ConsoleCommand object to print description of which.
 
  Print "Usage: " and a formatted manual of a command with offset from left.
 */
-void Console::ShowUsage(const Command &command) const noexcept {
+void Console::ShowUsage(const ConsoleCommand &command) const noexcept {
   std::cout << "Usage:";
   PrintDescription(command, 7);
 }
@@ -1196,13 +1197,13 @@ Console::DiffNewNext(size_t &j,
 
 /*!
  \brief Handle command "help".
- \param [in] parent Related Command object.
+ \param [in] parent Related ConsoleCommand object.
  \param [in] args Arguments for the command.
 
  Print project name, version and description, and then list all descriptions of
  commands.
 */
-void Console::CommandHelp(const Command &parent,
+void Console::CommandHelp(const ConsoleCommand &parent,
                           const std::vector<std::string> &args) noexcept {
   PrintNameVer();
   std::cout << kProjectDescription << std::endl;
@@ -1210,14 +1211,14 @@ void Console::CommandHelp(const Command &parent,
   std::cout << "Commands:\n" << std::endl;
 
   uint32_t middle{0};
-  for (const Command &command : kCommands) {
+  for (const ConsoleCommand &command : kCommands) {
     for (const std::array<std::string, 2> &line : command.description) {
       if (line[0].length() > middle)
         middle = line[0].length();
     }
   }
 
-  for (const Command &command : kCommands) {
+  for (const ConsoleCommand &command : kCommands) {
     PrintDescription(command, 2, middle);
     std::cout << std::endl;
   }
@@ -1225,7 +1226,7 @@ void Console::CommandHelp(const Command &parent,
 
 /*!
  \brief Handle command "name".
- \param [in] parent Related Command object.
+ \param [in] parent Related ConsoleCommand object.
  \param [in] args Arguments for the command.
 
  Search for PID by process name provided as the first argument and set PID by
@@ -1233,7 +1234,7 @@ void Console::CommandHelp(const Command &parent,
  PIDs if pid_num is specified (starting from 0) as the second argument. Print
  usage otherwise.
 */
-void Console::CommandName(const Command &parent,
+void Console::CommandName(const ConsoleCommand &parent,
                           const std::vector<std::string> &args) noexcept {
   if (args.size() < 1) {
     ShowUsage(parent);
@@ -1278,13 +1279,13 @@ void Console::CommandName(const Command &parent,
 
 /*!
  \brief Handle command "pid".
- \param [in] parent Related Command object.
+ \param [in] parent Related ConsoleCommand object.
  \param [in] args Arguments for the command.
 
  Set PID provided as the first argument and parse /proc/PID/maps. Print usage
  otherwise.
 */
-void Console::CommandPid(const Command &parent,
+void Console::CommandPid(const ConsoleCommand &parent,
                          const std::vector<std::string> &args) noexcept {
   if (args.size() < 1) {
     ShowUsage(parent);
@@ -1341,12 +1342,12 @@ void Console::CommandPid(const Command &parent,
 
 /*!
  \brief Handle command "maps".
- \param [in] parent Related Command object.
+ \param [in] parent Related ConsoleCommand object.
  \param [in] args Arguments for the command.
 
  Print to stdout memory segments found by parsing /proc/PID/maps.
 */
-void Console::CommandMaps(const Command &parent,
+void Console::CommandMaps(const ConsoleCommand &parent,
                           const std::vector<std::string> &args) noexcept {
   if (CheckPidWrapper() != 0)
     return;
@@ -1356,7 +1357,7 @@ void Console::CommandMaps(const Command &parent,
 
 /*!
  \brief Handle command "view".
- \param [in] parent Related Command object.
+ \param [in] parent Related ConsoleCommand object.
  \param [in] args Arguments for the command.
 
  Print data of memory segment with name or PID provided as the first argument.
@@ -1365,7 +1366,7 @@ void Console::CommandMaps(const Command &parent,
  raw data, "-f file" write output to file "file". Print usage in case of usage
  errors.
 */
-void Console::CommandView(const Command &parent,
+void Console::CommandView(const ConsoleCommand &parent,
                           const std::vector<std::string> &args) noexcept {
   bool raw{false}, hex{false};
 
@@ -1510,7 +1511,7 @@ void Console::CommandView(const Command &parent,
 
 /*!
  \brief Handle command "read".
- \param [in] parent Related Command object.
+ \param [in] parent Related ConsoleCommand object.
  \param [in] args Arguments for the command.
 
  Read an amount of bytes provided as the 2nd argument starting from an address
@@ -1518,7 +1519,7 @@ void Console::CommandView(const Command &parent,
  specified), "-r" - print raw data, "-f file" write output to file "file". Print
  usage in case of usage errors.
 */
-void Console::CommandRead(const Command &parent,
+void Console::CommandRead(const ConsoleCommand &parent,
                           const std::vector<std::string> &args) noexcept {
   bool raw{false}, hex{false};
 
@@ -1660,7 +1661,7 @@ void Console::CommandRead(const Command &parent,
 
 /*!
  \brief Handle command "write".
- \param [in] parent Related Command object.
+ \param [in] parent Related ConsoleCommand object.
  \param [in] args Arguments for the command.
 
  Write to memory an amount of bytes provided as the 2nd argument starting from
@@ -1668,7 +1669,7 @@ void Console::CommandRead(const Command &parent,
  provided as the 3rd argument or the file specified in type "-f file". Print
  usage in case of usage errors.
 */
-void Console::CommandWrite(const Command &parent,
+void Console::CommandWrite(const ConsoleCommand &parent,
                            const std::vector<std::string> &args) noexcept {
   std::string file_path, addr_str, amount_str;
   const std::string *str_p{nullptr};
@@ -1805,14 +1806,14 @@ void Console::CommandWrite(const Command &parent,
 
 /*!
  \brief Handle command "diff".
- \param [in] parent Related Command object.
+ \param [in] parent Related ConsoleCommand object.
  \param [in] args Arguments for the command.
 
  Find differences in memory states by length provided as the 1st argument and
  replace to string provided as the 2nd argument (optional). Print usage in case
  of usage errors.
 */
-void Console::CommandDiff(const Command &parent,
+void Console::CommandDiff(const ConsoleCommand &parent,
                           const std::vector<std::string> &args) noexcept {
   if (args.size() < 1) {
     ShowUsage(parent);
@@ -1981,13 +1982,13 @@ diff_return:
 
 /*!
  \brief Handle command "await".
- \param [in] parent Related Command object.
+ \param [in] parent Related ConsoleCommand object.
  \param [in] args Arguments for the command.
 
  Wait for the process with matching name or PID provided as the 1st argument.
  Print usage in case of usage errors.
 */
-void Console::CommandAwait(const Command &parent,
+void Console::CommandAwait(const ConsoleCommand &parent,
                            const std::vector<std::string> &args) noexcept {
   std::string name, pid_str;
 
