@@ -199,36 +199,6 @@ private:
     kPrintSegNoAccess,        //!< Error: no access to the segment.
   };
 
-  /*!
-   \brief Ex: Wrapper exception
-
-   This exception is thrown in wrapper functions when some similar actions are
-   needed to be done before return. The class has the return code variable, the
-   value of which should be returned by function.
-  */
-  class WrapperException : public std::exception {
-  public:
-    /*!
-     \brief Constructor.
-     \param [in] _return_code return_code value to set.
-
-     Sets value to return_code got as an argument.
-    */
-    WrapperException(uint8_t _return_code) : return_code(_return_code) {}
-
-    uint8_t return_code; //!< A code the function should return.
-  private:
-    /*!
-     \brief "what" function of the exception.
-     \return C-string descripting the exception.
-
-     Prints message to stdout when the exception is thrown.
-    */
-    virtual const char *what() const noexcept override {
-      return "Wrapper exception";
-    }
-  };
-
   int SetSigint(void (*handler)(int)) const noexcept;
   
   void PrintDescription(const Command &command, uint32_t left = 2,
