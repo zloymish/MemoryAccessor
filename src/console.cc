@@ -43,7 +43,6 @@
 #include <memory>
 #include <ostream>
 #include <sstream>
-#include <stdexcept>
 #include <string>
 #include <unordered_set>
 #include <vector>
@@ -265,21 +264,24 @@ static char **completion(const char *text, int start, int end) noexcept {
 /*!
  \brief Constructor.
  \param [in,out] memory_accessor A pointer to an instance of MemoryAccessor
- class. \param [in,out] hex_viewer A pointer to an instance of HexViewer
- class. \param [in,out] process_api A pointer to an instance of ProcessApi class. \throw
- std::logic_error If an instance of the class have already been created and it
- is a second instance.
+ class. 
+ \param [in,out] hex_viewer A pointer to an instance of HexViewer
+ class. 
+ \param [in,out] process_api A pointer to an instance of ProcessApi class. 
+ \note This function will call std::exit if an instance of the class have already been created and it is a second instance.
 
  Initializes MemoryAccessor class, HexViewer class and ProcessApi class pointers
- by values got as parameters. Throws an exception if an instance of the class
+ by values got as parameters. Exits the program if an instance of the class
  has already been created. Sets one_instance_created_ to true.
 */
 Console::Console(MemoryAccessor *memory_accessor, HexViewer *hex_viewer,
-                 ProcessApi *process_api) noexcept(false)
+                 ProcessApi *process_api) noexcept
     : memory_accessor_(memory_accessor), hex_viewer_(hex_viewer),
       process_api_(process_api) {
-  if (one_instance_created_)
-    throw std::logic_error("Only one instance of Console can be created");
+  if (one_instance_created_) {
+    std::cerr << "Error: only one instance of Console class can be created" << std::endl;
+    std::exit(1);
+  }
   one_instance_created_ = true;
 }
 

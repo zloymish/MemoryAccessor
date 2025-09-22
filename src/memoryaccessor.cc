@@ -26,7 +26,9 @@
 #include <sys/types.h>
 
 #include <cstdint>
+#include <cstdlib>
 #include <fstream>
+#include <iostream>
 #include <map>
 #include <sstream>
 #include <string>
@@ -41,17 +43,15 @@ bool MemoryAccessor::one_instance_created_{false};
 /*!
  \brief Constructor.
  \param [in,out] process_api A pointer to an instance of ProcessApi class.
- \throw std::logic_error If an instance of the class have already been created
- and it is a second instance.
+ \note This function will call std::exit if an instance of the class have already been created and it is a second instance.
 
- Initializes ProcessApi class pointer by value got as an parameter. Throws an
- exception if an instance of the class have already been created. Sets
- one_instance_created_ to true.
+ Initializes ProcessApi class pointer by value got as an parameter. Exits the program if an instance of the class has already been created. Sets one_instance_created_ to true.
 */
-MemoryAccessor::MemoryAccessor(ProcessApi *process_api) noexcept(false) : process_api_(process_api) {
-  if (one_instance_created_)
-    throw std::logic_error(
-        "Only one instance of MemoryAccessor can be created");
+MemoryAccessor::MemoryAccessor(ProcessApi *process_api) noexcept : process_api_(process_api) {
+  if (one_instance_created_) {
+    std::cerr << "Error: only one instance of MemoryAccessor class can be created" << std::endl;
+    std::exit(1);
+  }
   one_instance_created_ = true;
 }
 
@@ -389,13 +389,6 @@ MemoryAccessor::ErrorCode MemoryAccessor::Read(char *dst, size_t address, size_t
  \param [in] amount Number of bytes to write.
  \param [out] done_amount How much data were written.
  \return MemoryAccessor::ErrorCode, kPidNotSetErr if PID is not set, kAddressNotInSegmentErr if an address reached that does not belong to any segment, kSegmentAccessDeniedErr if access to the segment is denied by an operating system, kMemFileErr If an error in opening /proc/PID/mem file occured, kNoError otherwise.
- 
- \throw AddressNotInSegmentEx If an address reached that does not belong to any
- segment. \throw MemFileEx If an error in opening /proc/PID/mem file occured.
- \throw PidNotSetEx If PID is not set.
- \throw SegmentAccessDeniedEx If a segment is reached, access to which is denied
- by an operating system. \throw SegmentNotExistEx Must not be thrown normally,
- but appears in called methods.
 
  Write data to /proc/PID/mem from a source "src", modifying done_amount by how
  many bytes were written.

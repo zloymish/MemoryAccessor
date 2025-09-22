@@ -66,7 +66,7 @@ public:
     kAddressNotInSegmentErr, //!< Address does not belong to any segment
   };
   
-  explicit MemoryAccessor(ProcessApi *process_api) noexcept(false);
+  explicit MemoryAccessor(ProcessApi *process_api) noexcept;
 
   /*!
    \brief Copy constructor (deleted).

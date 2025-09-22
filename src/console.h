@@ -53,7 +53,7 @@ public:
       9}; //!< Number of the commands available.
 
   explicit Console(MemoryAccessor *memory_accessor, HexViewer *hex_viewer,
-                   ProcessApi *process_api) noexcept(false);
+                   ProcessApi *process_api) noexcept;
 
   /*!
    \brief Copy constructor (deleted).
